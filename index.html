@@ -1,784 +1,372 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="garlic">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Garlic Mode — Roast</title>
-  <meta name="description" content="Garlic Mode: roast presets, looped relax video, ambient tone, Spice Beats, Power mode, auto-unmute with overlay, audio-only (mobile default), consent cue. No tracking." />
-  <meta property="og:title" content="Garlic Mode — Roast" />
-  <meta property="og:description" content="Set roast %, run a session, relax with video or audio-only, layer beats, opt into Power mode, and use a simple consent cue." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://garlic.plnt.earth" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="referrer" content="no-referrer" />
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    :root{
-      --bg:#0f0f10;--fg:#eaeaea;--muted:#a7a7ad;
-      --accent:#ffd26a;--accent-2:#ff9f4a;
-      --card:#16171a;--ring:#2a2b31;--ok:#5cf2a4;--warn:#ffd26a;--stop:#ff6b6b;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;--gap:14px;
-      --font: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-    }
-    /* Power mode theme */
-    body.mode-power{
-      background: radial-gradient(1200px 800px at 70% -10%, rgba(255,80,180,.18), transparent 60%), #0f0f12;
-    }
-    body.mode-power .logo{
-      background: conic-gradient(from 0deg,#ffd0f0,#ff80d0,#ff3fb0,#b84cff,#ffd0f0);
-    }
-    body.mode-power .accented{background:linear-gradient(180deg,rgba(255,80,180,.22),rgba(184,76,255,.12));border-color:#0000}
-    @media (prefers-color-scheme:light){
-      :root{--bg:#f7f7fb;--fg:#1b1c20;--muted:#5b5d66;--card:#ffffff;--ring:#e8e9ef;--shadow:0 10px 30px rgba(0,0,0,.08)}
-      body.mode-power{background: radial-gradient(1200px 800px at 70% -10%, rgba(255,80,180,.12), transparent 60%), #fbf7fb;}
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:radial-gradient(1200px 800px at 70% -10%, rgba(255,159,74,.15), transparent 60%), var(--bg); color:var(--fg); font:16px/1.45 var(--font); letter-spacing:.2px}
-    a{color:inherit}
-    .wrap{max-width:980px;margin:auto;padding:28px}
-    header{display:flex;gap:var(--gap);align-items:center;justify-content:space-between;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 0deg,#fff1c1,#ffd26a,#ff9f4a,#ffd26a,#fff1c1); box-shadow:var(--shadow)}
-    h1{font-size:1.35rem;margin:0;letter-spacing:.4px}
-    .tag{font-size:.85rem;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,rgba(255,210,106,.07),transparent),var(--card);
-      border:1px solid var(--ring); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
-    .card h2{font-size:1.05rem;margin:0 0 12px}
-    .sub{color:var(--muted); font-size:.92rem}
-    .small{font-size:.9rem}
-    .muted{color:var(--muted)}
-    .mono{font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    .controls{display:grid;gap:14px}
-    .ctl-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .slider{appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-    .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #0001;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-    .meter{font-variant-numeric:tabular-nums;font-weight:600}
-    .pill{border:1px solid var(--ring);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.02)}
-    .btns{display:flex;gap:10px;flex-wrap:wrap}
-    button{appearance:none;border:1px solid var(--ring);background:var(--card);color:var(--fg);
-      padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer}
-    button:focus{outline:2px solid var(--accent);outline-offset:2px}
-    button.primary{background:linear-gradient(180deg,rgba(255,210,106,.25),rgba(255,210,106,.1));border-color:#0000}
-    body.mode-power button.primary{background:linear-gradient(180deg,rgba(255,80,180,.26),rgba(184,76,255,.12))}
-    .video-wrap{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--ring);background:#000}
-    iframe{width:100%;height:100%;border:0}
-    .input-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
-    input[type="url"]{flex:1;border-radius:12px;border:1px solid var(--ring);padding:10px;background:var(--card);color:var(--fg)}
-    .hint{font-size:.85rem;color:var(--muted)}
-    .amb{position:relative;height:180px;border-radius:12px;overflow:hidden;border:1px solid var(--ring);background:radial-gradient(600px 220px at 20% 0%,rgba(255,210,106,.12),transparent 60%), #0b0b0d}
-    body.mode-power .amb{background:radial-gradient(600px 220px at 20% 0%,rgba(255,80,180,.14),transparent 60%), #0b0b10}
-    canvas{display:block;width:100%;height:100%}
-    .amb-ctl{position:absolute;inset:auto 10px 10px 10px;display:flex;gap:10px;justify-content:space-between;align-items:center}
-    footer{margin-top:24px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    kbd{padding:2px 6px;border:1px solid var(--ring);border-radius:6px;background:var(--card)}
-    .toggle{display:inline-flex;align-items:center;gap:8px}
-    .toggle input{width:42px;height:22px;appearance:none;background:#333;border-radius:999px;position:relative;outline:none;border:1px solid var(--ring)}
-    .toggle input:checked{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-    body.mode-power .toggle input:checked{background:linear-gradient(90deg,#ff80d0,#b84cff)}
-    .toggle input::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:1px;left:1px;transition:transform .15s ease;box-shadow:0 1px 4px rgba(0,0,0,.35)}
-    .toggle input:checked::after{transform:translateX(20px)}
-    .callout{border:1px solid var(--ring);border-radius:12px;padding:10px 12px;background:rgba(255,255,255,.02)}
-    .accented{background:linear-gradient(180deg,rgba(255,210,106,.25),rgba(255,210,106,.1));border:1px solid var(--ring)}
-    /* Consent cue pulse overlay */
-    .pulse-overlay{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .25s ease}
-    .pulse-overlay.ok{background:radial-gradient(400px 300px at 50% 70%, rgba(92,242,164,.18), transparent 60%)}
-    .pulse-overlay.slow{background:radial-gradient(400px 300px at 50% 70%, rgba(255,210,106,.20), transparent 60%)}
-    .pulse-overlay.stop{background:radial-gradient(400px 300px at 50% 70%, rgba(255,107,107,.20), transparent 60%)}
-    .pulse-overlay.show{opacity:1}
-    .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--ring)}
-    .chip.ok{border-color:var(--ok)}
-    .chip.slow{border-color:var(--warn)}
-    .chip.stop{border-color:var(--stop)}
-    /* Tap-to-Unmute overlay */
-    .unmute{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55));color:#fff}
-    .unmute.hidden{opacity:0;pointer-events:none;transition:opacity .2s ease}
-    .unmute .bubble{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:999px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);backdrop-filter: blur(6px)}
-    .unmute .bubble button{background:#fff;color:#000;border:0;border-radius:999px;padding:8px 12px;font-weight:700}
-    .unmute .bubble span{opacity:.85}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Garlic Toast — Relax & Cook</title>
+<meta name="description" content="Set your toast level, run a kitchen timer, relax with a gentle aroma visual, and write a quick ritual note. Local-only, no tracking." />
+<meta name="referrer" content="no-referrer" />
+<meta name="color-scheme" content="dark light" />
+<style>
+  :root{
+    --bg:#0f0f10; --fg:#ececec; --muted:#a7a7ad; --ring:#2a2b31;
+    --card:#16171a; --accent:#ffd26a; --accent2:#ff9f4a; --ok:#53e39b;
+    --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    --font: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  }
+  @media (prefers-color-scheme:light){
+    :root{ --bg:#fafafc; --fg:#1b1c20; --muted:#5b5d66; --card:#ffffff; --ring:#e6e7ee; --shadow:0 10px 30px rgba(0,0,0,.08) }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:radial-gradient(1000px 600px at 70% -10%, rgba(255,159,74,.15), transparent 60%), var(--bg); color:var(--fg); font:16px/1.45 var(--font)}
+  .wrap{max-width:760px;margin:auto;padding:24px}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  h1{font-size:1.25rem;margin:0}
+  .clock{border:1px solid var(--ring);padding:6px 10px;border-radius:999px;font-variant-numeric:tabular-nums;background:var(--card)}
+  .card{background:var(--card);border:1px solid var(--ring);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-top:16px}
+  .sub{color:var(--muted);font-size:.92rem}
+  .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .slider{appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #0001;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .meter{font-variant-numeric:tabular-nums;font-weight:700}
+  .btns{display:flex;gap:10px;flex-wrap:wrap}
+  button{appearance:none;border:1px solid var(--ring);background:var(--card);color:var(--fg);padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer}
+  button.primary{background:linear-gradient(180deg,rgba(255,210,106,.25),rgba(255,210,106,.1));border-color:#0000}
+  textarea{width:100%;min-height:64px;border-radius:12px;border:1px solid var(--ring);padding:10px;background:var(--card);color:var(--fg)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .hint{font-size:.9rem;color:var(--muted)}
+  /* Aroma steam canvas */
+  .aroma{height:200px;border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,210,106,.08),transparent),#0c0c0f}
+  canvas{display:block;width:100%;height:100%}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--ring);background:rgba(255,255,255,.02);cursor:pointer}
+  .mutedline{border-top:1px solid var(--ring);margin:10px 0}
+  .log-item{padding:8px 0;border-bottom:1px dashed var(--ring)}
+  details summary{cursor:pointer;user-select:none}
+  footer{margin-top:16px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+</style>
 </head>
 <body>
-  <div class="pulse-overlay" id="pulse"></div>
-
-  <div class="wrap" role="application" aria-label="Garlic Mode — Roast">
+  <div class="wrap" role="application" aria-label="Garlic Toast — Relax & Cook">
     <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1 id="title">Garlic Mode</h1>
-          <div class="tag" id="tagline">Bold. Honest. Flavorful. Relax here.</div>
-        </div>
+      <div>
+        <h1>Garlic Toast</h1>
+        <div class="sub">Cook calmly. Let the aroma do the relaxing.</div>
       </div>
-      <div class="pill mono" id="clock" aria-live="polite">00:00</div>
+      <div class="clock mono" id="clock">00:00</div>
     </header>
 
-    <div class="grid">
-      <!-- LEFT -->
-      <section class="card controls" aria-labelledby="controls">
-        <h2 id="controls">Roast & Session</h2>
-
-        <!-- Power mode -->
-        <div class="callout" style="margin-bottom:8px">
-          <div class="ctl-row" aria-label="Sex Is Power mode">
-            <label class="toggle small" title="Confidence + consent mode (optional)">
-              <input type="checkbox" id="powerToggle" />
-              <span><strong>Sex Is Power</strong> (opt-in)</span>
-            </label>
-            <label class="toggle small" title="Public wording for the share line">
-              <input type="checkbox" id="publicWording" />
-              <span>Use wording: “sex is power”</span>
-            </label>
-          </div>
-          <p class="small muted">Palette warms, BPM glides, copy leans into confidence. Consent-first. You can turn this off anytime.</p>
-        </div>
-
-        <div class="ctl-row">
-          <div class="sub">roast intensity</div>
-          <div class="meter mono" id="roastMeter">65%</div>
-        </div>
-        <input id="roast" class="slider" type="range" min="0" max="100" value="65" aria-valuemin="0" aria-valuemax="100" aria-label="Roast percentage" />
-
-        <!-- Roast presets -->
-        <div class="ctl-row" aria-label="Roast presets">
-          <div class="sub">presets</div>
-          <div class="btns">
-            <button data-roast="35">Low (35%)</button>
-            <button class="primary" data-roast="65">Medium (65%)</button>
-            <button data-roast="90">High (90%)</button>
+    <!-- Toast level -->
+    <section class="card">
+      <div class="row" aria-label="Toast level">
+        <div>
+          <div class="sub">toast level</div>
+          <div class="chips" id="chips">
+            <div class="chip" data-level="30">Light</div>
+            <div class="chip" data-level="55">Gold</div>
+            <div class="chip" data-level="80">Dark</div>
           </div>
         </div>
+        <div class="meter mono" id="levelMeter">55%</div>
+      </div>
+      <input id="level" class="slider" type="range" min="0" max="100" value="55" aria-label="Toast level percentage" />
+      <p class="hint">Tip: set <strong>Gold</strong> for jammy-garlic toast; go lighter if your bread is thin.</p>
+    </section>
 
-        <!-- Consent cue -->
-        <div class="ctl-row" aria-label="Consent cue">
-          <div class="sub">consent cue</div>
-          <div class="btns">
-            <button id="cueOk" class="chip ok" title="OK / keep going">OK</button>
-            <button id="cueSlow" class="chip slow" title="SLOW / softer">SLOW</button>
-            <button id="cueStop" class="chip stop" title="STOP / pause">STOP</button>
-          </div>
+    <!-- Kitchen timer -->
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="sub">kitchen timer</div>
+          <div class="mono" id="elapsed">00:00</div>
         </div>
-
-        <div class="ctl-row">
-          <div>
-            <div class="sub">session timer</div>
-            <div class="mono" id="elapsed" aria-live="polite">00:00</div>
-          </div>
-          <div class="btns">
-            <button class="primary accented" id="startBtn" aria-pressed="false">Start</button>
-            <button id="pauseBtn" disabled>Pause</button>
-            <button id="resetBtn" disabled>Reset</button>
-          </div>
+        <div class="btns">
+          <button id="start" class="primary">Start</button>
+          <button id="pause" disabled>Pause</button>
+          <button id="reset" disabled>Reset</button>
         </div>
-
-        <hr style="border:none;border-top:1px solid var(--ring);margin:6px 0 10px" />
-
-        <div class="share" aria-labelledby="shareline">
-          <h2 id="shareline">Share line</h2>
-          <p class="sub small">One-liner you can paste anywhere. No UTM, no hidden params.</p>
-          <textarea id="shareTxt" aria-label="Share text" readonly></textarea>
-          <div class="btns">
-            <button id="copyBtn">Copy</button>
-            <button id="copyHashBtn" title="Copy with hashtag">Copy + Hashtag</button>
-            <span id="copyState" class="small muted" role="status" aria-live="polite"></span>
-          </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="sub">quick presets</div>
+        <div class="btns">
+          <button data-mins="2">2:00</button>
+          <button data-mins="3">3:00</button>
+          <button data-mins="4">4:00</button>
         </div>
+      </div>
+      <p class="hint">Breathe while it toasts: 4-sec inhale, 6-sec exhale. Smell = signal to relax.</p>
+    </section>
 
-        <hr style="border:none;border-top:1px solid var(--ring);margin:10px 0" />
-
-        <!-- Spice Beats -->
-        <h2>Spice Beats</h2>
-        <p class="sub small">Layer simple beats under the video or ambient field. They follow your roast % and mode.</p>
-        <div class="btns" role="group" aria-label="Beat selectors">
-          <button id="beatFem" class="primary" aria-pressed="false">Femenomonom Beat</button>
-          <button id="beatHot" aria-pressed="false">Hot To Go Beat</button>
-          <button id="beatStop">Stop Beats</button>
+    <!-- Aroma visual + tone -->
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="sub">aroma visual</div>
+          <p class="hint" style="margin:6px 0 0">Soft steam curls that drift with your toast level.</p>
         </div>
-        <div class="ctl-row">
-          <div class="sub">beat volume</div>
-          <input id="beatVol" type="range" min="0" max="100" value="55" aria-label="Beat volume" />
+        <div class="btns">
+          <button id="tone">Enable Aroma Tone</button>
         </div>
+      </div>
+      <div class="aroma"><canvas id="steam"></canvas></div>
+    </section>
 
-        <div class="amb" style="margin-top:14px" aria-label="Ambient field">
-          <canvas id="amb"></canvas>
-          <div class="amb-ctl">
-            <span class="small muted">ambient field</span>
-            <div class="btns">
-              <button id="soundBtn" aria-pressed="false" title="Enable/Disable tone">Enable Tone (128 Hz)</button>
-              <button id="calmBtn" title="Reduce motion">Calm</button>
-            </div>
-          </div>
+    <!-- Ritual Note -->
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="sub">ritual note</div>
+          <p class="hint" style="margin:6px 0 0">What did you cook? How did it feel? (Saved locally)</p>
         </div>
-        <p class="hint">Ambient tone is optional and off by default.</p>
-      </section>
+      </div>
+      <textarea id="note" placeholder="e.g., jammy garlic on sourdough; smelled like a warm hug; felt calmer after 3 breaths."></textarea>
+      <div class="btns" style="margin-top:8px">
+        <button id="saveNote" class="primary">Save</button>
+        <button id="archiveNote">Archive Entry</button>
+        <span id="saveState" class="hint"></span>
+      </div>
+      <div class="mutedline"></div>
+      <div class="sub" style="margin-bottom:6px">recent entries</div>
+      <div id="recent"></div>
+      <details style="margin-top:8px">
+        <summary class="hint">See full log</summary>
+        <div id="fulllog" style="margin-top:8px"></div>
+      </details>
+    </section>
 
-      <!-- RIGHT -->
-      <section class="card" aria-labelledby="relax">
-        <h2 id="relax">Relax Video</h2>
-
-        <div class="video-wrap" id="videoWrap" aria-label="Relax video container">
-          <!-- iframe mounted here -->
-          <div class="unmute hidden" id="unmuteOverlay" aria-hidden="true">
-            <div class="bubble">
-              <span>Sound off</span>
-              <button id="unmuteBtn" aria-label="Tap to unmute video">Tap to Unmute</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Player toggles -->
-        <div class="ctl-row">
-          <label class="toggle small" title="Loop video">
-            <input type="checkbox" id="loopToggle" checked />
-            <span>Loop video</span>
-          </label>
-          <label class="toggle small" title="Auto-unmute after your tap">
-            <input type="checkbox" id="unmuteToggle" />
-            <span>Auto-unmute on tap</span>
-          </label>
-          <label class="toggle small" title="Hide video and keep audio/tones">
-            <input type="checkbox" id="audioOnlyToggle" />
-            <span>Audio-only</span>
-          </label>
-          <label class="toggle small" title="Keep screen awake">
-            <input type="checkbox" id="wakeToggle" />
-            <span>Keep screen awake</span>
-          </label>
-        </div>
-        <p class="hint">Mobile default is Audio-only (saves battery). Toggle off to see the video.</p>
-
-        <!-- Presets -->
-        <div class="input-row" role="group" aria-label="Presets and YouTube link">
-          <div class="btns" style="flex-wrap:wrap">
-            <button class="primary" data-yt="GR3Liudev18">Pink Pony Club</button>
-            <button data-yt="woLfAvD5iXI">Subway</button>
-            <button data-yt="ePsqyPMIg6I">My Kink Is Karma</button>
-            <button data-yt="VS6ixn2berk">Supernova (Magician Cut)</button>
-          </div>
-        </div>
-
-        <!-- Manual URL -->
-        <div class="input-row">
-          <input type="url" id="ytUrl" placeholder="Or paste any official YouTube URL and press Load" inputmode="url" />
-          <button id="loadBtn" title="Load video">Load</button>
-        </div>
-        <p class="hint">Videos use privacy-enhanced mode. Background audio for YouTube depends on your device; Spice Beats and tone can continue.</p>
-
-        <!-- Mode ethos -->
-        <div class="callout" style="margin-top:12px">
-          <strong>Mode Ethos:</strong> confidence, mutual respect, clear consent, kind teasing only.
-        </div>
-      </section>
-    </div>
+    <!-- Share line -->
+    <section class="card">
+      <div class="sub">share line</div>
+      <textarea id="share" readonly></textarea>
+      <div class="btns" style="margin-top:8px">
+        <button id="copy">Copy</button>
+        <span id="copied" class="hint"></span>
+      </div>
+    </section>
 
     <footer>
-      <div>Keys: <kbd>S</kbd> start/pause · <kbd>R</kbd> reset · <kbd>C</kbd> copy</div>
-      <div>Referrer policy: <span class="mono">no-referrer</span> · No UTM by design.</div>
+      <div>No tracking · Referrer off</div>
+      <div class="hint">Keyboard: <span class="mono">S</span> start/pause · <span class="mono">R</span> reset · <span class="mono">C</span> copy</div>
     </footer>
   </div>
 
-  <script>
-    (function(){
-      function pad(n){return n<10?"0"+n:String(n)}
-      function formatElapsed(ms){
-        const s = Math.floor(ms/1000);
-        const h = Math.floor(s/3600);
-        const m = Math.floor((s%3600)/60);
-        const sec = s%60;
-        return h>0 ? `${h}:${pad(m)}:${pad(sec)}` : `${pad(m)}:${pad(sec)}`;
+<script>
+(()=>{
+  // ===== Utils =====
+  const pad=n=>n<10?"0"+n:n;
+  const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000));const m=Math.floor(s/60),sec=s%60;return `${pad(m)}:${pad(sec)}`};
+  const nowClock=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+  const stamp=()=> new Date().toISOString();
+
+  // ===== Elements =====
+  const level=document.getElementById('level');
+  const levelMeter=document.getElementById('levelMeter');
+  const chips=document.getElementById('chips');
+  const elapsedEl=document.getElementById('elapsed');
+  const startBtn=document.getElementById('start');
+  const pauseBtn=document.getElementById('pause');
+  const resetBtn=document.getElementById('reset');
+  const share=document.getElementById('share');
+  const copy=document.getElementById('copy');
+  const copied=document.getElementById('copied');
+  const clock=document.getElementById('clock');
+  const toneBtn=document.getElementById('tone');
+
+  const noteEl=document.getElementById('note');
+  const saveBtn=document.getElementById('saveNote');
+  const archiveBtn=document.getElementById('archiveNote');
+  const saveState=document.getElementById('saveState');
+  const recentBox=document.getElementById('recent');
+  const fullLogBox=document.getElementById('fulllog');
+
+  // ===== Clock =====
+  clock.textContent=nowClock();
+  setInterval(()=>clock.textContent=nowClock(), 30_000);
+
+  // ===== Toast level =====
+  function setLevel(v){ level.value=String(v); levelMeter.textContent=`${v}%`; updateShare(); }
+  level.addEventListener('input', e=> setLevel(Number(e.target.value)));
+  chips.addEventListener('click', e=>{
+    const v=e.target?.getAttribute?.('data-level'); if(v){ setLevel(Number(v)); }
+  });
+  setLevel(Number(level.value||55));
+
+  // ===== Timer (countdown or up) =====
+  let running=false, startAt=0, elapsed=0, targetMs=0, raf=0;
+  function tick(){
+    const t=performance.now();
+    const ms = running ? elapsed + (t-startAt) : elapsed;
+    const remaining = Math.max(0, targetMs ? (targetMs - ms) : 0);
+    elapsedEl.textContent = targetMs ? fmt(remaining) : fmt(ms);
+    updateShare(ms);
+    if (targetMs && remaining<=0 && running){
+      running=false; elapsed=targetMs; startBtn.textContent="Start"; pauseBtn.disabled=true;
+      document.title="Toast ready ✨";
+    } else {
+      raf = running ? requestAnimationFrame(tick) : 0;
+    }
+  }
+  function start(){
+    if(running) return;
+    running=true; startAt=performance.now(); startBtn.textContent="Running";
+    pauseBtn.disabled=false; resetBtn.disabled=false; if(!raf) tick();
+  }
+  function pause(){ if(!running) return; running=false; elapsed += performance.now()-startAt; startBtn.textContent="Start"; }
+  function reset(){
+    running=false; elapsed=0; startAt=0; targetMs=0; elapsedEl.textContent="00:00";
+    startBtn.textContent="Start"; pauseBtn.disabled=true; resetBtn.disabled=true; updateShare(0);
+    document.title="Garlic Toast — Relax & Cook";
+  }
+  startBtn.addEventListener('click', ()=> running?pause():start());
+  pauseBtn.addEventListener('click', pause);
+  resetBtn.addEventListener('click', reset);
+  document.querySelectorAll('[data-mins]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      targetMs=Number(b.getAttribute('data-mins'))*60*1000;
+      reset(); start();
+    });
+  });
+  document.addEventListener('keydown', e=>{
+    const k=e.key.toLowerCase();
+    if(k==='s'){ running?pause():start(); }
+    if(k==='r'){ reset(); }
+    if(k==='c'){ doCopy(); }
+  });
+
+  // ===== Share line =====
+  function updateShare(ms){
+    const time = typeof ms==='number' ? fmt(ms) : '00:00';
+    share.value = `Garlic Toast — level (${level.value}%) · ${time} · https://garlic.plnt.earth`;
+  }
+  updateShare(0);
+  async function doCopy(){
+    try{ await navigator.clipboard.writeText(share.value); copied.textContent="Copied ✓"; setTimeout(()=>copied.textContent="",1200); } catch {}
+  }
+  copy.addEventListener('click', doCopy);
+
+  // ===== Aroma steam canvas =====
+  const cvs=document.getElementById('steam'); const ctx=cvs.getContext('2d');
+  let t0=0;
+  function draw(ts){
+    if(!t0) t0=ts;
+    const t=(ts-t0)/1000, dpr=window.devicePixelRatio||1;
+    const w=cvs.width=cvs.clientWidth*dpr, h=cvs.height=cvs.clientHeight*dpr;
+    ctx.clearRect(0,0,w,h);
+    const baseGrad=ctx.createLinearGradient(0,h,0,0);
+    baseGrad.addColorStop(0,'#0b0b0d'); baseGrad.addColorStop(1,'#111218');
+    ctx.fillStyle=baseGrad; ctx.fillRect(0,0,w,h);
+
+    const levelF = Number(level.value)/100;
+    const curls = 3;
+    for(let i=0;i<curls;i++){
+      const amp = (6 + i*4) * dpr * (0.8 + levelF*0.6);
+      const speed = (0.2 + i*0.05) * (0.6 + levelF*0.8);
+      const y0 = h*0.75 - i*35*dpr;
+      ctx.beginPath();
+      for(let x=0;x<=w;x+=6*dpr){
+        const y=y0 - Math.sin((x*0.004 + t*speed) + i)*amp - (t*5);
+        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
       }
-      function fmtShareElapsed(ms){return formatElapsed(ms)}
-      function nowClock(){const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`}
-      function getYouTubeId(url){
-        try{
-          const u=new URL(url);
-          if(u.hostname.includes("youtu.be")) return u.pathname.slice(1);
-          if(u.searchParams.get("v")) return u.searchParams.get("v");
-          const parts=u.pathname.split("/"); const i=parts.indexOf("embed");
-          if(i>=0 && parts[i+1]) return parts[i+1];
-        }catch(_){}
-        return "";
-      }
-      function vibrate(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(_){ } }
+      ctx.strokeStyle = `hsla(${40+i*20} 90% ${60+(i*5)}% / ${0.35 + levelF*0.25})`;
+      ctx.lineWidth=3*dpr; ctx.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
 
-      // DOM
-      const titleEl=document.getElementById("title");
-      const tagEl=document.getElementById("tagline");
-      const powerToggle=document.getElementById("powerToggle");
-      const publicWording=document.getElementById("publicWording");
+  // ===== Aroma tone (gentle, optional) =====
+  let ac=null, osc=null, gain=null, toneOn=false;
+  function ensureAudio(){
+    if(!ac){
+      ac = new (window.AudioContext||window.webkitAudioContext)();
+      gain = ac.createGain(); gain.gain.value=0.0; gain.connect(ac.destination);
+      osc = ac.createOscillator(); osc.type="sine"; osc.frequency.value=128; osc.connect(gain); osc.start();
+    }
+  }
+  toneBtn.addEventListener('click', async ()=>{
+    ensureAudio();
+    if(ac.state==="suspended"){ try{ await ac.resume(); }catch{} }
+    toneOn=!toneOn;
+    const target = toneOn? 0.05 : 0.0;
+    gain.gain.linearRampToValueAtTime(target,(ac.currentTime||0)+0.08);
+    toneBtn.textContent = toneOn? "Disable Aroma Tone" : "Enable Aroma Tone";
+  });
 
-      const roast=document.getElementById("roast");
-      const roastMeter=document.getElementById("roastMeter");
-      const elapsedEl=document.getElementById("elapsed");
-      const startBtn=document.getElementById("startBtn");
-      const pauseBtn=document.getElementById("pauseBtn");
-      const resetBtn=document.getElementById("resetBtn");
-      const shareTxt=document.getElementById("shareTxt");
-      const copyBtn=document.getElementById("copyBtn");
-      const copyHashBtn=document.getElementById("copyHashBtn");
-      const copyState=document.getElementById("copyState");
-      const clock=document.getElementById("clock");
+  // ===== Ritual Note (localStorage) =====
+  const NOTE_KEY = 'garlic.ritual.note';
+  const LOG_KEY  = 'garlic.ritual.log';
+  // load current note
+  noteEl.value = localStorage.getItem(NOTE_KEY) || '';
+  function setSaveState(msg){ saveState.textContent = msg; setTimeout(()=>{ if(saveState.textContent===msg) saveState.textContent=''; }, 1200); }
 
-      const cueOk=document.getElementById("cueOk");
-      const cueSlow=document.getElementById("cueSlow");
-      const cueStop=document.getElementById("cueStop");
-      const pulse=document.getElementById("pulse");
+  // debounce auto-save
+  let saveTimer=null;
+  function autoSave(){
+    if(saveTimer) clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{
+      localStorage.setItem(NOTE_KEY, noteEl.value);
+      setSaveState('Saved ✓');
+      renderRecent();
+    }, 400);
+  }
+  noteEl.addEventListener('input', autoSave);
 
-      const videoWrap=document.getElementById("videoWrap");
-      const unmuteOverlay=document.getElementById("unmuteOverlay");
-      const unmuteBtn=document.getElementById("unmuteBtn");
-      const ytUrl=document.getElementById("ytUrl");
-      const loadBtn=document.getElementById("loadBtn");
-      const loopToggle=document.getElementById("loopToggle");
-      const unmuteToggle=document.getElementById("unmuteToggle");
-      const audioOnlyToggle=document.getElementById("audioOnlyToggle");
-      const wakeToggle=document.getElementById("wakeToggle");
+  saveBtn.addEventListener('click', ()=>{
+    localStorage.setItem(NOTE_KEY, noteEl.value);
+    setSaveState('Saved ✓');
+    renderRecent();
+  });
 
-      const amb=document.getElementById("amb");
-      const soundBtn=document.getElementById("soundBtn");
-      const calmBtn=document.getElementById("calmBtn");
+  archiveBtn.addEventListener('click', ()=>{
+    const text = (noteEl.value||'').trim();
+    if(!text){ setSaveState('Nothing to archive'); return; }
+    const entry = { ts: stamp(), level: Number(level.value), text };
+    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+    log.unshift(entry);
+    localStorage.setItem(LOG_KEY, JSON.stringify(log));
+    // clear current note (but keep a backup)
+    localStorage.setItem(NOTE_KEY, '');
+    noteEl.value='';
+    setSaveState('Archived ✓');
+    renderRecent();
+    renderFull();
+  });
 
-      const beatFem=document.getElementById("beatFem");
-      const beatHot=document.getElementById("beatHot");
-      const beatStop=document.getElementById("beatStop");
-      const beatVol=document.getElementById("beatVol");
+  function renderRecent(){
+    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+    recentBox.innerHTML = log.slice(0,5).map(item=>{
+      const d = new Date(item.ts);
+      return `<div class="log-item">
+        <div class="mono">${d.toLocaleString()}</div>
+        <div class="hint">level ${item.level}%</div>
+        <div>${escapeHtml(item.text).replace(/\n/g,'<br>')}</div>
+      </div>`;
+    }).join('') || `<div class="hint">No entries yet.</div>`;
+  }
+  function renderFull(){
+    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+    fullLogBox.innerHTML = log.map(item=>{
+      const d = new Date(item.ts);
+      return `<div class="log-item">
+        <div class="mono">${d.toLocaleString()}</div>
+        <div class="hint">level ${item.level}%</div>
+        <div>${escapeHtml(item.text).replace(/\n/g,'<br>')}</div>
+      </div>`;
+    }).join('') || `<div class="hint">Log is empty.</div>`;
+  }
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
-      // Roast handling
-      function setRoast(v){
-        roast.value = String(v);
-        roast.setAttribute("aria-valuenow", String(v));
-        roastMeter.textContent=v+"%";
-        updateShare();
-        updateBeatEnergy();
-      }
-      roast.addEventListener("input", ()=>setRoast(Number(roast.value)));
-      document.querySelectorAll('[data-roast]').forEach(b=>{
-        b.addEventListener('click', ()=> setRoast(Number(b.getAttribute('data-roast'))));
-      });
-      setRoast(Number(roast.value || 65));
+  renderRecent(); renderFull();
 
-      // Timer
-      let running=false, startedAt=0, accum=0, raf=0;
-      function tick(){
-        const t=performance.now();
-        const ms=accum+(running? t-startedAt:0);
-        elapsedEl.textContent=formatElapsed(ms);
-        updateShare(ms);
-        raf = running ? requestAnimationFrame(tick) : 0;
-      }
-      function start(){
-        if(running) return;
-        running=true; startedAt=performance.now();
-        startBtn.textContent="Running"; startBtn.setAttribute("aria-pressed","true");
-        pauseBtn.disabled=false; resetBtn.disabled=false;
-        if(!raf) tick();
-      }
-      function pause(){
-        if(!running) return;
-        running=false; accum+=performance.now()-startedAt;
-        startBtn.textContent="Start"; startBtn.setAttribute("aria-pressed","false");
-      }
-      function reset(){
-        running=false; accum=0; startedAt=0;
-        startBtn.textContent="Start"; startBtn.setAttribute("aria-pressed","false");
-        pauseBtn.disabled=true; resetBtn.disabled=true;
-        elapsedEl.textContent="00:00"; updateShare(0);
-      }
-      startBtn.addEventListener("click", ()=> running?pause():start());
-      pauseBtn.addEventListener("click", pause);
-      resetBtn.addEventListener("click", reset);
-      document.addEventListener("keydown",(e)=>{
-        const k=e.key.toLowerCase();
-        if(k==="s"){running?pause():start()}
-        if(k==="r"){reset()}
-        if(k==="c"){copyShare()}
-      });
-
-      // Clock
-      clock.textContent=nowClock();
-      setInterval(()=>clock.textContent=nowClock(),30_000);
-
-      // Share line + hashtag
-      function sharePrefix(){
-        if (!powerToggle.checked) return "Garlic Mode";
-        return publicWording.checked ? "Sex Is Power" : "Power Mode";
-      }
-      function currentHashtag(){
-        if (!powerToggle.checked) return "#GarlicMode";
-        return publicWording.checked ? "#SexIsPower" : "#PowerMode";
-      }
-      function updateShare(ms){
-        const elapsedMs = (typeof ms==="number") ? ms : (accum + (running ? performance.now()-startedAt : 0));
-        const roastV=Number(roast.value);
-        const t=fmtShareElapsed(elapsedMs);
-        shareTxt.value = `${sharePrefix()} — roast (${roastV}%) · ${t} · https://garlic.plnt.earth`;
-      }
-      updateShare(0);
-      async function doCopy(text){
-        try{
-          await navigator.clipboard.writeText(text);
-          copyState.textContent="Copied ✓";
-          copyState.classList.remove("muted"); copyState.classList.add("ok");
-          setTimeout(()=>{copyState.textContent=""; copyState.classList.remove("ok"); copyState.classList.add("muted")},1200);
-        }catch(_){
-          // fallback
-        }
-      }
-      function copyShare(){ doCopy(shareTxt.value); }
-      function copyShareWithHashtag(){ doCopy(`${shareTxt.value} ${currentHashtag()}`); }
-      copyBtn.addEventListener("click", copyShare);
-      copyHashBtn.addEventListener("click", copyShareWithHashtag);
-      publicWording.addEventListener('change', ()=>{ updateShare(); });
-
-      // Consent cue handlers (visual pulse + optional vibrate)
-      const pulse = document.getElementById("pulse");
-      function pulseOverlay(type){
-        pulse.className = "pulse-overlay " + type;
-        pulse.classList.add("show");
-        setTimeout(()=>pulse.classList.remove("show"), 250);
-      }
-      cueOk.addEventListener("click", ()=>{ pulseOverlay("ok"); vibrate(30); });
-      cueSlow.addEventListener("click", ()=>{ pulseOverlay("slow"); vibrate([20,40,20]); });
-      cueStop.addEventListener("click", ()=>{ pulseOverlay("stop"); vibrate([60,40,60]); });
-
-      // YouTube (with loop + unmute + audio-only)
-      let currentVideoId = "GR3Liudev18";
-      let userUnmuted = false; // becomes true after overlay tap when auto-unmute is enabled
-
-      function embedSrc(id){
-        const loopOn = loopToggle.checked ? 1 : 0;
-        const playlist = loopOn ? `&playlist=${id}` : "";
-        const muted = (unmuteToggle.checked && userUnmuted) ? 0 : 1;
-        return `https://www.youtube-nocookie.com/embed/${id}?playsinline=1&autoplay=1&mute=${muted}&rel=0&controls=1&loop=${loopOn}${playlist}`;
-      }
-      function mountIframe(){
-        const src = embedSrc(currentVideoId);
-        videoWrap.innerHTML = `<iframe title="Relax Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen src="${src}"></iframe>
-          <div class="unmute ${(!unmuteToggle.checked || userUnmuted || audioOnlyToggle.checked)?'hidden':''}" id="unmuteOverlay" aria-hidden="${(!unmuteToggle.checked || userUnmuted || audioOnlyToggle.checked)?'true':'false'}">
-            <div class="bubble">
-              <span>Sound off</span>
-              <button id="unmuteBtn" aria-label="Tap to unmute video">Tap to Unmute</button>
-            </div>
-          </div>`;
-        const btn = document.getElementById('unmuteBtn');
-        if (btn){
-          btn.addEventListener('click', ()=>{
-            userUnmuted = true; mountIframe();
-          });
-        }
-      }
-      function loadYouTube(id){
-        if(!id) return;
-        currentVideoId = id;
-        userUnmuted = false; // require tap again if auto-unmute is on
-        if (!audioOnlyToggle.checked) mountIframe();
-        if ('mediaSession' in navigator){
-          navigator.mediaSession.metadata = new MediaMetadata({
-            title: (document.body.classList.contains('mode-power')? "Power Relax Video":"Relax Video"),
-            artist: 'Garlic Mode',
-            album: 'Looped Chill',
-            artwork: []
-          });
-        }
-      }
-      loadBtn.addEventListener("click", ()=>{
-        const id=getYouTubeId(ytUrl.value.trim());
-        if(id) loadYouTube(id);
-      });
-      document.querySelectorAll('[data-yt]').forEach(b=>{
-        b.addEventListener('click', ()=> loadYouTube(b.getAttribute('data-yt')));
-      });
-      loopToggle.addEventListener('change', ()=> { if(!audioOnlyToggle.checked) mountIframe(); });
-      unmuteToggle.addEventListener('change', ()=> { userUnmuted = false; if(!audioOnlyToggle.checked) mountIframe(); });
-      audioOnlyToggle.addEventListener('change', ()=>{
-        if (audioOnlyToggle.checked){ videoWrap.innerHTML = ""; }
-        else { mountIframe(); }
-      });
-
-      // Wake Lock
-      let wakeLock = null;
-      async function requestWake(){ try{ if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); }catch(_){ } }
-      function releaseWake(){ try{ if (wakeLock) { wakeLock.release(); wakeLock = null; } }catch(_){ }
-      wakeToggle.addEventListener('change', ()=>{ if (wakeToggle.checked) requestWake(); else releaseWake(); });
-      document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState === 'visible' && wakeToggle.checked) requestWake(); });
-
-      // Ambient visual
-      const ctx=amb.getContext("2d");
-      let calm=false, t0=0;
-      function draw(ts){
-        if(!t0) t0=ts;
-        const t=(ts-t0)/1000;
-        const w=amb.width=amb.clientWidth*devicePixelRatio;
-        const h=amb.height=amb.clientHeight*devicePixelRatio;
-        const dpr=devicePixelRatio;
-
-        ctx.clearRect(0,0,w,h);
-        const g=ctx.createLinearGradient(0,0,0,h);
-        g.addColorStop(0,"#0b0b0d"); g.addColorStop(1,"#121318");
-        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-
-        for(let k=0;k<3;k++){
-          const amp=(calm?6:12)*dpr*(1+k*0.2);
-          const speed=(calm?0.15:0.35)*(1+k*0.15);
-          const y0=h*0.35+k*22*dpr;
-          ctx.beginPath();
-          for(let x=0;x<=w;x+=6*dpr){
-            const y=y0+Math.sin((x*0.004+t*speed)+k)*amp;
-            if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-          }
-          const hue = (document.body.classList.contains('mode-power')? (300 + k*20) : (40 + k*20));
-          ctx.strokeStyle=`hsla(${hue} 90% ${calm?70:60}% / ${calm?0.35:0.5})`;
-          ctx.lineWidth=4*dpr; ctx.stroke();
-        }
-        requestAnimationFrame(draw);
-      }
-      requestAnimationFrame(draw);
-      calmBtn.addEventListener("click", ()=>{calm=!calm; calmBtn.textContent=calm?"Motion On":"Calm"});
-
-      // Audio Engine (Tone + Beats)
-      let ac=null, toneOsc=null, toneGain=null;
-      let beatGain=null, mixerGain=null;
-      let seqInterval=null, bpm=96;
-      let transport = { step:0, playing:false, pattern:"none" };
-
-      function ensureAudio(){
-        if(!ac){
-          ac=new (window.AudioContext||window.webkitAudioContext)();
-          mixerGain=ac.createGain(); mixerGain.gain.value=1.0; mixerGain.connect(ac.destination);
-          // tone
-          toneGain=ac.createGain(); toneGain.gain.value=0.0; toneGain.connect(mixerGain);
-          toneOsc=ac.createOscillator(); toneOsc.type="sine"; toneOsc.frequency.value=128; toneOsc.connect(toneGain); toneOsc.start();
-          // beats bus
-          beatGain=ac.createGain(); beatGain.gain.value=0.55; beatGain.connect(mixerGain);
-        }
-      }
-      // Tone toggle
-      soundBtn.addEventListener("click", async ()=>{
-        ensureAudio();
-        if(ac.state==="suspended"){ try{ await ac.resume(); }catch(_){ } }
-        const on = toneGain.gain.value>0;
-        const target = on? 0.0 : 0.06;
-        toneGain.gain.linearRampToValueAtTime(target,(ac.currentTime||0)+0.08);
-        soundBtn.textContent = on? "Enable Tone (128 Hz)" : "Disable Tone";
-        soundBtn.setAttribute("aria-pressed", on? "false":"true");
-        if ('mediaSession' in navigator){
-          navigator.mediaSession.metadata = new MediaMetadata({ title: (document.body.classList.contains('mode-power')? "Power Ambient":"Garlic Ambient"), artist: '128 Hz tone', album: 'Garlic Mode' });
-        }
-      });
-
-      // Simple drum synths
-      function kick(t, vel){
-        const o = ac.createOscillator(); o.type="sine"; o.frequency.setValueAtTime(110, t);
-        o.frequency.exponentialRampToValueAtTime(40, t+0.12);
-        const g = ac.createGain(); g.gain.setValueAtTime(0.001, t);
-        g.gain.exponentialRampToValueAtTime(0.7*vel, t+0.005);
-        g.gain.exponentialRampToValueAtTime(0.001, t+0.25);
-        o.connect(g).connect(beatGain); o.start(t); o.stop(t+0.26);
-      }
-      function snare(t, vel){
-        const n = ac.createBufferSource();
-        const buf = ac.createBuffer(1, ac.sampleRate*0.25, ac.sampleRate);
-        const data = buf.getChannelData(0);
-        for(let i=0;i<data.length;i++){ data[i] = (Math.random()*2-1)*Math.pow(1-i/data.length, 2); }
-        n.buffer=buf;
-        const bp = ac.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=1800;
-        const g = ac.createGain(); g.gain.value=0.32*vel;
-        n.connect(bp).connect(g).connect(beatGain);
-        n.start(t); n.stop(t+0.25);
-      }
-      function hat(t, vel){
-        const n = ac.createBufferSource();
-        const buf = ac.createBuffer(1, ac.sampleRate*0.08, ac.sampleRate);
-        const data = buf.getChannelData(0);
-        for(let i=0;i<data.length;i++){ data[i] = (Math.random()*2-1)*Math.pow(1-i/data.length, 1.5); }
-        n.buffer=buf;
-        const hp = ac.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=6000;
-        const g = ac.createGain(); g.gain.value=0.18*vel;
-        n.connect(hp).connect(g).connect(beatGain);
-        n.start(t); n.stop(t+0.08);
-      }
-      function clap(t, vel){ for(let i=0;i<3;i++){ snare(t+i*0.01, vel*0.7); } }
-
-      // Beat control
-      function setBeatVolume(v){ if(beatGain){ beatGain.gain.value = v; } }
-      beatVol.addEventListener("input", ()=> setBeatVolume(Number(beatVol.value)/100));
-      function roastEnergy(){ return Math.max(0.25, Number(roast.value)/100); }
-      function updateBeatEnergy(){ setBeatVolume(Number(beatVol.value)/100); }
-
-      function startTransport(patternName){
-        ensureAudio();
-        if(ac.state==="suspended"){ ac.resume(); }
-        transport.pattern = patternName;
-        transport.playing = true;
-        transport.step = 0;
-        if (seqInterval) clearInterval(seqInterval);
-        const spb = 60 / bpm; // seconds per beat
-        seqInterval = setInterval(()=> sequenceStep(spb), spb*1000/2); // 8th-note driver
-        if ('mediaSession' in navigator){
-          navigator.mediaSession.metadata = new MediaMetadata({ title: patternName + (document.body.classList.contains('mode-power')?" (Power)":""),
-            artist: 'Spice Beats', album: 'Garlic Mode' });
-        }
-      }
-      function stopTransport(){
-        transport.playing=false; transport.pattern="none";
-        if (seqInterval) { clearInterval(seqInterval); seqInterval=null; }
-      }
-
-      function sequenceStep(spb){
-        if(!transport.playing) return;
-        const t0 = ac.currentTime;
-        const e = roastEnergy();
-        const step = transport.step % 16;
-        const sched = (dt, fn)=> fn(t0 + dt);
-
-        if (transport.pattern === "femenomonom"){
-          if (step%4===0) sched(0, t=>kick(t, 0.9*e));
-          if (step===4 || step===12) sched(0.0, t=>clap(t, 0.8*e));
-          if (step===7 || step===15) sched(0.0, t=>snare(t, 0.35*e));
-          if (step%2===1) sched(0.0, t=>hat(t, 0.5*e));
-          if (step===3 || step===11) sched(0.0, t=>hat(t, 0.75*e));
-        } else if (transport.pattern === "hot_to_go"){
-          if (step===0 || step===3 || step===8 || step===11) sched(0, t=>kick(t, 0.95*e));
-          if (step===4 || step===12) sched(0.0, t=>clap(t, 0.85*e));
-          if (step%2===0) sched(0.0, t=>hat(t, 0.45*e));
-          if (step===2 || step===10) sched(0.0, t=>hat(t, 0.9*e));
-        }
-        transport.step++;
-      }
-
-      beatFem.addEventListener("click", ()=>{
-        const active = beatFem.getAttribute('aria-pressed')==="true";
-        if (active){ stopTransport(); beatFem.setAttribute('aria-pressed','false'); beatFem.classList.remove('primary'); }
-        else{
-          beatHot.setAttribute('aria-pressed','false'); beatHot.classList.remove('primary');
-          beatFem.setAttribute('aria-pressed','true'); beatFem.classList.add('primary');
-          startTransport("femenomonom");
-        }
-      });
-      beatHot.addEventListener("click", ()=>{
-        const active = beatHot.getAttribute('aria-pressed')==="true";
-        if (active){ stopTransport(); beatHot.setAttribute('aria-pressed','false'); beatHot.classList.remove('primary'); }
-        else{
-          beatFem.setAttribute('aria-pressed','false'); beatFem.classList.remove('primary');
-          beatHot.setAttribute('aria-pressed','true'); beatHot.classList.add('primary');
-          startTransport("hot_to_go");
-        }
-      });
-      beatStop.addEventListener("click", ()=>{
-        stopTransport();
-        beatFem.setAttribute('aria-pressed','false'); beatFem.classList.remove('primary');
-        beatHot.setAttribute('aria-pressed','false'); beatHot.classList.remove('primary');
-      });
-
-      // Power mode toggling (palette, copy, BPM)
-      let bpm=96;
-      function setPowerMode(on){
-        document.body.classList.toggle('mode-power', on);
-        titleEl.textContent = on ? "Power Mode" : "Garlic Mode";
-        tagEl.textContent = on
-          ? "Confidence. Consent. Playful heat. Breathe and move."
-          : "Bold. Honest. Flavorful. Relax here.";
-        bpm = on ? 104 : 96;
-        if (seqInterval){ clearInterval(seqInterval); seqInterval=null; if (transport.playing){ startTransport(transport.pattern); } }
-        updateShare();
-      }
-      powerToggle.addEventListener('change', ()=> setPowerMode(powerToggle.checked));
-
-      // Reduced motion default
-      let calm=false;
-      if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches){ calm=true; calmBtn.textContent="Motion On"; }
-      calmBtn.addEventListener("click", ()=>{calm=!calm; calmBtn.textContent=calm?"Motion On":"Calm"});
-
-      // --- Mobile default: Audio-only ON ---
-      function isMobileLike(){
-        return (window.matchMedia && window.matchMedia("(pointer:coarse)").matches) || screen.width < 768;
-      }
-      if (isMobileLike()){
-        audioOnlyToggle.checked = true;
-      }
-
-      // Init
-      function initVideo(){
-        loadYouTube("GR3Liudev18"); // default to Pink Pony Club
-        if (!audioOnlyToggle.checked) { mountIframe(); }
-      }
-      initVideo();
-
-      // --- Video helpers (mount defined after initVideo call uses it conditionally) ---
-      let userUnmuted=false;
-      function embedSrc(id){
-        const loopOn = loopToggle.checked ? 1 : 0;
-        const playlist = loopOn ? `&playlist=${id}` : "";
-        const muted = (unmuteToggle.checked && userUnmuted) ? 0 : 1;
-        return `https://www.youtube-nocookie.com/embed/${id}?playsinline=1&autoplay=1&mute=${muted}&rel=0&controls=1&loop=${loopOn}${playlist}`;
-      }
-      function mountIframe(){
-        const src = embedSrc(currentVideoId);
-        videoWrap.innerHTML = `<iframe title="Relax Video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen src="${src}"></iframe>
-          <div class="unmute ${(!unmuteToggle.checked || userUnmuted || audioOnlyToggle.checked)?'hidden':''}" id="unmuteOverlay" aria-hidden="${(!unmuteToggle.checked || userUnmuted || audioOnlyToggle.checked)?'true':'false'}">
-            <div class="bubble">
-              <span>Sound off</span>
-              <button id="unmuteBtn" aria-label="Tap to unmute video">Tap to Unmute</button>
-            </div>
-          </div>`;
-        const btn = document.getElementById('unmuteBtn');
-        if (btn){
-          btn.addEventListener('click', ()=>{ userUnmuted = true; mountIframe(); });
-        }
-      }
-
-      // Listeners that affect video
-      loadBtn.addEventListener("click", ()=>{
-        const id=getYouTubeId(ytUrl.value.trim());
-        if(id) loadYouTube(id);
-      });
-      document.querySelectorAll('[data-yt]').forEach(b=>{
-        b.addEventListener('click', ()=> loadYouTube(b.getAttribute('data-yt')));
-      });
-      loopToggle.addEventListener('change', ()=> { if(!audioOnlyToggle.checked) mountIframe(); });
-      unmuteToggle.addEventListener('change', ()=> { userUnmuted = false; if(!audioOnlyToggle.checked) mountIframe(); });
-      audioOnlyToggle.addEventListener('change', ()=>{
-        if (audioOnlyToggle.checked){ videoWrap.innerHTML = ""; }
-        else { mountIframe(); }
-      });
-
-      // Wake Lock
-      let wakeLock = null;
-      async function requestWake(){ try{ if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); }catch(_){ } }
-      function releaseWake(){ try{ if (wakeLock) { wakeLock.release(); wakeLock = null; } }catch(_){ }
-      wakeToggle.addEventListener('change', ()=>{ if (wakeToggle.checked) requestWake(); else releaseWake(); });
-      document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState === 'visible' && wakeToggle.checked) requestWake(); });
-
-      // Ambient visual loop (kept after video init so DOM is mounted)
-      const ctx=amb.getContext("2d");
-      requestAnimationFrame(function draw(ts){
-        const w=amb.width=amb.clientWidth*devicePixelRatio;
-        const h=amb.height=amb.clientHeight*devicePixelRatio;
-        const t=(ts/1000);
-        ctx.clearRect(0,0,w,h);
-        const g=ctx.createLinearGradient(0,0,0,h);
-        g.addColorStop(0,"#0b0b0d"); g.addColorStop(1,"#121318");
-        ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-        for(let k=0;k<3;k++){
-          const amp=(calm?6:12)*devicePixelRatio*(1+k*0.2);
-          const speed=(calm?0.15:0.35)*(1+k*0.15);
-          const y0=h*0.35+k*22*devicePixelRatio;
-          ctx.beginPath();
-          for(let x=0;x<=w;x+=6*devicePixelRatio){
-            const y=y0+Math.sin((x*0.004+t*speed)+k)*amp;
-            if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-          }
-          const hue = (document.body.classList.contains('mode-power')? (300 + k*20) : (40 + k*20));
-          ctx.strokeStyle=`hsla(${hue} 90% ${calm?70:60}% / ${calm?0.35:0.5})`;
-          ctx.lineWidth=4*devicePixelRatio; ctx.stroke();
-        }
-        requestAnimationFrame(draw);
-      });
-
-    })();
-  </script>
+  // ===== Keyboard shortcuts =====
+  document.addEventListener('keydown', e=>{
+    const k=e.key.toLowerCase();
+    if(k==='s'){ running?pause():start(); }
+    if(k==='r'){ reset(); }
+    if(k==='c'){ doCopy(); }
+  });
+})();
+</script>
 </body>
 </html>
