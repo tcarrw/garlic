@@ -4,68 +4,81 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Garlic Toast — Relax & Cook</title>
-<meta name="description" content="Set toast level, use a gentle kitchen timer, relax with aroma steam. Optional Relaxation Pack, Hum Guide, Artist Mode. Local notes. No tracking." />
+<meta name="description" content="Relax while you cook: pick a vibe, start a 3-minute calm, breathe with the aroma, then (optional) tone. Local notes. No tracking." />
 <meta name="referrer" content="no-referrer" />
 <meta name="color-scheme" content="dark light" />
 <style>
   :root{
-    --bg:#0f0f10; --fg:#ececec; --muted:#a7a7ad; --ring:#2a2b31;
-    --card:#16171a; --accent:#ffd26a; --accent2:#ff9f4a; --ok:#53e39b; --lav:#c9a7ff;
+    --bg:#0f0f10; --fg:#ececec; --muted:#a7a7ad; --ring:#2a2b31; --card:#16171a;
+    --accent:#ffd26a; --accent2:#ff9f4a; --ok:#53e39b; --lav:#c9a7ff;
     --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
     --font: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-    --ringTint:#ffd26a;
   }
   @media (prefers-color-scheme:light){
     :root{ --bg:#fafafc; --fg:#1b1c20; --muted:#5b5d66; --card:#ffffff; --ring:#e6e7ee; --shadow:0 10px 30px rgba(0,0,0,.08) }
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:radial-gradient(900px 540px at 70% -10%, rgba(255,159,74,.14), transparent 60%), var(--bg); color:var(--fg); font:16px/1.45 var(--font)}
-  .wrap{max-width:760px;margin:auto;padding:24px}
-  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:radial-gradient(1000px 650px at 70% -10%, rgba(255,159,74,.12), transparent 60%), var(--bg); color:var(--fg); font:16px/1.45 var(--font)}
+  .wrap{max-width:980px;margin:auto;padding:24px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
   h1{font-size:1.25rem;margin:0}
+  .sub{color:var(--muted);font-size:.95rem}
   .clock{border:1px solid var(--ring);padding:6px 10px;border-radius:999px;font-variant-numeric:tabular-nums;background:var(--card)}
   .card{background:var(--card);border:1px solid var(--ring);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-top:16px}
-  .sub{color:var(--muted);font-size:.92rem}
   .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-  .slider{appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-  .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #0001;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-  .meter{font-variant-numeric:tabular-nums;font-weight:700}
   .btns{display:flex;gap:10px;flex-wrap:wrap}
   button{appearance:none;border:1px solid var(--ring);background:var(--card);color:var(--fg);padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer}
   button.primary{background:linear-gradient(180deg,rgba(255,210,106,.25),rgba(255,210,106,.1));border-color:#0000}
-  textarea{width:100%;min-height:64px;border-radius:12px;border:1px solid var(--ring);padding:10px;background:var(--card);color:var(--fg)}
   .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
   .hint{font-size:.9rem;color:var(--muted)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip{padding:6px 10px;border-radius:999px;border:1px solid var(--ring);background:rgba(255,255,255,.02);cursor:pointer}
-  .chip.hidden{display:none}
-  .mutedline{border-top:1px solid var(--ring);margin:10px 0}
-  .log-item{padding:8px 0;border-bottom:1px dashed var(--ring)}
-  details summary{cursor:pointer;user-select:none}
+  /* Vibe cards */
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  @media (max-width:820px){ .grid{grid-template-columns:1fr} }
+  .vibe{display:flex;flex-direction:column;gap:10px}
+  .poster{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--ring)}
+  .poster .bg{position:absolute;inset:0}
+  .poster .txt{position:absolute;inset:auto 14px 12px 14px;display:flex;flex-direction:column;gap:4px}
+  .poster h3{margin:0;font-size:1.05rem}
+  .poster p{margin:0;color:#eaeaea;opacity:.85}
+  .chipline{display:flex;align-items:center;gap:10px;justify-content:space-between}
+  .role{color:var(--muted);font-size:.92rem}
+  /* Posters (CSS art, zero clutter) */
+  .bg.marina{background:
+    radial-gradient(900px 420px at -10% -10%, #ffbf80 0%, transparent 60%),
+    linear-gradient(135deg,#3a2b14,#1a1714)}
+  .bg.sigrid{background:
+    radial-gradient(900px 420px at 110% -10%, #9fd7ff 0%, transparent 60%),
+    linear-gradient(135deg,#14212b,#111417)}
+  .bg.taylor{background:
+    radial-gradient(900px 420px at 50% -20%, #c9a7ff 0%, transparent 60%),
+    linear-gradient(135deg,#2a2233,#17141b)}
+  .bg.chappell{background:
+    radial-gradient(900px 420px at -10% 120%, #ffb3a1 0%, transparent 60%),
+    linear-gradient(135deg,#2b1c1a,#161214)}
+  .bg.ohno{background:
+    radial-gradient(900px 420px at 100% 120%, #ffd26a 0%, transparent 60%),
+    linear-gradient(135deg,#2d2416,#161410)}
+  /* Controls */
+  .slider{appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #0001;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  .meter{font-variant-numeric:tabular-nums;font-weight:700}
   /* Aroma steam */
-  .aroma{height:200px;border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,210,106,.08),transparent),#0c0c0f}
+  .aroma{height:180px;border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,210,106,.08),transparent),#0c0c0f;margin-top:8px}
   canvas{display:block;width:100%;height:100%}
-  /* Progress ring */
-  .ringbox{display:flex;align-items:center;gap:12px}
-  .ring{width:48px;height:48px;border-radius:50%;background:
-    conic-gradient(var(--ringTint) 0% 0%, #333 0% 100%);
-    display:grid;place-items:center;border:1px solid var(--ring)}
-  .ring > span{font-size:.78rem;font-variant-numeric:tabular-nums}
-  .artistline{margin-top:8px;font-size:.95rem}
-  /* Water cue */
+  /* Audio dock */
+  .dock{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--ring);border-radius:12px;background:rgba(255,255,255,.02)}
+  .dock .title{flex:1 1 auto;min-width:0}
+  .pill{border:1px solid var(--ring);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.02)}
   .waterdot{width:10px;height:10px;border-radius:50%;background:#6ecbff;box-shadow:0 0 0 0 rgba(110,203,255,.0)}
-  .blink{animation: blink 1.2s ease 1}
-  @keyframes blink { 0%{box-shadow:0 0 0 0 rgba(110,203,255,.7)} 100%{box-shadow:0 0 0 12px rgba(110,203,255,0)} }
-  .watercap{display:none;color:#6ecbff}
-  .watercap.show{display:inline}
-  select{appearance:none;border:1px solid var(--ring);background:var(--card);color:var(--fg);padding:8px 10px;border-radius:10px}
-  /* Start preset card */
-  .startline{margin-top:8px}
+  .blink{animation:blink 1.2s ease 1}
+  @keyframes blink{0%{box-shadow:0 0 0 0 rgba(110,203,255,.7)}100%{box-shadow:0 0 0 12px rgba(110,203,255,0)}}
+  .watercap{display:none;color:#6ecbff}.watercap.show{display:inline}
+  textarea{width:100%;min-height:64px;border-radius:12px;border:1px solid var(--ring);padding:10px;background:var(--card);color:var(--fg)}
+  footer{margin-top:16px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 </style>
 </head>
 <body>
-  <div class="wrap" role="application" aria-label="Garlic Toast — Relax & Cook">
+  <div class="wrap">
     <header>
       <div>
         <h1>Garlic Toast</h1>
@@ -74,57 +87,117 @@
       <div class="clock mono" id="clock">00:00</div>
     </header>
 
-    <!-- Start preset -->
+    <!-- Mantra + One-tap -->
     <section class="card">
       <div class="row">
         <div>
-          <div class="sub">one-tap start</div>
-          <div class="hint startline">inhale 4 · exhale 6 — smell = your metronome.</div>
+          <div class="sub">mantra</div>
+          <div class="hint" id="mantra">smell the toast, soften your jaw, feel your feet.</div>
         </div>
         <div class="btns">
           <button id="startCalm" class="primary">Start 3-minute calm</button>
         </div>
       </div>
+      <div class="hint" style="margin-top:6px">tone comes after cooking (optional)</div>
     </section>
 
-    <!-- Artist Mode -->
-    <section class="card">
+    <!-- Vibes (big, uncluttered posters) -->
+    <section class="card" aria-label="Pick a recipe vibe">
       <div class="row">
         <div>
-          <div class="sub">artist mode</div>
-          <div class="hint">Tiny copy & color only—keeps the page simple.</div>
+          <div class="sub">recipe vibe</div>
+          <div class="hint">Pick one. We’ll loop a quiet track while you cook, then offer a relax track.</div>
         </div>
-        <div class="btns">
-          <select id="artist">
-            <option value="default">Default</option>
-            <option value="marina">MARINA</option>
-            <option value="sigrid">Sigrid</option>
-            <option value="taylor">Taylor</option>
-            <option value="abbey">Abbey</option>
-          </select>
+        <div class="pill mono" id="currentVibe">—</div>
+      </div>
+
+      <div class="grid" id="vibes">
+        <!-- 1. Quick Garlic Toast · Bee -->
+        <div class="vibe" data-key="quick_garlic_toast" data-cook="GR3Liudev18" data-cook-label="MARINA — Oh No!" data-relax="2qjjl6YwT5g" data-relax-label="MARINA — Happy" data-permission="you’re the Bee—make it golden." data-role="action first, then feel the lift.">
+          <div class="poster">
+            <div class="bg marina"></div>
+            <div class="txt">
+              <h3>Quick Garlic Toast</h3>
+              <p>MARINA — <em>Oh No!</em> · loop chorus</p>
+            </div>
+          </div>
+          <div class="chipline">
+            <span class="role">you’re the Bee—make it golden.</span>
+            <button class="use primary">Use this vibe</button>
+          </div>
+        </div>
+        <!-- 2. Slow Simmer · Moon -->
+        <div class="vibe" data-key="slow_simmer" data-cook="2z8d0X4GfVQ" data-cook-label="Sigrid — Dynamite (Acoustic)" data-relax="2l9TQYp5f9Q" data-relax-label="Sigrid — Home to You (Cinema)" data-permission="no rush—clarity grows on low heat." data-role="you’re the keeper of calm and temperature.">
+          <div class="poster">
+            <div class="bg sigrid"></div>
+            <div class="txt">
+              <h3>Slow Simmer</h3>
+              <p>Sigrid — <em>Dynamite (Acoustic)</em> · loop verse</p>
+            </div>
+          </div>
+          <div class="chipline">
+            <span class="role">no rush—clarity grows on low heat.</span>
+            <button class="use primary">Use this vibe</button>
+          </div>
+        </div>
+        <!-- 3. Cozy Pasta · Boundary -->
+        <div class="vibe" data-key="cozy_pasta" data-cook="mkR_Qwix4Ho" data-cook-label="Taylor Swift — Lavender Haze" data-relax="t7C3QN3r2xw" data-relax-label="Taylor Swift — peace" data-permission="this is your little ritual; you decide the pace." data-role="you set the edges so softness can exist.">
+          <div class="poster">
+            <div class="bg taylor"></div>
+            <div class="txt">
+              <h3>Cozy Pasta</h3>
+              <p>Taylor Swift — <em>Lavender Haze</em> · loop verse bed</p>
+            </div>
+          </div>
+          <div class="chipline">
+            <span class="role">this is your little ritual; you decide the pace.</span>
+            <button class="use primary">Use this vibe</button>
+          </div>
+        </div>
+        <!-- 4. Fresh & Bright · Playful -->
+        <div class="vibe" data-key="fresh_bright" data-cook="G-6xH8ZKJ3c" data-cook-label="Chappell Roan — California" data-relax="b9m7Z4C4zD8" data-relax-label="Chappell Roan — Coffee" data-permission="light hands, easy breath—make it fun." data-role="you warm the room without turning up the heat.">
+          <div class="poster">
+            <div class="bg chappell"></div>
+            <div class="txt">
+              <h3>Fresh & Bright</h3>
+              <p>Chappell Roan — <em>California</em> · loop verse</p>
+            </div>
+          </div>
+          <div class="chipline">
+            <span class="role">light hands, easy breath—make it fun.</span>
+            <button class="use primary">Use this vibe</button>
+          </div>
+        </div>
+        <!-- 5. Oh No Reset -->
+        <div class="vibe" data-key="oh_no_reset" data-cook="GR3Liudev18" data-cook-label="MARINA — Oh No! (one chorus)" data-relax="" data-relax-label="128 Hz tone (30–60s)" data-permission="laugh, scrape, butter—golden next round." data-role="resets are part of the ritual.">
+          <div class="poster">
+            <div class="bg ohno"></div>
+            <div class="txt">
+              <h3>“Oh No” Reset</h3>
+              <p>MARINA — <em>Oh No!</em> · one chorus reset</p>
+            </div>
+          </div>
+          <div class="chipline">
+            <span class="role">laugh, scrape, butter—golden next round.</span>
+            <button class="use primary">Use this vibe</button>
+          </div>
         </div>
       </div>
-      <div class="artistline" id="artistLine">Smell the toast → soften jaw → feel your feet.</div>
     </section>
 
     <!-- Toast level -->
     <section class="card">
-      <div class="row" aria-label="Toast level">
+      <div class="row">
         <div>
           <div class="sub">toast level</div>
-          <div class="chips" id="chips">
-            <div class="chip" data-level="30">Light</div>
-            <div class="chip" data-level="55">Gold</div>
-            <div class="chip" data-level="80">Dark</div>
-          </div>
+          <div class="hint">Tip: Gold (55%) suits jammy-garlic toast; go lighter for thin bread.</div>
         </div>
         <div class="meter mono" id="levelMeter">55%</div>
       </div>
       <input id="level" class="slider" type="range" min="0" max="100" value="55" aria-label="Toast level percentage" />
-      <p class="hint">Tip: set <strong>Gold</strong> for jammy-garlic toast; go lighter for thin bread.</p>
     </section>
 
-    <!-- Kitchen timer -->
+    <!-- Timer -->
     <section class="card">
       <div class="row">
         <div>
@@ -144,49 +217,56 @@
           <button data-mins="3">3:00</button>
           <button data-mins="4">4:00</button>
         </div>
-        <div class="hint"><span class="waterdot" id="waterDot" title="Sip water"></span> <span id="waterCap" class="watercap">sip water</span></div>
+        <div class="hint"><span class="waterdot" id="waterDot"></span> <span id="waterCap" class="watercap">sip water</span></div>
       </div>
-      <p class="hint">Breathe while it toasts: 4-sec inhale, 6-sec exhale. Smell = signal to relax.</p>
+      <p class="hint">Breathe while it toasts: inhale 4 · exhale 6 — smell = your metronome.</p>
     </section>
 
-    <!-- Relaxation Pack -->
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="sub">relaxation pack</div>
-          <div class="hint">Tap a tool; a small ring guides the time.</div>
-        </div>
-        <div class="btns" id="toolsRow">
-          <button class="chip" data-tool="breath">4–6 Breath</button>
-          <button class="chip" data-tool="hum">Hum 20s</button>
-          <button class="chip" data-tool="jaw">Jaw Drop 20s</button>
-          <button class="chip" data-tool="ground">Ground 10s</button>
-        </div>
-      </div>
-      <div class="row" style="margin-top:12px; align-items:center">
-        <div class="ringbox">
-          <div class="ring" id="ring"><span id="ringText">–</span></div>
-          <div class="hint" id="cue">Choose a tool above.</div>
-        </div>
-        <div class="btns">
-          <button id="humGuide">Hum Guide (A3)</button>
-          <button id="tone">Enable Aroma Tone</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Aroma visual -->
+    <!-- Aroma visual + Tone/Hum -->
     <section class="card">
       <div class="row">
         <div>
           <div class="sub">aroma visual</div>
-          <p class="hint" style="margin:6px 0 0">Soft steam curls that drift with toast level.</p>
+          <p class="hint" style="margin:6px 0 0">Soft steam curls that drift with your toast level.</p>
+        </div>
+        <div class="btns">
+          <button id="tone">Enable Aroma Tone</button>
+          <button id="humGuide">Hum Guide (A3)</button>
         </div>
       </div>
       <div class="aroma"><canvas id="steam"></canvas></div>
     </section>
 
-    <!-- Ritual Note -->
+    <!-- Audio Dock (appears when playing) -->
+    <section class="card" id="dockCard" style="display:none">
+      <div class="dock">
+        <div class="pill mono" id="phasePill">COOK</div>
+        <div class="title">
+          <div class="sub" id="trackTitle">—</div>
+        </div>
+        <div class="btns">
+          <button id="stopAudio">Stop</button>
+        </div>
+      </div>
+      <div id="iframeHost" style="margin-top:10px;border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9"></div>
+    </section>
+
+    <!-- Post-timer prompt -->
+    <section class="card" id="postCard" style="display:none">
+      <div class="row">
+        <div>
+          <div class="sub">toast’s ready</div>
+          <div class="hint">safe hands first; sound second.</div>
+        </div>
+        <div class="btns">
+          <button id="playRelax" class="primary">Play relax track</button>
+          <button id="startTone">Start 60-second tone</button>
+          <button id="skipAll">Skip</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notes -->
     <section class="card">
       <div class="sub">ritual note</div>
       <p class="hint" style="margin:6px 0 8px">What did you cook? How did it feel? (Saved locally)</p>
@@ -196,7 +276,7 @@
         <button id="archiveNote">Archive Entry</button>
         <span id="saveState" class="hint"></span>
       </div>
-      <div class="mutedline"></div>
+      <div style="border-top:1px solid var(--ring);margin:10px 0"></div>
       <div class="sub" style="margin-bottom:6px">recent entries</div>
       <div id="recent"></div>
       <details style="margin-top:8px">
@@ -205,7 +285,7 @@
       </details>
     </section>
 
-    <!-- Share line -->
+    <!-- Share -->
     <section class="card">
       <div class="sub">share line</div>
       <textarea id="share" readonly></textarea>
@@ -222,318 +302,266 @@
   </div>
 
 <script>
-(()=>{
-  // ===== Utils =====
-  const pad=n=>n<10?"0"+n:n;
-  const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000));const m=Math.floor(s/60),sec=s%60;return `${pad(m)}:${pad(sec)}`};
-  const nowClock=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
-  const stamp=()=> new Date().toISOString();
+(()=>{/* ==== Utilities ==== */
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const pad=n=>n<10?"0"+n:n;
+const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000));const m=Math.floor(s/60),sec=s%60;return `${pad(m)}:${pad(sec)}`};
+const nowClock=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ===== Elements =====
-  const clock=document.getElementById('clock');
-  const artistSel=document.getElementById('artist');
-  const artistLine=document.getElementById('artistLine');
+/* ==== Clock ==== */
+const clock=$("#clock"); clock.textContent=nowClock(); setInterval(()=>clock.textContent=nowClock(),30_000);
 
-  const level=document.getElementById('level');
-  const levelMeter=document.getElementById('levelMeter');
-  const chips=document.getElementById('chips');
+/* ==== Vibes (selection + posters already on page) ==== */
+let current = {
+  key:null, cookId:null, cookLabel:"", relaxId:null, relaxLabel:"", permission:"", role:""
+};
+const currentVibe=$("#currentVibe");
+function selectVibe(vEl){
+  current.key = vEl.dataset.key;
+  current.cookId = vEl.dataset.cook || "";
+  current.cookLabel = vEl.dataset.cookLabel || "";
+  current.relaxId = vEl.dataset.relax || "";
+  current.relaxLabel = vEl.dataset.relaxLabel || "";
+  current.permission = vEl.dataset.permission || "";
+  current.role = vEl.dataset.role || "";
+  currentVibe.textContent = vEl.querySelector("h3").textContent;
+  $("#mantra").textContent = "smell the toast, soften your jaw, feel your feet.";
+}
+$$(".vibe .use").forEach(b=>b.addEventListener("click", ()=>selectVibe(b.closest(".vibe"))));
 
-  const elapsedEl=document.getElementById('elapsed');
-  const startBtn=document.getElementById('start');
-  const pauseBtn=document.getElementById('pause');
-  const resetBtn=document.getElementById('reset');
-  const startCalm=document.getElementById('startCalm');
-  const waterDot=document.getElementById('waterDot');
-  const waterCap=document.getElementById('waterCap');
+/* ==== Toast Level ==== */
+const level=$("#level"), levelMeter=$("#levelMeter");
+function setLevel(v){ level.value=String(v); levelMeter.textContent=`${v}%`; updateShare(); }
+level.addEventListener("input", ()=> setLevel(Number(level.value)));
+setLevel(55);
 
-  const share=document.getElementById('share');
-  const copy=document.getElementById('copy');
-  const copied=document.getElementById('copied');
-
-  const toneBtn=document.getElementById('tone');
-  const humGuideBtn=document.getElementById('humGuide');
-
-  const toolsRow=document.getElementById('toolsRow');
-  const ring=document.getElementById('ring');
-  const ringText=document.getElementById('ringText');
-  const cue=document.getElementById('cue');
-
-  const noteEl=document.getElementById('note');
-  const saveBtn=document.getElementById('saveNote');
-  const archiveBtn=document.getElementById('archiveNote');
-  const saveState=document.getElementById('saveState');
-  const recentBox=document.getElementById('recent');
-  const fullLogBox=document.getElementById('fulllog');
-
-  // ===== Clock =====
-  clock.textContent=nowClock();
-  setInterval(()=>clock.textContent=nowClock(), 30_000);
-
-  // ===== Artist Mode =====
-  const artistMap = {
-    default: { line: "Smell the toast → soften jaw → feel your feet.", tint: "#ffd26a" },
-    marina:  { line: "soft mouth, brave heart.", tint: "#ffe8b8" },
-    sigrid:  { line: "clear air, clear voice.", tint: "#aee1ff" },
-    taylor:  { line: "little ritual before you write.", tint: "#c9a7ff" },
-    abbey:   { line: "studio quiet: soft hum, light head nod.", tint: "#ffcc88" }
-  };
-  function applyArtist(v){
-    const a = artistMap[v] || artistMap.default;
-    artistLine.textContent = a.line;
-    document.documentElement.style.setProperty('--ringTint', a.tint);
+/* ==== Timer ==== */
+const elapsedEl=$("#elapsed"), startBtn=$("#start"), pauseBtn=$("#pause"), resetBtn=$("#reset");
+const waterDot=$("#waterDot"), waterCap=$("#waterCap");
+let running=false, startAt=0, elapsed=0, targetMs=0, raf=0, halfFired=false;
+function tick(){
+  const t=performance.now();
+  const ms=running ? elapsed + (t-startAt) : elapsed;
+  const remaining = Math.max(0, targetMs ? (targetMs - ms) : 0);
+  elapsedEl.textContent = targetMs ? fmt(remaining) : fmt(ms);
+  updateShare(ms);
+  if(targetMs && !halfFired && ms >= (targetMs/2)){
+    halfFired=true; waterDot.classList.add("blink"); waterCap.classList.add("show");
+    setTimeout(()=>{waterDot.classList.remove("blink"); waterCap.classList.remove("show");},1500);
   }
-  artistSel.addEventListener('change', ()=> applyArtist(artistSel.value));
-  applyArtist(artistSel.value);
-
-  // ===== Toast level =====
-  function setLevel(v){ level.value=String(v); levelMeter.textContent=`${v}%`; updateShare(); }
-  level.addEventListener('input', e=> setLevel(Number(e.target.value)));
-  chips.addEventListener('click', e=>{
-    const v=e.target?.getAttribute?.('data-level'); if(v){ setLevel(Number(v)); }
-  });
-  setLevel(Number(level.value||55));
-
-  // ===== Timer (countdown or up) + water cue =====
-  let running=false, startAt=0, elapsed=0, targetMs=0, raf=0, halfFired=false;
-  function tick(){
-    const t=performance.now();
-    const ms = running ? elapsed + (t-startAt) : elapsed;
-    const remaining = Math.max(0, targetMs ? (targetMs - ms) : 0);
-    elapsedEl.textContent = targetMs ? fmt(remaining) : fmt(ms);
-    updateShare(ms);
-
-    if(targetMs && !halfFired && ms >= (targetMs/2)){
-      halfFired=true; waterDot.classList.add('blink'); waterCap.classList.add('show');
-      setTimeout(()=>{waterDot.classList.remove('blink'); waterCap.classList.remove('show');}, 1500);
-    }
-
-    if (targetMs && remaining<=0 && running){
-      running=false; elapsed=targetMs; startBtn.textContent="Start"; pauseBtn.disabled=true;
-      document.title="Toast ready ✨";
-    } else {
-      raf = running ? requestAnimationFrame(tick) : 0;
-    }
+  if(targetMs && remaining<=0 && running){
+    running=false; elapsed=targetMs; startBtn.textContent="Start"; pauseBtn.disabled=true;
+    document.title="Toast ready ✨";
+    endOfToast();
+  }else{
+    raf = running ? requestAnimationFrame(tick) : 0;
   }
-  function start(){
-    if(running) return;
-    running=true; startAt=performance.now(); startBtn.textContent="Running";
-    pauseBtn.disabled=false; resetBtn.disabled=false; if(!raf) tick();
+}
+function start(){
+  if(running) return;
+  running=true; startAt=performance.now(); startBtn.textContent="Running";
+  pauseBtn.disabled=false; resetBtn.disabled=false; if(!raf) tick();
+}
+function pause(){ if(!running) return; running=false; elapsed += performance.now()-startAt; startBtn.textContent="Start"; }
+function reset(){
+  running=false; elapsed=0; startAt=0; targetMs=0; elapsedEl.textContent="00:00";
+  startBtn.textContent="Start"; pauseBtn.disabled=true; resetBtn.disabled=true; updateShare(0);
+  halfFired=false; document.title="Garlic Toast — Relax & Cook"; $("#postCard").style.display="none";
+}
+startBtn.addEventListener("click", ()=> running?pause():start());
+pauseBtn.addEventListener("click", pause);
+resetBtn.addEventListener("click", reset);
+$$("[data-mins]").forEach(b=>b.addEventListener("click", ()=>{
+  targetMs=Number(b.getAttribute("data-mins"))*60*1000; reset(); targetMs=Number(b.getAttribute("data-mins"))*60*1000; start();
+  if(current.cookId) playCookLoop();
+}));
+
+document.addEventListener("keydown", (e)=>{
+  const k=e.key.toLowerCase(); if(k==="s"){running?pause():start()} if(k==="r"){reset()} if(k==="c"){copyShare()}
+});
+
+/* ==== One-tap Start ==== */
+$("#startCalm").addEventListener("click", ()=>{
+  if(!current.key){ // default to Quick Garlic Toast if none picked
+    selectVibe(document.querySelector('[data-key="quick_garlic_toast"]'));
   }
-  function pause(){ if(!running) return; running=false; elapsed += performance.now()-startAt; startBtn.textContent="Start"; }
-  function reset(){
-    running=false; elapsed=0; startAt=0; targetMs=0; elapsedEl.textContent="00:00";
-    startBtn.textContent="Start"; pauseBtn.disabled=true; resetBtn.disabled=true; updateShare(0);
-    document.title="Garlic Toast — Relax & Cook"; halfFired=false;
+  setLevel(55); targetMs=3*60*1000; reset(); targetMs=3*60*1000; start();
+  if(current.cookId) playCookLoop();
+});
+
+/* ==== Audio Dock (YouTube privacy, only on tap) ==== */
+const dockCard=$("#dockCard"), iframeHost=$("#iframeHost"), trackTitle=$("#trackTitle"), phasePill=$("#phasePill");
+let userVol=0.08; // hint volume for embed (not guaranteed)
+function ytSrc(id, loop){
+  const playlist = loop ? `&playlist=${id}` : "";
+  return `https://www.youtube-nocookie.com/embed/${id}?playsinline=1&autoplay=1&mute=0&controls=1&rel=0&loop=${loop?1:0}${playlist}`;
+}
+function mountIframe(id, loop){
+  iframeHost.innerHTML = id ? `<iframe title="Audio" allow="autoplay; encrypted-media; picture-in-picture" style="width:100%;height:100%;border:0" src="${ytSrc(id, loop)}"></iframe>` : "";
+}
+function playCookLoop(){
+  dockCard.style.display="block";
+  phasePill.textContent="COOK";
+  trackTitle.textContent = current.cookLabel || "Loop";
+  mountIframe(current.cookId, true);
+}
+function playRelaxTrack(){
+  if(!current.relaxId){ // fallback to tone if relax track is “tone” or empty
+    $("#postCard").style.display="none"; startTone60();
+    return;
   }
-  startBtn.addEventListener('click', ()=> running?pause():start());
-  pauseBtn.addEventListener('click', pause);
-  resetBtn.addEventListener('click', reset);
-  document.querySelectorAll('[data-mins]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      targetMs=Number(b.getAttribute('data-mins'))*60*1000;
-      reset(); start();
-    });
-  });
+  dockCard.style.display="block";
+  phasePill.textContent="RELAX";
+  trackTitle.textContent = current.relaxLabel || "Relax";
+  mountIframe(current.relaxId, false);
+}
+$("#stopAudio").addEventListener("click", ()=>{ mountIframe("",false); dockCard.style.display="none"; });
 
-  // One-tap preset: Gold 55%, 3:00, Start + Hum 20s ring
-  startCalm.addEventListener('click', ()=>{
-    setLevel(55);
-    targetMs=3*60*1000;
-    reset(); // clear
-    targetMs=3*60*1000;
-    start();
-    runTool('hum'); // prime hum 20s
-  });
+/* ==== End of toast: show prompt ==== */
+function endOfToast(){
+  mountIframe("",false); // stop cook loop
+  if(current.key){ $("#postCard").style.display="block"; }
+}
 
-  document.addEventListener('keydown', e=>{
-    const k=e.key.toLowerCase();
-    if(k==='s'){ running?pause():start(); }
-    if(k==='r'){ reset(); }
-    if(k==='c'){ doCopy(); }
-  });
+/* ==== Post-timer actions ==== */
+$("#playRelax").addEventListener("click", ()=>{ playRelaxTrack(); $("#postCard").style.display="none"; });
+$("#skipAll").addEventListener("click", ()=>{ $("#postCard").style.display="none"; });
+$("#startTone").addEventListener("click", ()=>{ $("#postCard").style.display="none"; startTone60(); });
 
-  // ===== Share line =====
-  function updateShare(ms){
-    const time = typeof ms==='number' ? fmt(ms) : '00:00';
-    share.value = `Garlic Toast — level (${level.value}%) · ${time} · https://garlic.plnt.earth`;
+/* ==== Aroma Tone (with auto-fade) + Hum Guide ==== */
+let ac=null, toneOsc=null, toneGain=null, humOsc=null, humGain=null, toneFadeTimer=null;
+function ensureAudio(){
+  if(!ac){
+    ac = new (window.AudioContext||window.webkitAudioContext)();
+    toneGain = ac.createGain(); toneGain.gain.value=0.0; toneGain.connect(ac.destination);
+    toneOsc = ac.createOscillator(); toneOsc.type="sine"; toneOsc.frequency.value=128; toneOsc.connect(toneGain); toneOsc.start();
+    humGain = ac.createGain(); humGain.gain.value=0.0; humGain.connect(ac.destination);
+    humOsc = ac.createOscillator(); humOsc.type="sine"; humOsc.frequency.value=220; humOsc.connect(humGain); humOsc.start();
   }
-  updateShare(0);
-  async function doCopy(){
-    try{ await navigator.clipboard.writeText(share.value); copied.textContent="Copied ✓"; setTimeout(()=>copied.textContent="",1200); } catch {}
-  }
-  copy.addEventListener('click', doCopy);
-
-  // ===== Aroma steam canvas (reduced-motion aware) =====
-  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const cvs=document.getElementById('steam'); const ctx=cvs.getContext('2d');
-  let t0=0;
-  function draw(ts){
-    if(!t0) t0=ts;
-    const t=(ts-t0)/1000, dpr=window.devicePixelRatio||1;
-    const w=cvs.width=cvs.clientWidth*dpr, h=cvs.height=cvs.clientHeight*dpr;
-    ctx.clearRect(0,0,w,h);
-    const baseGrad=ctx.createLinearGradient(0,h,0,0);
-    baseGrad.addColorStop(0,'#0b0b0d'); baseGrad.addColorStop(1,'#111218');
-    ctx.fillStyle=baseGrad; ctx.fillRect(0,0,w,h);
-
-    const levelF = Number(level.value)/100;
-    const curls = 3;
-    for(let i=0;i<curls;i++){
-      const ampBase = prefersReduced ? 4 : 6;
-      const amp = (ampBase + i*4) * dpr * (0.8 + levelF*0.6);
-      const spBase = prefersReduced ? 0.08 : 0.2;
-      const speed = (spBase + i*0.05) * (0.6 + levelF*0.8);
-      const y0 = h*0.75 - i*35*dpr;
-      ctx.beginPath();
-      for(let x=0;x<=w;x+=6*dpr){
-        const y=y0 - Math.sin((x*0.004 + t*speed) + i)*amp - (t*(prefersReduced?2.5:5));
-        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+}
+$("#tone").addEventListener("click", async ()=>{
+  ensureAudio(); if(ac.state==="suspended"){ try{ await ac.resume(); }catch{} }
+  const on = toneGain.gain.value>0.0001;
+  if(on){
+    toneGain.gain.linearRampToValueAtTime(0.0,(ac.currentTime||0)+0.06);
+    $("#tone").textContent="Enable Aroma Tone"; if(toneFadeTimer) clearTimeout(toneFadeTimer);
+  }else{
+    toneGain.gain.linearRampToValueAtTime(0.06,(ac.currentTime||0)+0.06);
+    $("#tone").textContent="Disable Aroma Tone";
+    if(toneFadeTimer) clearTimeout(toneFadeTimer);
+    toneFadeTimer = setTimeout(()=>{
+      if(ac && toneGain && toneGain.gain.value>0.0001){
+        toneGain.gain.linearRampToValueAtTime(0.03,(ac.currentTime||0)+0.5);
       }
-      ctx.strokeStyle = `hsla(${40+i*20} 90% ${60+(i*5)}% / ${0.35 + levelF*0.25})`;
-      ctx.lineWidth=3*dpr; ctx.stroke();
+    },15000);
+  }
+});
+$("#humGuide").addEventListener("click", async ()=>{
+  ensureAudio(); if(ac.state==="suspended"){ try{ await ac.resume(); }catch{} }
+  const on = humGain.gain.value>0.0001;
+  humGain.gain.linearRampToValueAtTime(on?0.0:0.07,(ac.currentTime||0)+0.04);
+  $("#humGuide").textContent = on? "Hum Guide (A3)" : "Stop Hum Guide";
+});
+function startTone60(){
+  ensureAudio(); if(ac.state==="suspended"){ try{ ac.resume(); }catch{} }
+  toneGain.gain.setValueAtTime(0.06, ac.currentTime||0);
+  if(toneFadeTimer) clearTimeout(toneFadeTimer);
+  toneFadeTimer = setTimeout(()=>{ if(toneGain) toneGain.gain.linearRampToValueAtTime(0.03,(ac.currentTime||0)+0.5); },15000);
+  // stop after ~60s
+  setTimeout(()=>{ if(toneGain) toneGain.gain.linearRampToValueAtTime(0.0,(ac.currentTime||0)+0.6); }, 60000);
+}
+
+/* ==== Aroma Steam Canvas ==== */
+const cvs=$("#steam"), ctx=cvs.getContext("2d");
+let t0=0;
+function draw(ts){
+  if(!t0) t0=ts;
+  const t=(ts-t0)/1000, dpr=window.devicePixelRatio||1;
+  const w=cvs.width=cvs.clientWidth*dpr, h=cvs.height=cvs.clientHeight*dpr;
+  ctx.clearRect(0,0,w,h);
+  const baseGrad=ctx.createLinearGradient(0,h,0,0);
+  baseGrad.addColorStop(0,'#0b0b0d'); baseGrad.addColorStop(1,'#111218');
+  ctx.fillStyle=baseGrad; ctx.fillRect(0,0,w,h);
+  const levelF = Number(level.value)/100;
+  const curls=3;
+  for(let i=0;i<curls;i++){
+    const aBase = prefersReduced ? 4 : 6;
+    const amp=(aBase + i*4)*dpr*(0.8+levelF*0.6);
+    const sBase = prefersReduced ? 0.08:0.2;
+    const speed=(sBase + i*0.05)*(0.6+levelF*0.8);
+    const y0=h*0.75 - i*35*dpr;
+    ctx.beginPath();
+    for(let x=0;x<=w;x+=6*dpr){
+      const y=y0 - Math.sin((x*0.004 + t*speed) + i)*amp - (t*(prefersReduced?2.5:5));
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
-    requestAnimationFrame(draw);
+    ctx.strokeStyle=`hsla(${40+i*20} 90% ${60+(i*5)}% / ${0.35+levelF*0.25})`;
+    ctx.lineWidth=3*dpr; ctx.stroke();
   }
   requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
 
-  // ===== Audio (Aroma 128 Hz + Hum Guide 220 Hz, auto-fade) =====
-  let ac=null, toneOsc=null, toneGain=null, humOsc=null, humGain=null, toneFadeTimer=null;
-  function ensureAudio(){
-    if(!ac){
-      ac = new (window.AudioContext||window.webkitAudioContext)();
-      // Aroma tone
-      toneGain = ac.createGain(); toneGain.gain.value=0.0; toneGain.connect(ac.destination);
-      toneOsc = ac.createOscillator(); toneOsc.type="sine"; toneOsc.frequency.value=128; toneOsc.connect(toneGain); toneOsc.start();
-      // Hum guide
-      humGain = ac.createGain(); humGain.gain.value=0.0; humGain.connect(ac.destination);
-      humOsc = ac.createOscillator(); humOsc.type="sine"; humOsc.frequency.value=220; humOsc.connect(humGain); humOsc.start();
-    }
-  }
-  toneBtn.addEventListener('click', async ()=>{
-    ensureAudio(); if(ac.state==="suspended"){ try{ await ac.resume(); }catch{} }
-    const on = toneGain.gain.value>0.0001;
-    if(on){
-      toneGain.gain.linearRampToValueAtTime(0.0,(ac.currentTime||0)+0.06);
-      toneBtn.textContent = "Enable Aroma Tone";
-      if(toneFadeTimer) clearTimeout(toneFadeTimer);
-    }else{
-      // enable and schedule auto-fade to 0.03 after 15s
-      toneGain.gain.linearRampToValueAtTime(0.06,(ac.currentTime||0)+0.06);
-      toneBtn.textContent = "Disable Aroma Tone";
-      if(toneFadeTimer) clearTimeout(toneFadeTimer);
-      toneFadeTimer = setTimeout(()=>{
-        if(ac && toneGain && toneGain.gain.value>0.0001){
-          toneGain.gain.linearRampToValueAtTime(0.03, (ac.currentTime||0)+0.5);
-        }
-      }, 15000);
-    }
-  });
-  humGuideBtn.addEventListener('click', async ()=>{
-    ensureAudio(); if(ac.state==="suspended"){ try{ await ac.resume(); }catch{} }
-    const on = humGain.gain.value>0.0001;
-    humGain.gain.linearRampToValueAtTime(on?0.0:0.07,(ac.currentTime||0)+0.04);
-    humGuideBtn.textContent = on? "Hum Guide (A3)" : "Stop Hum Guide";
-  });
+/* ==== Notes (local) ==== */
+const NOTE_KEY='garlic.ritual.note', LOG_KEY='garlic.ritual.log';
+const noteEl=$("#note"), saveBtn=$("#saveNote"), archiveBtn=$("#archiveNote"), saveState=$("#saveState");
+const recentBox=$("#recent"), fullLogBox=$("#fulllog");
+noteEl.value = localStorage.getItem(NOTE_KEY) || '';
+let saveTimer=null;
+function setSaveState(msg){ saveState.textContent=msg; setTimeout(()=>{ if(saveState.textContent===msg) saveState.textContent=''; },1200); }
+function autoSave(){ if(saveTimer) clearTimeout(saveTimer); saveTimer=setTimeout(()=>{ localStorage.setItem(NOTE_KEY,noteEl.value); setSaveState('Saved ✓'); renderRecent(); },400); }
+noteEl.addEventListener('input', autoSave);
+saveBtn.addEventListener('click', ()=>{ localStorage.setItem(NOTE_KEY,noteEl.value); setSaveState('Saved ✓'); renderRecent(); });
+archiveBtn.addEventListener('click', ()=>{
+  const text=(noteEl.value||'').trim(); if(!text){ setSaveState('Nothing to archive'); return; }
+  const entry={ ts:new Date().toISOString(), level:Number(level.value), text };
+  const log=JSON.parse(localStorage.getItem(LOG_KEY)||'[]'); log.unshift(entry);
+  localStorage.setItem(LOG_KEY, JSON.stringify(log)); localStorage.setItem(NOTE_KEY,''); noteEl.value='';
+  setSaveState('Archived ✓'); renderRecent(); renderFull();
+});
+function esc(s){return s.replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
+function renderRecent(){
+  const log=JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
+  recentBox.innerHTML = log.slice(0,5).map(x=>{
+    const d=new Date(x.ts);
+    return `<div style="padding:8px 0;border-bottom:1px dashed var(--ring)">
+      <div class="mono">${d.toLocaleString()}</div>
+      <div class="hint">level ${x.level}%</div>
+      <div>${esc(x.text).replace(/\n/g,'<br>')}</div>
+    </div>`;
+  }).join('') || `<div class="hint">No entries yet.</div>`;
+}
+function renderFull(){
+  const log=JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
+  fullLogBox.innerHTML = log.map(x=>{
+    const d=new Date(x.ts);
+    return `<div style="padding:8px 0;border-bottom:1px dashed var(--ring)">
+      <div class="mono">${d.toLocaleString()}</div>
+      <div class="hint">level ${x.level}%</div>
+      <div>${esc(x.text).replace(/\n/g,'<br>')}</div>
+    </div>`;
+  }).join('') || `<div class="hint">Log is empty.</div>`;
+}
+renderRecent(); renderFull();
 
-  // ===== Relaxation Pack (ring timer + chip hiding) =====
-  let ringTimer=null, ringEnd=0, ringActive=false, activeTool=null;
-  function setRing(pct, label){
-    ring.style.background = `conic-gradient(var(--ringTint) 0% ${pct}%, #333 ${pct}% 100%)`;
-    ringText.textContent = label || "–";
-  }
-  function hideOtherChips(hide){
-    const nodes = Array.from(toolsRow.querySelectorAll('.chip'));
-    nodes.forEach(n=>{
-      if(!activeTool || n.textContent.trim().toLowerCase().includes(activeTool)) return;
-      n.classList.toggle('hidden', hide);
-    });
-  }
-  function startRing(seconds, text, toolKey){
-    clearRing();
-    ringActive=true; activeTool = toolKey || null;
-    hideOtherChips(true);
-    ringEnd = performance.now() + seconds*1000;
-    cue.textContent = text;
-    tickRing();
-  }
-  function tickRing(){
-    if(!ringActive) return;
-    const now = performance.now();
-    const remaining = Math.max(0, ringEnd - now);
-    const total = Math.max(1, (ringEnd - (ringEnd - remaining)));
-    const pct = Math.max(0, 100 - (remaining / total)*100);
-    setRing(pct, Math.ceil(remaining/1000)+"s");
-    if(remaining<=0){ clearRing(); return; }
-    ringTimer = requestAnimationFrame(tickRing);
-  }
-  function clearRing(){
-    ringActive=false; activeTool=null;
-    if(ringTimer) cancelAnimationFrame(ringTimer);
-    setRing(0,"–"); cue.textContent="Choose a tool above.";
-    hideOtherChips(false);
-  }
-  function runTool(key){
-    if(key==="breath"){ startRing(60, "Inhale 4 · Exhale 6 — slow and easy.", "breath"); }
-    else if(key==="hum"){ startRing(20, "Hum softly (mmm), jaw loose.", "hum"); }
-    else if(key==="jaw"){ startRing(20, "Tongue rests low; jaw unhooks.", "jaw"); }
-    else if(key==="ground"){ startRing(10, "Notice scent → feel feet.", "ground"); }
-  }
-  toolsRow.querySelectorAll('[data-tool]').forEach(b=>{
-    b.addEventListener('click', ()=> runTool(b.getAttribute('data-tool')));
-  });
+/* ==== Share line ==== */
+const share=$("#share"), copied=$("#copied");
+function updateShare(ms){
+  const time = typeof ms==='number' ? fmt(ms) : '00:00';
+  share.value = `Garlic Toast — level (${level.value}%) · ${time} · https://garlic.plnt.earth`;
+}
+updateShare(0);
+async function copyShare(){
+  try{ await navigator.clipboard.writeText(share.value); copied.textContent="Copied ✓"; setTimeout(()=>copied.textContent="",1200); }catch{}
+}
+$("#copy").addEventListener("click", copyShare);
 
-  // ===== Ritual Note (localStorage) =====
-  const NOTE_KEY = 'garlic.ritual.note';
-  const LOG_KEY  = 'garlic.ritual.log';
-  noteEl.value = localStorage.getItem(NOTE_KEY) || '';
-  function setSaveState(msg){ saveState.textContent = msg; setTimeout(()=>{ if(saveState.textContent===msg) saveState.textContent=''; }, 1200); }
-  let saveTimer=null;
-  function autoSave(){
-    if(saveTimer) clearTimeout(saveTimer);
-    saveTimer=setTimeout(()=>{
-      localStorage.setItem(NOTE_KEY, noteEl.value);
-      setSaveState('Saved ✓'); renderRecent();
-    }, 400);
-  }
-  noteEl.addEventListener('input', autoSave);
-  saveBtn.addEventListener('click', ()=>{ localStorage.setItem(NOTE_KEY, noteEl.value); setSaveState('Saved ✓'); renderRecent(); });
-  archiveBtn.addEventListener('click', ()=>{
-    const text = (noteEl.value||'').trim();
-    if(!text){ setSaveState('Nothing to archive'); return; }
-    const entry = { ts: stamp(), level: Number(level.value), text };
-    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); log.unshift(entry);
-    localStorage.setItem(LOG_KEY, JSON.stringify(log));
-    localStorage.setItem(NOTE_KEY, ''); noteEl.value='';
-    setSaveState('Archived ✓'); renderRecent(); renderFull();
-  });
-  function escapeHtml(s){ return s.replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-  function renderRecent(){
-    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
-    recentBox.innerHTML = log.slice(0,5).map(item=>{
-      const d = new Date(item.ts);
-      return `<div class="log-item">
-        <div class="mono">${d.toLocaleString()}</div>
-        <div class="hint">level ${item.level}%</div>
-        <div>${escapeHtml(item.text).replace(/\n/g,'<br>')}</div>
-      </div>`;
-    }).join('') || `<div class="hint">No entries yet.</div>`;
-  }
-  function renderFull(){
-    const log = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
-    fullLogBox.innerHTML = log.map(item=>{
-      const d = new Date(item.ts);
-      return `<div class="log-item">
-        <div class="mono">${d.toLocaleString()}</div>
-        <div class="hint">level ${item.level}%</div>
-        <div>${escapeHtml(item.text).replace(/\n/g,'<br>')}</div>
-      </div>`;
-    }).join('') || `<div class="hint">Log is empty.</div>`;
-  }
-  renderRecent(); renderFull();
-
-  // ===== Init =====
-  updateShare(0);
-})();
-</script>
+/* ==== Time init ==== */
+function initDefaults(){
+  // nothing autoplayed; just show posters. User picks vibe or one-tap start sets default.
+}
+initDefaults();
+})();</script>
 </body>
 </html>
