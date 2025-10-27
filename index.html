@@ -1,272 +1,168 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Garlic Toast — 3-Minute Calm</title>
-<meta name="description" content="One big button. 3-minute calm while toast cooks. Aroma steam, mantra, simple note. No tracking." />
+<title>Garlic · Calm + Recipe</title>
+<meta name="description" content="Jammy garlic toast for anyone: quick recipe card, a one-click video search, and an optional clear-voice micro-ritual." />
 <meta name="referrer" content="no-referrer" />
 <meta name="color-scheme" content="dark light" />
 <style>
   :root{
-    --fg:#e8eef2; --muted:#a5b0b7; --ring:#21313b; --card:rgba(255,255,255,.06);
-    --radius:16px; --blur:14px; --shadow:0 18px 48px rgba(0,0,0,.22);
-    --font: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    --bg:#0b1216; --fg:#e8eef2; --muted:#9fb0ba; --ring:#21313b;
+    --card:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.18);
+    --radius:16px; --shadow:0 18px 48px rgba(0,0,0,.22);
+    --font: ui-rounded,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    --blue:#9fd7ff; --gold:#ffd26a; --green:#8cffba;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0;color:var(--fg);font:16px/1.45 var(--font);
+    margin:0; color:var(--fg); font:16px/1.5 var(--font);
     background:
-      radial-gradient(1200px 800px at 80% -10%, rgba(174,225,255,.20), transparent 60%),
-      radial-gradient(900px 600px at -10% 110%, rgba(120,190,255,.16), transparent 60%),
-      #0b1216;
+      radial-gradient(1100px 700px at 80% -10%, rgba(159,215,255,.18), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(255,210,106,.14), transparent 60%),
+      var(--bg);
   }
-  .wrap{max-width:720px;margin:auto;padding:24px}
+  .wrap{max-width:880px;margin:auto;padding:24px}
   header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-  h1{margin:0;font-size:1.2rem}
+  h1{margin:0 0 6px;font-size:1.25rem}
   .sub{color:var(--muted)}
-  .clock{border:1px solid var(--ring);padding:6px 10px;border-radius:999px;font-variant-numeric:tabular-nums;background:rgba(255,255,255,.05)}
-  .card{background:var(--card);border:1px solid rgba(255,255,255,.18);
-    backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
-    border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-top:16px}
+  .card{
+    background:var(--card); border:1px solid var(--stroke);
+    border-radius:var(--radius); padding:18px; margin-top:16px; box-shadow:var(--shadow);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
   .row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
   .btns{display:flex;gap:10px;flex-wrap:wrap}
-  button{appearance:none;border:1px solid var(--ring);background:rgba(255,255,255,.06);color:var(--fg);
-    padding:12px 16px;border-radius:12px;font-weight:600;cursor:pointer}
-  button.primary{background:linear-gradient(180deg, rgba(174,225,255,.22), rgba(255,255,255,.06));border-color:transparent}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  a.btn, button.btn{
+    appearance:none; border:1px solid var(--ring); color:var(--fg);
+    background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+    padding:12px 16px; border-radius:12px; font-weight:700; text-decoration:none; cursor:pointer
+  }
+  .btn.gold{background:linear-gradient(180deg, rgba(255,210,106,.28), rgba(255,210,106,.10)); border-color:transparent}
+  .btn.blue{background:linear-gradient(180deg, rgba(159,215,255,.28), rgba(159,215,255,.10)); border-color:transparent}
+  .btn.green{background:linear-gradient(180deg, rgba(140,255,186,.28), rgba(140,255,186,.10)); border-color:transparent}
+  .pill{border:1px solid var(--ring);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06)}
+  ul,ol{margin:8px 0 0 20px}
+  li{margin:6px 0}
   .hint{color:var(--muted);font-size:.95rem}
-  .slider{appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,#bfe5ff,#7fc2f2)}
-  .slider::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #0001;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-  .meter{font-variant-numeric:tabular-nums;font-weight:700}
-  .aroma{height:180px;border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(174,225,255,.10),transparent),#0a0f13;margin-top:8px}
-  canvas{display:block;width:100%;height:100%}
-  textarea{width:100%;min-height:70px;border-radius:12px;border:1px solid var(--ring);padding:10px;background:rgba(255,255,255,.06);color:var(--fg)}
-  footer{margin-top:16px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  .waterdot{width:10px;height:10px;border-radius:50%;background:#6ecbff;box-shadow:0 0 0 0 rgba(110,203,255,.0)}
-  @keyframes blink{0%{box-shadow:0 0 0 0 rgba(110,203,255,.7)}100%{box-shadow:0 0 0 12px rgba(110,203,255,0)}}
-  .blink{animation:blink 1.2s ease 1}
-  .watercap{display:none;color:#6ecbff}.watercap.show{display:inline}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:880px){ .grid{grid-template-columns:1fr} }
+  .share{width:100%;border-radius:12px;border:1px solid var(--ring);padding:10px;background:rgba(255,255,255,.06);color:var(--fg)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
-        <h1>Garlic Toast</h1>
-        <div class="sub">Cook calmly. Let the aroma do the relaxing.</div>
+        <h1>Garlic · Calm + Recipe</h1>
+        <div class="sub">Useful to anyone. Optional nod to Sigrid’s “clear voice.”</div>
       </div>
-      <div class="clock mono" id="clock">00:00</div>
+      <div class="pill mono" id="clock">00:00</div>
     </header>
 
-    <!-- One big button -->
+    <!-- 1) Video launcher (always works: opens YouTube search) -->
     <section class="card">
       <div class="row">
         <div>
-          <div class="sub">how this works</div>
-          <div class="hint">Tap <strong>Start cooking</strong> → 3-second count-in → 3:00 timer runs. One hint at a time.</div>
+          <div class="sub">watch a recipe video</div>
+          <p class="hint">Opens YouTube search for “jammy garlic toast / garlic confit toast.” Pick any instructor you like.</p>
         </div>
         <div class="btns">
-          <button id="startCooking" class="primary">Start cooking (3:00)</button>
+          <a class="btn gold" target="_blank" rel="noopener"
+             href="https://www.youtube.com/results?search_query=jammy+garlic+toast+recipe">▶︎ Open recipe videos</a>
+          <a class="btn blue" target="_blank" rel="noopener"
+             href="https://www.youtube.com/results?search_query=garlic+confit+toast+recipe">▶︎ Garlic confit toast</a>
         </div>
       </div>
-      <div class="hint" id="mantra" style="margin-top:6px">smell the toast, soften your jaw, feel your feet.</div>
     </section>
 
-    <!-- Toast level -->
+    <!-- 2) Quick, clear recipe card -->
     <section class="card">
       <div class="row">
         <div>
-          <div class="sub">toast level</div>
-          <div class="hint">Gold (55%) works for jammy-garlic toast; go lighter for thin bread.</div>
+          <div class="sub">jammy garlic toast · 10–12 min</div>
+          <p class="hint">A friendly baseline for any kitchen. Adjust heat & salt to taste.</p>
         </div>
-        <div class="meter mono" id="levelMeter">55%</div>
+        <div class="pill">Gold toast ≈ 55%</div>
       </div>
-      <input id="level" class="slider" type="range" min="0" max="100" value="55" aria-label="Toast level percentage" />
+      <div class="grid">
+        <div>
+          <h3 style="margin:0 0 6px">Ingredients</h3>
+          <ul>
+            <li>2 thick bread slices</li>
+            <li>3–4 garlic cloves, lightly smashed</li>
+            <li>2–3 tbsp olive oil (or butter)</li>
+            <li>Salt + pepper (optional chilli)</li>
+            <li>Optional: parsley, lemon zest, parmesan</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin:0 0 6px">Steps</h3>
+          <ol>
+            <li>Pan on <strong>medium-low</strong>. Add oil + smashed garlic.</li>
+            <li>Stir 90–120s until garlic turns <em>jammy</em> (soft, fragrant; not browned). Remove garlic to a plate.</li>
+            <li>Add bread to the garlicky oil; toast side A to golden.</li>
+            <li>Flip; toast side B. If dry, add a little oil.</li>
+            <li>Salt lightly; smear the soft garlic on top.</li>
+            <li>Finish: pepper, parsley/lemon/parmesan if you like. Eat while warm.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:8px">Safety: if garlic browns early, lower heat or remove garlic and restart oil.</p>
     </section>
 
-    <!-- Timer -->
+    <!-- 3) Optional Sigrid “clear voice” micro-ritual -->
     <section class="card">
       <div class="row">
         <div>
-          <div class="sub">kitchen timer</div>
-          <div class="mono" id="elapsed">00:00</div>
+          <div class="sub">optional · clear voice (60–90s)</div>
+          <p class="hint">A tiny, kitchen-safe unwind you can do after plating.</p>
         </div>
-        <div class="btns">
-          <button id="start" class="primary" disabled>Start</button>
-          <button id="pause" disabled>Pause</button>
-          <button id="reset" disabled>Reset</button>
-        </div>
+        <div class="pill">“clear air, clear voice.”</div>
       </div>
-      <div class="row" style="margin-top:10px">
-        <div class="sub">quick presets</div>
-        <div class="btns"><button data-mins="2">2:00</button><button data-mins="3">3:00</button><button data-mins="4">4:00</button></div>
-        <div class="hint"><span class="waterdot" id="waterDot"></span> <span id="waterCap" class="watercap">sip water</span></div>
-      </div>
-      <p class="hint" id="stageHint">Breathe while it toasts: inhale 4 · exhale 6 — smell = your metronome.</p>
+      <ol style="margin-left:20px">
+        <li><strong>Breath 4–6 ×3</strong>: inhale 4s, exhale 6s.</li>
+        <li><strong>Hum 20s</strong> (mmm), jaw loose, lips together.</li>
+        <li><strong>Tongue drop 20s</strong>: tongue rests low, tip behind lower teeth.</li>
+        <li><strong>One yawn-sigh</strong> and sip water. Done.</li>
+      </ol>
     </section>
 
-    <!-- Aroma visual -->
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="sub">aroma visual</div>
-          <p class="hint" style="margin:6px 0 0">Soft steam curls that drift with your toast level.</p>
-        </div>
-      </div>
-      <div class="aroma"><canvas id="steam"></canvas></div>
-    </section>
-
-    <!-- Note -->
-    <section class="card">
-      <div class="sub">ritual note</div>
-      <p class="hint" style="margin:6px 0 8px">What did you cook? How did it feel? (Saved locally)</p>
-      <textarea id="note" placeholder="e.g., jammy garlic on sourdough; smelled like a warm hug; calmer after 3 breaths."></textarea>
-      <div class="btns" style="margin-top:8px">
-        <button id="saveNote" class="primary">Save</button>
-        <button id="archiveNote">Archive Entry</button>
-        <span id="saveState" class="hint"></span>
-      </div>
-    </section>
-
-    <!-- Share -->
+    <!-- Share line -->
     <section class="card">
       <div class="sub">share line</div>
-      <textarea id="share" readonly></textarea>
-      <div class="btns" style="margin-top:8px"><button id="copy">Copy</button><span id="copied" class="hint"></span></div>
+      <input id="share" class="share mono" readonly
+             value="Garlic · Calm + Recipe — pick a video, follow a simple card, optional clear-voice ritual · https://garlic.plnt.earth" />
+      <div class="btns" style="margin-top:8px">
+        <button class="btn green" id="copy">Copy</button>
+        <span class="hint" id="copied"></span>
+      </div>
     </section>
 
-    <footer>
-      <div>No tracking · Referrer off</div>
-      <div class="hint">Keyboard: <span class="mono">S</span> start/pause · <span class="mono">R</span> reset · <span class="mono">C</span> copy</div>
+    <footer class="sub" style="margin-top:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <span>No tracking · Works on any phone · Video opens in YouTube</span>
+      <span class="mono" id="tz"></span>
     </footer>
   </div>
 
 <script>
-(()=>{const $=s=>document.querySelector(s);
-const pad=n=>n<10?"0"+n:n;
-const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000));const m=Math.floor(s/60),sec=s%60;return `${pad(m)}:${pad(sec)}`};
-const nowClock=()=>{const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
-const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function(){
+  const pad=n=>n<10?'0'+n:n;
+  const clock=document.getElementById('clock');
+  const tz=document.getElementById('tz');
+  function tick(){ const d=new Date(); clock.textContent=pad(d.getHours())+':'+pad(d.getMinutes()); }
+  tick(); setInterval(tick, 30000);
+  tz.textContent = Intl.DateTimeFormat(undefined,{timeZoneName:'short'}).format(new Date()).split(' ').pop();
 
-/* Clock */
-const clock=$("#clock"); clock.textContent=nowClock(); setInterval(()=>clock.textContent=nowClock(),30_000);
-
-/* Level */
-const level=$("#level"), levelMeter=$("#levelMeter");
-function setLevel(v){ level.value=String(v); levelMeter.textContent=`${v}%`; updateShare(); }
-level.addEventListener("input", ()=> setLevel(Number(level.value))); setLevel(55);
-
-/* Timer */
-const elapsedEl=$("#elapsed"), startBtn=$("#start"), pauseBtn=$("#pause"), resetBtn=$("#reset");
-const waterDot=$("#waterDot"), waterCap=$("#waterCap"), stageHint=$("#stageHint");
-let running=false, startAt=0, elapsed=0, targetMs=3*60*1000, raf=0, halfFired=false;
-
-function tick(){
-  const t=performance.now();
-  const ms = running ? elapsed + (t-startAt) : elapsed;
-  const remaining = Math.max(0, targetMs ? (targetMs - ms) : 0);
-  elapsedEl.textContent = targetMs ? fmt(remaining) : fmt(ms);
-  updateShare(ms);
-  if(targetMs && !halfFired && ms >= (targetMs/2)){
-    halfFired=true; waterDot.classList.add("blink"); waterCap.classList.add("show");
-    setTimeout(()=>{waterDot.classList.remove("blink"); waterCap.classList.remove("show");},1500);
-  }
-  if (targetMs && remaining<=0 && running){
-    running=false; elapsed=targetMs; startBtn.textContent="Start"; pauseBtn.disabled=true;
-    document.title="Toast ready ✨";
-  }else{
-    raf = running ? requestAnimationFrame(tick) : 0;
-  }
-}
-function go(){
-  running=true; startAt=performance.now(); startBtn.textContent="Running";
-  pauseBtn.disabled=false; resetBtn.disabled=false; if(!raf) tick();
-}
-function start(){ if(running) return;
-  let i=3; const id=setInterval(()=>{ stageHint.textContent=`starting in ${i}…`; i--; if(i<0){ clearInterval(id); stageHint.textContent="smell the toast, soften your jaw, feel your feet."; go(); } },300);
-}
-function pause(){ if(!running) return; running=false; elapsed += performance.now()-startAt; startBtn.textContent="Start"; }
-function reset(){
-  running=false; elapsed=0; startAt=0; elapsedEl.textContent="00:00";
-  startBtn.textContent="Start"; pauseBtn.disabled=true; resetBtn.disabled=true; updateShare(0);
-  halfFired=false; document.title="Garlic Toast — 3-Minute Calm";
-  stageHint.textContent="Breathe while it toasts: inhale 4 · exhale 6 — smell = your metronome.";
-}
-startBtn.addEventListener("click", ()=> running?pause():start());
-pauseBtn.addEventListener("click", pause);
-resetBtn.addEventListener("click", reset);
-document.querySelectorAll("[data-mins]").forEach(b=>b.addEventListener("click", ()=>{
-  targetMs=Number(b.getAttribute("data-mins"))*60*1000;
-  reset(); targetMs=Number(b.getAttribute("data-mins"))*60*1000; start();
-}));
-document.addEventListener("keydown", (e)=>{
-  const k=e.key.toLowerCase(); if(k==="s"){running?pause():start()} if(k==="r"){reset()} if(k==="c"){copyShare()}
-});
-
-/* One big button */
-$("#startCooking").addEventListener("click", ()=>{
-  setLevel(55); targetMs=3*60*1000; reset(); targetMs=3*60*1000; start();
-  startBtn.disabled=false; // enable manual controls after we begin
-});
-
-/* Aroma steam */
-const cvs=document.getElementById("steam"), ctx=cvs.getContext("2d"); let t0=0;
-function draw(ts){
-  if(!t0) t0=ts;
-  const t=(ts-t0)/1000, dpr=window.devicePixelRatio||1;
-  const w=cvs.width=cvs.clientWidth*dpr, h=cvs.height=cvs.clientHeight*dpr;
-  ctx.clearRect(0,0,w,h);
-  const g=ctx.createLinearGradient(0,h,0,0); g.addColorStop(0,'#0b0b0d'); g.addColorStop(1,'#111218');
-  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-  const levelF = Number(level.value)/100, curls=3;
-  for(let i=0;i<curls;i++){
-    const aBase = prefersReduced ? 4 : 6;
-    const amp=(aBase + i*4)*dpr*(0.8+levelF*0.6);
-    const sBase = prefersReduced ? 0.08 : 0.2;
-    const speed=(sBase + i*0.05)*(0.6+levelF*0.8);
-    const y0=h*0.75 - i*35*dpr;
-    ctx.beginPath();
-    for(let x=0;x<=w;x+=6*dpr){
-      const y=y0 - Math.sin((x*0.004 + t*speed) + i)*amp - (t*(prefersReduced?2.5:5));
-      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle=`hsla(${40+i*20} 90% ${60+(i*5)}% / ${0.35+levelF*0.25})`;
-    ctx.lineWidth=3*dpr; ctx.stroke();
-  }
-  requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-
-/* Notes (local) */
-const NOTE_KEY='garlic.note', LOG_KEY='garlic.log';
-const noteEl=$("#note"), saveBtn=$("#saveNote"), archiveBtn=$("#archiveNote"), saveState=$("#saveState");
-noteEl.value = localStorage.getItem(NOTE_KEY) || '';
-let saveTimer=null;
-function setSaveState(msg){ saveState.textContent=msg; setTimeout(()=>{ if(saveState.textContent===msg) saveState.textContent=''; },1200); }
-function autoSave(){ if(saveTimer) clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>{ localStorage.setItem(NOTE_KEY,noteEl.value); setSaveState('Saved ✓'); },400);
-}
-noteEl.addEventListener('input', autoSave);
-saveBtn.addEventListener('click', ()=>{ localStorage.setItem(NOTE_KEY,noteEl.value); setSaveState('Saved ✓'); });
-archiveBtn.addEventListener('click', ()=>{
-  const text=(noteEl.value||'').trim(); if(!text){ setSaveState('Nothing to archive'); return; }
-  const entry={ ts:new Date().toISOString(), level:Number(level.value), text };
-  const log=JSON.parse(localStorage.getItem(LOG_KEY)||'[]'); log.unshift(entry);
-  localStorage.setItem(LOG_KEY, JSON.stringify(log)); localStorage.setItem(NOTE_KEY,''); noteEl.value='';
-  setSaveState('Archived ✓');
-});
-
-/* Share line */
-const share=$("#share"), copied=$("#copied");
-function updateShare(ms){
-  const time = typeof ms==='number' ? fmt(ms) : '00:00';
-  share.value = `Garlic Toast — level (${level.value}%) · ${time} · https://garlic.plnt.earth`;
-}
-updateShare(0);
-async function copyShare(){ try{ await navigator.clipboard.writeText(share.value); copied.textContent="Copied ✓"; setTimeout(()=>copied.textContent="",1200); }catch{} }
-$("#copy").addEventListener("click", copyShare);
+  const share=document.getElementById('share'), copied=document.getElementById('copied');
+  document.getElementById('copy').addEventListener('click', async ()=>{
+    try{ await navigator.clipboard.writeText(share.value);
+      copied.textContent='Copied ✓'; setTimeout(()=>copied.textContent='',1200);
+    }catch(e){ copied.textContent='Copy failed'; setTimeout(()=>copied.textContent='',1200); }
+  });
 })();
 </script>
 </body>
