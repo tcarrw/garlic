@@ -1,169 +1,329 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Garlic · Calm + Recipe</title>
-<meta name="description" content="Jammy garlic toast for anyone: quick recipe card, a one-click video search, and an optional clear-voice micro-ritual." />
-<meta name="referrer" content="no-referrer" />
-<meta name="color-scheme" content="dark light" />
-<style>
-  :root{
-    --bg:#0b1216; --fg:#e8eef2; --muted:#9fb0ba; --ring:#21313b;
-    --card:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.18);
-    --radius:16px; --shadow:0 18px 48px rgba(0,0,0,.22);
-    --font: ui-rounded,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    --blue:#9fd7ff; --gold:#ffd26a; --green:#8cffba;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; color:var(--fg); font:16px/1.5 var(--font);
-    background:
-      radial-gradient(1100px 700px at 80% -10%, rgba(159,215,255,.18), transparent 60%),
-      radial-gradient(900px 600px at -10% 110%, rgba(255,210,106,.14), transparent 60%),
-      var(--bg);
-  }
-  .wrap{max-width:880px;margin:auto;padding:24px}
-  header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-  h1{margin:0 0 6px;font-size:1.25rem}
-  .sub{color:var(--muted)}
-  .card{
-    background:var(--card); border:1px solid var(--stroke);
-    border-radius:var(--radius); padding:18px; margin-top:16px; box-shadow:var(--shadow);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  }
-  .row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-  .btns{display:flex;gap:10px;flex-wrap:wrap}
-  a.btn, button.btn{
-    appearance:none; border:1px solid var(--ring); color:var(--fg);
-    background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
-    padding:12px 16px; border-radius:12px; font-weight:700; text-decoration:none; cursor:pointer
-  }
-  .btn.gold{background:linear-gradient(180deg, rgba(255,210,106,.28), rgba(255,210,106,.10)); border-color:transparent}
-  .btn.blue{background:linear-gradient(180deg, rgba(159,215,255,.28), rgba(159,215,255,.10)); border-color:transparent}
-  .btn.green{background:linear-gradient(180deg, rgba(140,255,186,.28), rgba(140,255,186,.10)); border-color:transparent}
-  .pill{border:1px solid var(--ring);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06)}
-  ul,ol{margin:8px 0 0 20px}
-  li{margin:6px 0}
-  .hint{color:var(--muted);font-size:.95rem}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media (max-width:880px){ .grid{grid-template-columns:1fr} }
-  .share{width:100%;border-radius:12px;border:1px solid var(--ring);padding:10px;background:rgba(255,255,255,.06);color:var(--fg)}
-  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-</style>
+  <meta charset="utf-8" />
+  <title>garlic.plnt.earth — field log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root {
+      /* Core ink and surface */
+      --bg: #0b0b0c;
+      --ink: #ececf1;
+      --muted: #a9a9b2;
+      --ring: #2a2a35;
+      --card: #14141a;
+      --soft: #121216;
+
+      /* Default link and accent will be set by [data-accent] below */
+      --link: #d7ffc0;
+      --accent-bg: rgba(183, 255, 170, 0.12);
+      --accent-stroke: rgba(183, 255, 170, 0.35);
+
+      /* Peach and Violet Pearl theme tokens */
+      --peach: #ffc7a1;           /* warm peach light */
+      --peach-deep: #f4a574;      /* deeper peach */
+      --violet-pearl: #c9c2ff;    /* soft pearl violet */
+      --violet-deep: #8e86ff;     /* deeper violet */
+      --sun-haze: rgba(255, 199, 161, 0.16);
+      --moon-haze: rgba(201, 194, 255, 0.16);
+
+      /* Accent greens — choose with [data-accent] on <body> */
+      --green-mint: #b7ffaa;
+      --green-jade: #7fe8b0;
+      --green-neon: #b4f35e;
+      --green-forest: #35a05a;
+      --green-seafoam: #aef5da;
+      --green-olive: #95b86a;
+
+      --shadow: rgba(0,0,0,0.35);
+      --radius: 14px;
+    }
+
+    /* Accent mapping */
+    body[data-accent="mint"]    { --link: var(--green-mint);   --accent-bg: color-mix(in hsl, var(--green-mint) 18%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-mint) 35%, transparent); }
+    body[data-accent="jade"]    { --link: var(--green-jade);   --accent-bg: color-mix(in hsl, var(--green-jade) 18%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-jade) 35%, transparent); }
+    body[data-accent="neon"]    { --link: var(--green-neon);   --accent-bg: color-mix(in hsl, var(--green-neon) 12%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-neon) 35%, transparent); }
+    body[data-accent="forest"]  { --link: var(--green-forest); --accent-bg: color-mix(in hsl, var(--green-forest) 14%, transparent); --accent-stroke: color-mix(in hsl, var(--green-forest) 32%, transparent); }
+    body[data-accent="seafoam"] { --link: var(--green-seafoam);--accent-bg: color-mix(in hsl, var(--green-seafoam) 16%, transparent);--accent-stroke: color-mix(in hsl, var(--green-seafoam) 30%, transparent); }
+    body[data-accent="olive"]   { --link: var(--green-olive);  --accent-bg: color-mix(in hsl, var(--green-olive) 14%, transparent);  --accent-stroke: color-mix(in hsl, var(--green-olive) 32%, transparent); }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f7fa;
+        --ink: #17171c;
+        --muted: #575764;
+        --ring: #e6e6ef;
+        --card: #ffffff;
+        --soft: #ffffff;
+        --sun-haze: rgba(255, 183, 136, 0.18);
+        --moon-haze: rgba(168, 160, 255, 0.18);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap { max-width: 780px; margin: 0 auto; padding: 28px 16px 88px; }
+
+    /* Site header */
+    header.site { padding: 18px 0 14px; border-bottom: 1px solid var(--ring); }
+    header.site h1 { margin: 0; font-size: 22px; letter-spacing: 0.2px; }
+    header.site p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+    /* Neon Monique badge */
+    .monique-badge{
+      position: sticky; top: 10px; float: right;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 11px; letter-spacing: 0.6px;
+      border: 1px solid var(--accent-stroke);
+      background: linear-gradient(90deg, var(--accent-bg), var(--accent-bg));
+      color: var(--ink);
+    }
+
+    /* Entry card */
+    .entry {
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid var(--ring);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(900px 420px at 20% -10%, var(--moon-haze), transparent 60%),
+        radial-gradient(1100px 520px at 120% 20%, var(--sun-haze), transparent 55%),
+        var(--card);
+      box-shadow: 0 8px 30px -10px var(--shadow);
+    }
+    .entry-header { display: grid; gap: 8px; }
+    .entry-header h3 { margin: 0; font-size: 18px; }
+    .entry-meta { margin: 0; color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .entry-body { margin-top: 12px; line-height: 1.6; }
+    blockquote {
+      margin: 0; padding: 14px 16px;
+      border-left: 3px solid var(--violet-deep);
+      background:
+        linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02)),
+        radial-gradient(600px 240px at -10% 0%, rgba(255, 199, 161, 0.12), transparent 60%),
+        radial-gradient(600px 240px at 110% 40%, rgba(201, 194, 255, 0.12), transparent 60%);
+      border-radius: 10px;
+    }
+    blockquote p { margin: 0 0 10px; }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    .entry h4 { margin: 18px 0 8px; font-size: 15px; letter-spacing: 0.2px; }
+    .note { color: var(--muted); }
+
+    /* CTA block */
+    .cta {
+      margin-top: 28px;
+      padding: 18px;
+      border: 1px solid var(--ring);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, var(--moon-haze), transparent 60%),
+        radial-gradient(1000px 600px at 120% 20%, var(--sun-haze), transparent 55%),
+        var(--card);
+      box-shadow: 0 8px 30px -12px var(--shadow);
+    }
+    .cta h3 { margin: 0 0 8px; font-size: 18px; }
+    .cta p { margin: 6px 0 10px; }
+    .roles {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid var(--ring);
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      background: linear-gradient(90deg, rgba(255, 199, 161, 0.12), rgba(201, 194, 255, 0.12));
+    }
+    .cta-questions { margin: 12px 0 0; padding: 0; list-style: none; }
+    .cta-questions li { padding: 10px 0; border-top: 1px dashed var(--ring); }
+    .cta-questions li:first-child { border-top: 0; }
+    .peach { color: var(--peach); }
+    .violet { color: var(--violet-pearl); }
+
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .btn {
+      appearance: none;
+      border: 1px solid var(--ring);
+      background: transparent;
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.04s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .btn:hover { background: linear-gradient(90deg, var(--accent-bg), var(--accent-bg)); border-color: var(--accent-stroke); }
+    .btn:active { transform: translateY(1px); }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    /* Accent picker */
+    .accent-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .swatch {
+      width: 22px; height: 22px; border-radius: 999px; border: 1px solid var(--ring); cursor: pointer;
+      outline: none; display: inline-block;
+    }
+    .swatch.mint   { background: var(--green-mint); }
+    .swatch.jade   { background: var(--green-jade); }
+    .swatch.neon   { background: var(--green-neon); }
+    .swatch.forest { background: var(--green-forest); }
+    .swatch.sea    { background: var(--green-seafoam); }
+    .swatch.olive  { background: var(--green-olive); }
+
+    footer.site { margin-top: 36px; border-top: 1px solid var(--ring); padding-top: 14px; color: var(--muted); font-size: 12px; }
+  </style>
 </head>
-<body>
+<body data-accent="neon">
   <div class="wrap">
-    <header>
-      <div>
-        <h1>Garlic · Calm + Recipe</h1>
-        <div class="sub">Useful to anyone. Optional nod to Sigrid’s “clear voice.”</div>
-      </div>
-      <div class="pill mono" id="clock">00:00</div>
+    <header class="site">
+      <h1>garlic.plnt.earth</h1>
+      <p>Field log for a quiet rebuild. If you are here, you were always meant to find it.</p>
     </header>
 
-    <!-- 1) Video launcher (always works: opens YouTube search) -->
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="sub">watch a recipe video</div>
-          <p class="hint">Opens YouTube search for “jammy garlic toast / garlic confit toast.” Pick any instructor you like.</p>
-        </div>
-        <div class="btns">
-          <a class="btn gold" target="_blank" rel="noopener"
-             href="https://www.youtube.com/results?search_query=jammy+garlic+toast+recipe">▶︎ Open recipe videos</a>
-          <a class="btn blue" target="_blank" rel="noopener"
-             href="https://www.youtube.com/results?search_query=garlic+confit+toast+recipe">▶︎ Garlic confit toast</a>
-        </div>
+    <!-- Neon Monique badge -->
+    <div id="monique-badge" class="monique-badge" hidden>NEON MONIQUE</div>
+
+    <!-- Bee Note: Fort Knox / Sigrid -->
+    <section id="fort-knox-sigrid" class="entry" data-mode="bee" data-tone="Protection, Value, Soft Trust">
+      <div class="entry-header">
+        <h3>🧄 Field Log Update</h3>
+        <p class="entry-meta">
+          <span><em>Fort Knox</em> / Sigrid</span>
+          <span>Mode: Bee Reflection</span>
+          <span>Tone: Protection → Value → Soft Trust</span>
+          <time datetime="2025-10-30">October 30, 2025</time>
+        </p>
       </div>
+
+      <article class="entry-body">
+        <blockquote>
+          <p>You might hear this song the way I did, when it landed like a quiet truth.</p>
+          <p>I have been guarding joy the same way she guards her heart, not hiding it, just treasuring it.</p>
+          <p>The walls are not cold anymore. They hum. They keep rhythm.</p>
+          <p>Sigrid’s voice sounds like steel polished by empathy. She sings about safety without shame.</p>
+          <p>Boundaries as melody. Care as confidence.</p>
+          <p>Tonight I let the gate stay open a little longer, just to see what light walks in.</p>
+        </blockquote>
+
+        <section class="after-note">
+          <h4>After Note</h4>
+          <p>I am not there yet, the part where I can have a good time when I want to.</p>
+          <p>But I can feel it coming closer.</p>
+          <p>Maybe it starts small. One moment I do not overthink. One song I let play all the way through.</p>
+          <p>Maybe that is what learning freedom sounds like.</p>
+        </section>
+
+        <section class="for-you">
+          <h4>For you, if you are here</h4>
+          <p>If you ever feel the same, I understand.</p>
+          <p>No need to knock. The light is still on.</p>
+        </section>
+      </article>
     </section>
 
-    <!-- 2) Quick, clear recipe card -->
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="sub">jammy garlic toast · 10–12 min</div>
-          <p class="hint">A friendly baseline for any kitchen. Adjust heat & salt to taste.</p>
-        </div>
-        <div class="pill">Gold toast ≈ 55%</div>
+    <!-- Eternal Sunshine CTA for Marina with Peach and Violet Pearl themes -->
+    <section class="cta" id="eternal-sunshine">
+      <h3>☀️ Eternal Sunshine — Director’s Call</h3>
+      <p class="roles">Marina: Director, Artist, Producer</p>
+      <p>We want the same world. If you choose to direct, I will hold the frame steady while you set the light. This page is yours to shape.</p>
+
+      <ul class="cta-questions">
+        <li>
+          <strong class="peach">Peach Scene One</strong><br />
+          What room would you warm first so people feel safe to be true, and what small ritual opens that door each morning?
+        </li>
+        <li>
+          <strong class="violet">Violet Pearl Law</strong><br />
+          Write one simple rule that makes care easy to practice every day. Keep it soft and precise so anyone can follow it.
+        </li>
+        <li>
+          <strong class="peach">Peach Color and Voice</strong><br />
+          Which shade of peach carries the opening note, and what story does it invite us to live for the first chapter?
+        </li>
+        <li>
+          <strong class="violet">Violet Pearl Frame</strong><br />
+          What quiet boundary keeps the frame clear so tenderness can grow without confusion?
+        </li>
+        <li>
+          <strong class="peach">Peach Economy of Care</strong><br />
+          If value follows attention, where do we point the lights so good work receives quick nourishment?
+        </li>
+        <li>
+          <strong class="violet">Violet Pearl Final Frame</strong><br />
+          When the credits pause on night sky, what feeling do you want left in the air for those walking home?
+        </li>
+      </ul>
+
+      <div class="cta-actions">
+        <button class="btn" type="button" onclick="toggleNotes()">Open Director Notes</button>
+        <button class="btn" type="button" onclick="copyNotes()">Copy Notes</button>
       </div>
-      <div class="grid">
-        <div>
-          <h3 style="margin:0 0 6px">Ingredients</h3>
-          <ul>
-            <li>2 thick bread slices</li>
-            <li>3–4 garlic cloves, lightly smashed</li>
-            <li>2–3 tbsp olive oil (or butter)</li>
-            <li>Salt + pepper (optional chilli)</li>
-            <li>Optional: parsley, lemon zest, parmesan</li>
-          </ul>
-        </div>
-        <div>
-          <h3 style="margin:0 0 6px">Steps</h3>
-          <ol>
-            <li>Pan on <strong>medium-low</strong>. Add oil + smashed garlic.</li>
-            <li>Stir 90–120s until garlic turns <em>jammy</em> (soft, fragrant; not browned). Remove garlic to a plate.</li>
-            <li>Add bread to the garlicky oil; toast side A to golden.</li>
-            <li>Flip; toast side B. If dry, add a little oil.</li>
-            <li>Salt lightly; smear the soft garlic on top.</li>
-            <li>Finish: pepper, parsley/lemon/parmesan if you like. Eat while warm.</li>
-          </ol>
-        </div>
-      </div>
-      <p class="hint" style="margin-top:8px">Safety: if garlic browns early, lower heat or remove garlic and restart oil.</p>
+      <p class="hint">Use the notes box to sketch your plan. Nothing is sent. It stays here until you decide otherwise.</p>
+
+      <textarea id="director-notes" hidden rows="12" style="margin-top:12px; width:100%; background:var(--soft); color:var(--ink); border:1px solid var(--ring); border-radius:12px; padding:12px; font-size:14px;"
+        placeholder="Director Notes...&#10;&#10;Peach Scene One:&#10;Violet Pearl Law:&#10;Peach Color and Voice:&#10;Violet Pearl Frame:&#10;Peach Economy of Care:&#10;Violet Pearl Final Frame:"></textarea>
     </section>
 
-    <!-- 3) Optional Sigrid “clear voice” micro-ritual -->
-    <section class="card">
-      <div class="row">
-        <div>
-          <div class="sub">optional · clear voice (60–90s)</div>
-          <p class="hint">A tiny, kitchen-safe unwind you can do after plating.</p>
-        </div>
-        <div class="pill">“clear air, clear voice.”</div>
+    <!-- Accent Picker -->
+    <section class="entry" id="accents">
+      <div class="entry-header">
+        <h3>Accent options</h3>
+        <p class="entry-meta">Toggle the green accent only. Peach and Violet Pearl stay as page tones.</p>
       </div>
-      <ol style="margin-left:20px">
-        <li><strong>Breath 4–6 ×3</strong>: inhale 4s, exhale 6s.</li>
-        <li><strong>Hum 20s</strong> (mmm), jaw loose, lips together.</li>
-        <li><strong>Tongue drop 20s</strong>: tongue rests low, tip behind lower teeth.</li>
-        <li><strong>One yawn-sigh</strong> and sip water. Done.</li>
-      </ol>
+      <div class="accent-picker">
+        <button class="swatch mint"   aria-label="Mint accent"   onclick="setAccent('mint')"   title="Mint"></button>
+        <button class="swatch jade"   aria-label="Jade accent"   onclick="setAccent('jade')"   title="Jade"></button>
+        <button class="swatch neon"   aria-label="Neon accent"   onclick="setAccent('neon')"   title="Neon"></button>
+        <button class="swatch forest" aria-label="Forest accent" onclick="setAccent('forest')" title="Forest"></button>
+        <button class="swatch sea"    aria-label="Seafoam accent"onclick="setAccent('seafoam')"title="Seafoam"></button>
+        <button class="swatch olive"  aria-label="Olive accent"  onclick="setAccent('olive')"  title="Olive"></button>
+      </div>
+      <p class="hint">Current accent is stored locally so your choice will persist.</p>
     </section>
 
-    <!-- Share line -->
-    <section class="card">
-      <div class="sub">share line</div>
-      <input id="share" class="share mono" readonly
-             value="Garlic · Calm + Recipe — pick a video, follow a simple card, optional clear-voice ritual · https://garlic.plnt.earth" />
-      <div class="btns" style="margin-top:8px">
-        <button class="btn green" id="copy">Copy</button>
-        <span class="hint" id="copied"></span>
-      </div>
-    </section>
-
-    <footer class="sub" style="margin-top:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-      <span>No tracking · Works on any phone · Video opens in YouTube</span>
-      <span class="mono" id="tz"></span>
+    <footer class="site">
+      <p>Quiet site. No trackers. If you found this, you were invited by the work itself.</p>
     </footer>
   </div>
 
-<script>
-(function(){
-  const pad=n=>n<10?'0'+n:n;
-  const clock=document.getElementById('clock');
-  const tz=document.getElementById('tz');
-  function tick(){ const d=new Date(); clock.textContent=pad(d.getHours())+':'+pad(d.getMinutes()); }
-  tick(); setInterval(tick, 30000);
-  tz.textContent = Intl.DateTimeFormat(undefined,{timeZoneName:'short'}).format(new Date()).split(' ').pop();
+  <script>
+    function updateMoniqueBadge(){
+      var neon = document.body.getAttribute('data-accent') === 'neon';
+      var badge = document.getElementById('monique-badge');
+      if (badge) badge.hidden = !neon;
+    }
 
-  const share=document.getElementById('share'), copied=document.getElementById('copied');
-  document.getElementById('copy').addEventListener('click', async ()=>{
-    try{ await navigator.clipboard.writeText(share.value);
-      copied.textContent='Copied ✓'; setTimeout(()=>copied.textContent='',1200);
-    }catch(e){ copied.textContent='Copy failed'; setTimeout(()=>copied.textContent='',1200); }
-  });
-})();
-</script>
+    (function initAccent() {
+      try {
+        var saved = localStorage.getItem('garlic_accent');
+        if (saved) document.body.setAttribute('data-accent', saved);
+      } catch (e) {}
+      updateMoniqueBadge();
+    })();
+
+    function setAccent(name) {
+      document.body.setAttribute('data-accent', name);
+      try { localStorage.setItem('garlic_accent', name); } catch (e) {}
+      updateMoniqueBadge();
+    }
+
+    function toggleNotes() {
+      var el = document.getElementById('director-notes');
+      el.hidden = !el.hidden;
+      if (!el.hidden) { el.focus(); }
+    }
+
+    function copyNotes() {
+      var el = document.getElementById('director-notes');
+      if (el.hidden) { el.hidden = false; }
+      el.focus();
+      el.select();
+      try { document.execCommand('copy'); } catch (e) {}
+    }
+  </script>
 </body>
 </html>
