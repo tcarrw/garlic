@@ -1,329 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>garlic.plnt.earth — field log</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b0b0c" />
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    :root {
-      /* Core ink and surface */
-      --bg: #0b0b0c;
-      --ink: #ececf1;
-      --muted: #a9a9b2;
-      --ring: #2a2a35;
-      --card: #14141a;
-      --soft: #121216;
-
-      /* Default link and accent will be set by [data-accent] below */
-      --link: #d7ffc0;
-      --accent-bg: rgba(183, 255, 170, 0.12);
-      --accent-stroke: rgba(183, 255, 170, 0.35);
-
-      /* Peach and Violet Pearl theme tokens */
-      --peach: #ffc7a1;           /* warm peach light */
-      --peach-deep: #f4a574;      /* deeper peach */
-      --violet-pearl: #c9c2ff;    /* soft pearl violet */
-      --violet-deep: #8e86ff;     /* deeper violet */
-      --sun-haze: rgba(255, 199, 161, 0.16);
-      --moon-haze: rgba(201, 194, 255, 0.16);
-
-      /* Accent greens — choose with [data-accent] on <body> */
-      --green-mint: #b7ffaa;
-      --green-jade: #7fe8b0;
-      --green-neon: #b4f35e;
-      --green-forest: #35a05a;
-      --green-seafoam: #aef5da;
-      --green-olive: #95b86a;
-
-      --shadow: rgba(0,0,0,0.35);
-      --radius: 14px;
-    }
-
-    /* Accent mapping */
-    body[data-accent="mint"]    { --link: var(--green-mint);   --accent-bg: color-mix(in hsl, var(--green-mint) 18%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-mint) 35%, transparent); }
-    body[data-accent="jade"]    { --link: var(--green-jade);   --accent-bg: color-mix(in hsl, var(--green-jade) 18%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-jade) 35%, transparent); }
-    body[data-accent="neon"]    { --link: var(--green-neon);   --accent-bg: color-mix(in hsl, var(--green-neon) 12%, transparent);   --accent-stroke: color-mix(in hsl, var(--green-neon) 35%, transparent); }
-    body[data-accent="forest"]  { --link: var(--green-forest); --accent-bg: color-mix(in hsl, var(--green-forest) 14%, transparent); --accent-stroke: color-mix(in hsl, var(--green-forest) 32%, transparent); }
-    body[data-accent="seafoam"] { --link: var(--green-seafoam);--accent-bg: color-mix(in hsl, var(--green-seafoam) 16%, transparent);--accent-stroke: color-mix(in hsl, var(--green-seafoam) 30%, transparent); }
-    body[data-accent="olive"]   { --link: var(--green-olive);  --accent-bg: color-mix(in hsl, var(--green-olive) 14%, transparent);  --accent-stroke: color-mix(in hsl, var(--green-olive) 32%, transparent); }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f7f7fa;
-        --ink: #17171c;
-        --muted: #575764;
-        --ring: #e6e6ef;
-        --card: #ffffff;
-        --soft: #ffffff;
-        --sun-haze: rgba(255, 183, 136, 0.18);
-        --moon-haze: rgba(168, 160, 255, 0.18);
-      }
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji; }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    .wrap { max-width: 780px; margin: 0 auto; padding: 28px 16px 88px; }
-
-    /* Site header */
-    header.site { padding: 18px 0 14px; border-bottom: 1px solid var(--ring); }
-    header.site h1 { margin: 0; font-size: 22px; letter-spacing: 0.2px; }
-    header.site p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-
-    /* Neon Monique badge */
-    .monique-badge{
-      position: sticky; top: 10px; float: right;
-      padding: 6px 10px; border-radius: 999px;
-      font-size: 11px; letter-spacing: 0.6px;
-      border: 1px solid var(--accent-stroke);
-      background: linear-gradient(90deg, var(--accent-bg), var(--accent-bg));
-      color: var(--ink);
-    }
-
-    /* Entry card */
-    .entry {
-      margin-top: 22px;
-      padding: 18px;
-      border: 1px solid var(--ring);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(900px 420px at 20% -10%, var(--moon-haze), transparent 60%),
-        radial-gradient(1100px 520px at 120% 20%, var(--sun-haze), transparent 55%),
-        var(--card);
-      box-shadow: 0 8px 30px -10px var(--shadow);
-    }
-    .entry-header { display: grid; gap: 8px; }
-    .entry-header h3 { margin: 0; font-size: 18px; }
-    .entry-meta { margin: 0; color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .entry-body { margin-top: 12px; line-height: 1.6; }
-    blockquote {
-      margin: 0; padding: 14px 16px;
-      border-left: 3px solid var(--violet-deep);
-      background:
-        linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02)),
-        radial-gradient(600px 240px at -10% 0%, rgba(255, 199, 161, 0.12), transparent 60%),
-        radial-gradient(600px 240px at 110% 40%, rgba(201, 194, 255, 0.12), transparent 60%);
-      border-radius: 10px;
-    }
-    blockquote p { margin: 0 0 10px; }
-    blockquote p:last-child { margin-bottom: 0; }
-
-    .entry h4 { margin: 18px 0 8px; font-size: 15px; letter-spacing: 0.2px; }
-    .note { color: var(--muted); }
-
-    /* CTA block */
-    .cta {
-      margin-top: 28px;
-      padding: 18px;
-      border: 1px solid var(--ring);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(1200px 600px at 20% -10%, var(--moon-haze), transparent 60%),
-        radial-gradient(1000px 600px at 120% 20%, var(--sun-haze), transparent 55%),
-        var(--card);
-      box-shadow: 0 8px 30px -12px var(--shadow);
-    }
-    .cta h3 { margin: 0 0 8px; font-size: 18px; }
-    .cta p { margin: 6px 0 10px; }
-    .roles {
-      display: inline-block;
-      padding: 6px 10px;
-      border: 1px solid var(--ring);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-      background: linear-gradient(90deg, rgba(255, 199, 161, 0.12), rgba(201, 194, 255, 0.12));
-    }
-    .cta-questions { margin: 12px 0 0; padding: 0; list-style: none; }
-    .cta-questions li { padding: 10px 0; border-top: 1px dashed var(--ring); }
-    .cta-questions li:first-child { border-top: 0; }
-    .peach { color: var(--peach); }
-    .violet { color: var(--violet-pearl); }
-
-    .cta-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-    .btn {
-      appearance: none;
-      border: 1px solid var(--ring);
-      background: transparent;
-      color: var(--ink);
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: transform 0.04s ease, background 0.2s ease, border-color 0.2s ease;
-    }
-    .btn:hover { background: linear-gradient(90deg, var(--accent-bg), var(--accent-bg)); border-color: var(--accent-stroke); }
-    .btn:active { transform: translateY(1px); }
-    .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
-
-    /* Accent picker */
-    .accent-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .swatch {
-      width: 22px; height: 22px; border-radius: 999px; border: 1px solid var(--ring); cursor: pointer;
-      outline: none; display: inline-block;
-    }
-    .swatch.mint   { background: var(--green-mint); }
-    .swatch.jade   { background: var(--green-jade); }
-    .swatch.neon   { background: var(--green-neon); }
-    .swatch.forest { background: var(--green-forest); }
-    .swatch.sea    { background: var(--green-seafoam); }
-    .swatch.olive  { background: var(--green-olive); }
-
-    footer.site { margin-top: 36px; border-top: 1px solid var(--ring); padding-top: 14px; color: var(--muted); font-size: 12px; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>garlic · for Marina</title>
+<meta name="theme-color" content="#f4c2ff" />
+<style>
+  :root{
+    --ink:#0b0b12; --pearl:#cbb9ff; --peach:#ffd1c7; --green:#9af59b;
+    --glass:#12131d; --line:#252742; --soft:#ffffff;
+  }
+  html,body{height:100%;margin:0;background:
+    radial-gradient(120% 120% at 20% 10%, rgba(203,185,255,.25), transparent 40%),
+    radial-gradient(120% 120% at 80% 90%, rgba(255,209,199,.25), transparent 40%),
+    var(--ink);color:#fff;font-family:system-ui,-apple-system,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{min-height:100%;display:grid;place-items:center;padding:28px}
+  .card{width:min(880px,94vw);background:linear-gradient(180deg,#14162a 0%, #0f1122 100%);
+        border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.45);padding:22px 18px 18px}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{font-weight:800;letter-spacing:.2px;font-size:clamp(18px,3.6vw,22px)}
+  .compassbtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;
+              padding:10px 12px;text-decoration:none;font-weight:700}
+  .hero{display:grid;gap:10px;margin:10px 0 8px}
+  .title{font-size:clamp(26px,6vw,40px);line-height:1.05;font-weight:900;background:linear-gradient(90deg,var(--peach),var(--pearl));
+         -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{opacity:.9;font-size:14px}
+  .greta{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;
+         border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);font-size:12px}
+  .body{margin-top:6px;display:grid;gap:14px}
+  .note{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .btn{appearance:none;border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer}
+  .btn.primary{color:#0b0b12;background:#fff}
+  .btn.green{color:#0b0b12;background:var(--green)}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
+  .field{display:grid;gap:6px;margin-top:10px}
+  .input{background:#0a0b14;border:1px solid #1f2133;color:#fff;border-radius:12px;padding:12px;font-size:14px;width:100%;outline:none}
+  .small{font-size:12px;opacity:.75}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+  .chip{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);
+        padding:8px 12px;border-radius:999px;font-size:12px;margin-right:6px}
+  .alive{position:fixed;inset:-20vmax;pointer-events:none;opacity:.25;filter:blur(60px) saturate(120%);
+         background:
+           radial-gradient(45% 45% at 25% 20%, rgba(154,245,155,.65), transparent 60%),
+           radial-gradient(55% 55% at 75% 80%, rgba(203,185,255,.55), transparent 60%),
+           radial-gradient(50% 50% at 70% 30%, rgba(255,209,199,.55), transparent 60%);
+         animation:drift 18s ease-in-out infinite alternate}
+  @keyframes drift{to{transform:translate3d(2%, -2%, 0) scale(1.03)}}
+  .hintno{opacity:.8;margin-top:6px;font-size:12px}
+  /* Bee notes (Norwegian) */
+  .bee{background:rgba(154,245,155,.09);border:1px solid rgba(154,245,155,.25)}
+  .toggle{margin-top:8px}
+  .togglebtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;
+             padding:8px 10px;font-weight:700;cursor:pointer}
+  .hidden{display:none}
+</style>
 </head>
-<body data-accent="neon">
-  <div class="wrap">
-    <header class="site">
-      <h1>garlic.plnt.earth</h1>
-      <p>Field log for a quiet rebuild. If you are here, you were always meant to find it.</p>
-    </header>
+<body>
+<div class="alive"></div>
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <div class="brand">garlic · Marina as Director</div>
+      <a class="compassbtn" href="https://earth.plnt.earth/compass">Compass</a>
+    </div>
 
-    <!-- Neon Monique badge -->
-    <div id="monique-badge" class="monique-badge" hidden>NEON MONIQUE</div>
+    <div class="hero">
+      <div class="title">Through Greta’s lens. For Marina.</div>
+      <div class="sub">Peach and violet-pearl by default. Green accents ready. No noise. Only signal.</div>
+      <div class="greta">🌍 Greta anchor · earth conscience · “design for life first”</div>
+    </div>
 
-    <!-- Bee Note: Fort Knox / Sigrid -->
-    <section id="fort-knox-sigrid" class="entry" data-mode="bee" data-tone="Protection, Value, Soft Trust">
-      <div class="entry-header">
-        <h3>🧄 Field Log Update</h3>
-        <p class="entry-meta">
-          <span><em>Fort Knox</em> / Sigrid</span>
-          <span>Mode: Bee Reflection</span>
-          <span>Tone: Protection → Value → Soft Trust</span>
-          <time datetime="2025-10-30">October 30, 2025</time>
-        </p>
+    <div class="body">
+      <div class="note">
+        <div style="font-weight:800;margin-bottom:6px">Message to Marina</div>
+        <div style="line-height:1.5">
+          You are the director. If the world were yours to rebuild gently, where would you start and who would you call in first.
+          I will follow your one clean decision today and build the room for it.
+        </div>
+        <div class="hintno">Du burde komme over. <span class="small">You should come over.</span></div>
+        <div class="cta">
+          <button class="btn primary" id="ask">Ask your director question</button>
+          <a class="btn ghost" href="https://earth.plnt.earth/cosmic">Cosmic sequence</a>
+          <a class="btn green" href="https://earth.plnt.earth/taylor/bridge">→ Taylor bridge</a>
+        </div>
+        <div class="field hidden" id="panel">
+          <input id="q" class="input" type="text" placeholder="Your one decision or question" />
+          <button class="btn primary" id="save">Save</button>
+          <div class="small hidden" id="saved">Saved locally. I will check back at 14:15.</div>
+        </div>
       </div>
 
-      <article class="entry-body">
-        <blockquote>
-          <p>You might hear this song the way I did, when it landed like a quiet truth.</p>
-          <p>I have been guarding joy the same way she guards her heart, not hiding it, just treasuring it.</p>
-          <p>The walls are not cold anymore. They hum. They keep rhythm.</p>
-          <p>Sigrid’s voice sounds like steel polished by empathy. She sings about safety without shame.</p>
-          <p>Boundaries as melody. Care as confidence.</p>
-          <p>Tonight I let the gate stay open a little longer, just to see what light walks in.</p>
-        </blockquote>
-
-        <section class="after-note">
-          <h4>After Note</h4>
-          <p>I am not there yet, the part where I can have a good time when I want to.</p>
-          <p>But I can feel it coming closer.</p>
-          <p>Maybe it starts small. One moment I do not overthink. One song I let play all the way through.</p>
-          <p>Maybe that is what learning freedom sounds like.</p>
-        </section>
-
-        <section class="for-you">
-          <h4>For you, if you are here</h4>
-          <p>If you ever feel the same, I understand.</p>
-          <p>No need to knock. The light is still on.</p>
-        </section>
-      </article>
-    </section>
-
-    <!-- Eternal Sunshine CTA for Marina with Peach and Violet Pearl themes -->
-    <section class="cta" id="eternal-sunshine">
-      <h3>☀️ Eternal Sunshine — Director’s Call</h3>
-      <p class="roles">Marina: Director, Artist, Producer</p>
-      <p>We want the same world. If you choose to direct, I will hold the frame steady while you set the light. This page is yours to shape.</p>
-
-      <ul class="cta-questions">
-        <li>
-          <strong class="peach">Peach Scene One</strong><br />
-          What room would you warm first so people feel safe to be true, and what small ritual opens that door each morning?
-        </li>
-        <li>
-          <strong class="violet">Violet Pearl Law</strong><br />
-          Write one simple rule that makes care easy to practice every day. Keep it soft and precise so anyone can follow it.
-        </li>
-        <li>
-          <strong class="peach">Peach Color and Voice</strong><br />
-          Which shade of peach carries the opening note, and what story does it invite us to live for the first chapter?
-        </li>
-        <li>
-          <strong class="violet">Violet Pearl Frame</strong><br />
-          What quiet boundary keeps the frame clear so tenderness can grow without confusion?
-        </li>
-        <li>
-          <strong class="peach">Peach Economy of Care</strong><br />
-          If value follows attention, where do we point the lights so good work receives quick nourishment?
-        </li>
-        <li>
-          <strong class="violet">Violet Pearl Final Frame</strong><br />
-          When the credits pause on night sky, what feeling do you want left in the air for those walking home?
-        </li>
-      </ul>
-
-      <div class="cta-actions">
-        <button class="btn" type="button" onclick="toggleNotes()">Open Director Notes</button>
-        <button class="btn" type="button" onclick="copyNotes()">Copy Notes</button>
+      <!-- Bee Notes to Sigrid (Norwegian, from the future) -->
+      <div class="note bee">
+        <div style="font-weight:800;margin-bottom:6px">Bie-notater til Sigrid (fra fremtiden)</div>
+        <div id="beeBody" class="hidden" style="line-height:1.55">
+          <p><strong>11:00 — Klart lys:</strong> Vi ser det som er sant uten å skjære. Pusten holder kanten myk.</p>
+          <p><strong>13:00 — Struktur:</strong> Vi legger tempo i gulvet, ikke i skuldrene. Ett slag om gangen.</p>
+          <p><strong>14:15 — Regissør-kall:</strong> Én ren beslutning, resten følger.</p>
+          <p><strong>17:00 — Scene:</strong> Vi deler det vi har bygget — mykt, men tydelig.</p>
+          <p><strong>18:00 — Kveldsport:</strong> Lukk løkker, lett skuldrene, velg én ting for i morgen.</p>
+          <p><em>Til deg fra en roligere morgendag:</em> Hvis mørket blir tett, er det bare luft som venter på lys. Jeg er her.</p>
+        </div>
+        <div class="toggle"><button id="beeToggle" class="togglebtn">Vis / skjul notater</button></div>
       </div>
-      <p class="hint">Use the notes box to sketch your plan. Nothing is sent. It stays here until you decide otherwise.</p>
 
-      <textarea id="director-notes" hidden rows="12" style="margin-top:12px; width:100%; background:var(--soft); color:var(--ink); border:1px solid var(--ring); border-radius:12px; padding:12px; font-size:14px;"
-        placeholder="Director Notes...&#10;&#10;Peach Scene One:&#10;Violet Pearl Law:&#10;Peach Color and Voice:&#10;Violet Pearl Frame:&#10;Peach Economy of Care:&#10;Violet Pearl Final Frame:"></textarea>
-    </section>
-
-    <!-- Accent Picker -->
-    <section class="entry" id="accents">
-      <div class="entry-header">
-        <h3>Accent options</h3>
-        <p class="entry-meta">Toggle the green accent only. Peach and Violet Pearl stay as page tones.</p>
+      <div class="note">
+        <div style="font-weight:800;margin-bottom:6px">Today’s hours</div>
+        <div>
+          <span class="chip">11:00 clarity</span>
+          <span class="chip">13:00 structure</span>
+          <span class="chip">14:15 director call</span>
+          <span class="chip">17:00 stage</span>
+          <span class="chip">18:00 evening gate</span>
+        </div>
+        <div class="small" style="margin-top:6px;opacity:.8">NO: 11:00 klart lys · 13:00 struktur · 14:15 regissør-kall · 17:00 scene · 18:00 kveldsport</div>
       </div>
-      <div class="accent-picker">
-        <button class="swatch mint"   aria-label="Mint accent"   onclick="setAccent('mint')"   title="Mint"></button>
-        <button class="swatch jade"   aria-label="Jade accent"   onclick="setAccent('jade')"   title="Jade"></button>
-        <button class="swatch neon"   aria-label="Neon accent"   onclick="setAccent('neon')"   title="Neon"></button>
-        <button class="swatch forest" aria-label="Forest accent" onclick="setAccent('forest')" title="Forest"></button>
-        <button class="swatch sea"    aria-label="Seafoam accent"onclick="setAccent('seafoam')"title="Seafoam"></button>
-        <button class="swatch olive"  aria-label="Olive accent"  onclick="setAccent('olive')"  title="Olive"></button>
-      </div>
-      <p class="hint">Current accent is stored locally so your choice will persist.</p>
-    </section>
+    </div>
 
-    <footer class="site">
-      <p>Quiet site. No trackers. If you found this, you were invited by the work itself.</p>
-    </footer>
+    <div class="footer">
+      <div class="small">garlic.plnt.earth · Sigrid + Marina focused. Greta as north star.</div>
+      <a class="compassbtn" href="https://earth.plnt.earth/time">Imaginary Time Log</a>
+    </div>
   </div>
+</div>
+<script>
+  // Director note local save
+  var ask = document.getElementById("ask");
+  var panel = document.getElementById("panel");
+  var saveBtn = document.getElementById("save");
+  var input = document.getElementById("q");
+  var saved = document.getElementById("saved");
+  var key = "garlic.director.note";
+  try{
+    var v = localStorage.getItem(key);
+    if(v){ panel.classList.remove("hidden"); input.value=v; saved.classList.remove("hidden"); }
+  }catch(e){}
+  ask.addEventListener("click", function(){
+    panel.classList.toggle("hidden");
+  }, {passive:true});
+  saveBtn.addEventListener("click", function(){
+    var t = input.value.trim();
+    if(!t) return;
+    try{ localStorage.setItem(key, t); }catch(e){}
+    saved.classList.remove("hidden");
+  }, {passive:true});
 
-  <script>
-    function updateMoniqueBadge(){
-      var neon = document.body.getAttribute('data-accent') === 'neon';
-      var badge = document.getElementById('monique-badge');
-      if (badge) badge.hidden = !neon;
-    }
-
-    (function initAccent() {
-      try {
-        var saved = localStorage.getItem('garlic_accent');
-        if (saved) document.body.setAttribute('data-accent', saved);
-      } catch (e) {}
-      updateMoniqueBadge();
-    })();
-
-    function setAccent(name) {
-      document.body.setAttribute('data-accent', name);
-      try { localStorage.setItem('garlic_accent', name); } catch (e) {}
-      updateMoniqueBadge();
-    }
-
-    function toggleNotes() {
-      var el = document.getElementById('director-notes');
-      el.hidden = !el.hidden;
-      if (!el.hidden) { el.focus(); }
-    }
-
-    function copyNotes() {
-      var el = document.getElementById('director-notes');
-      if (el.hidden) { el.hidden = false; }
-      el.focus();
-      el.select();
-      try { document.execCommand('copy'); } catch (e) {}
-    }
-  </script>
+  // Bee notes toggle (Norwegian)
+  var beeToggle = document.getElementById("beeToggle");
+  var beeBody = document.getElementById("beeBody");
+  beeToggle.addEventListener("click", function(){
+    beeBody.classList.toggle("hidden");
+  }, {passive:true});
+</script>
 </body>
 </html>
