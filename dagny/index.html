@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Dagny — Northern Pulse</title>
+<meta name="theme-color" content="#9fd6ff" />
+<style>
+  :root{
+    --ink:#0a0e14;
+    --north:#9fd6ff;   /* silver-blue */
+    --rose:#efb1cb;    /* east hint */
+    --amber:#ffd07a;   /* south hint */
+    --violet:#b7a6ff;  /* west hint */
+    --line:#1e2536;
+  }
+  html,body{height:100%;margin:0;background:radial-gradient(120% 120% at 15% 20%, rgba(159,214,255,.22), transparent 40%),
+                                      radial-gradient(120% 120% at 85% 85%, rgba(183,166,255,.18), transparent 40%),
+                                      var(--ink);color:#fff;font-family:system-ui,-apple-system,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{min-height:100%;display:grid;place-items:center;padding:28px}
+  .card{width:min(900px,94vw);background:linear-gradient(180deg,#101629 0%,#0c1222 100%);
+        border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.45);padding:20px}
+  .head{display:flex;align-items:center;justify-content:space-between}
+  .brand{font-weight:900;font-size:clamp(22px,5.5vw,34px);letter-spacing:.2px}
+  .links{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;text-decoration:none;color:#0b0b12;background:#fff;border:0;border-radius:12px;
+       padding:10px 14px;font-weight:800}
+  .ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
+  .sub{opacity:.9;font-size:14px;margin:6px 0 14px}
+  .grid{display:grid;gap:14px}
+  @media(min-width:720px){.grid{grid-template-columns:1.1fr .9fr;align-items:start}}
+  .note{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
+  .tag{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);
+       padding:8px 12px;border-radius:999px;font-size:12px;margin-right:8px}
+  .compass{position:relative;width:220px;height:220px;margin-inline:auto;background:radial-gradient(65% 65% at 50% 50%, rgba(255,255,255,.08), transparent 70%);
+           border-radius:50%}
+  .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.18)}
+  .quad{position:absolute;inset:10px;border-radius:50%;mask:
+        radial-gradient(100% 100% at 50% 50%, #000 60%, transparent 61%),
+        conic-gradient(from 0deg, #000 0 25%, transparent 25% 100%)}
+  .qN{background:
+        conic-gradient(from -45deg, var(--north) 0 25%, transparent 25% 100%)}
+  .qE{background:
+        conic-gradient(from 45deg, var(--rose) 0 25%, transparent 25% 100%)}
+  .qS{background:
+        conic-gradient(from 135deg, var(--amber) 0 25%, transparent 25% 100%)}
+  .qW{background:
+        conic-gradient(from -135deg, var(--violet) 0 25%, transparent 25% 100%)}
+  .sun{position:absolute;inset:0;display:grid;place-items:center}
+  .dot{width:18px;height:18px;border-radius:50%;
+       background:radial-gradient(circle at 35% 35%, #fff, #ffe7a6 60%, #cbb9ff 100%);
+       box-shadow:0 0 40px rgba(255,230,160,.55)}
+  .northPulse{position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+              width:70px;height:70px;border-radius:50%;background:radial-gradient(60% 60% at 50% 50%, rgba(159,214,255,.8), transparent 70%);
+              filter:blur(6px);opacity:.9}
+  .tiny{font-size:12px;opacity:.8;text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <div class="brand">Dagny — Northern Pulse</div>
+      <div class="links">
+        <a class="btn ghost" href="https://earth.plnt.earth/compass">Compass</a>
+        <a class="btn" href="https://earth.plnt.earth/cosmic">Cosmic sequence</a>
+      </div>
+    </div>
+    <div class="sub">Clear air. Joy in motion. Sigrid’s sister field. Norway color, silver-blue.</div>
+
+    <div class="grid">
+      <div class="note">
+        <div style="font-weight:800;margin-bottom:6px">Position in Illumina</div>
+        <div style="line-height:1.5">
+          Dagny carries the North band into movement. Where Sigrid steadies breath, Dagny turns it into a step. The light is honest and quick. 
+          Use her when you need to move without breaking clarity.
+        </div>
+        <div style="margin-top:8px">
+          <span class="tag">Element: Air + Light</span>
+          <span class="tag">Function: motion through clarity</span>
+          <span class="tag">Tone: silver-blue</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <a class="btn" href="https://www.youtube.com/results?search_query=Dagny+It+Gets+Dark+Backbeat" target="_blank" rel="noopener">Listen</a>
+          <a class="btn ghost" href="https://earth.plnt.earth/time">Log how it felt</a>
+        </div>
+      </div>
+
+      <div class="note">
+        <div style="font-weight:800;margin-bottom:10px;text-align:center">Compass · North active</div>
+        <div class="compass">
+          <div class="ring"></div>
+          <div class="quad qN"></div>
+          <div class="quad qE"></div>
+          <div class="quad qS"></div>
+          <div class="quad qW"></div>
+          <div class="sun"><div class="dot"></div></div>
+          <div class="northPulse"></div>
+        </div>
+        <div class="tiny">Marina at center. Dagny lights the North arc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
