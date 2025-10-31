@@ -1,157 +1,308 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>garlic · for Marina</title>
-<meta name="theme-color" content="#f4c2ff" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>All From Garlic → Official — Illumina</title>
+<meta name="description" content="Four-quadrant Illumina pathway: Garlic → School → Earth → Dagny, with Olivia Compass overlay." />
+<!-- all from garlic -->
 <style>
   :root{
-    --ink:#0b0b12; --pearl:#cbb9ff; --peach:#ffd1c7; --green:#9af59b;
-    --glass:#12131d; --line:#252742; --soft:#ffffff;
+    --bg:#0b0c11;
+    --panel:#0f1221;
+    --panel2:#11152a;
+    --ink:#e9ecff;
+    --muted:#a9b0d5;
+    --line:#2a2f4a;
+    --line2:#353a5c;
+    --good:#73e3c5;
+    --warn:#d08bff;
+    --accent:#79e0c8;
+    --accent2:#d08bff;
+    --shadow: 0 10px 30px rgba(0,0,0,.45);
   }
-  html,body{height:100%;margin:0;background:
-    radial-gradient(120% 120% at 20% 10%, rgba(203,185,255,.25), transparent 40%),
-    radial-gradient(120% 120% at 80% 90%, rgba(255,209,199,.25), transparent 40%),
-    var(--ink);color:#fff;font-family:system-ui,-apple-system,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  .wrap{min-height:100%;display:grid;place-items:center;padding:28px}
-  .card{width:min(880px,94vw);background:linear-gradient(180deg,#14162a 0%, #0f1122 100%);
-        border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 60px rgba(0,0,0,.45);padding:22px 18px 18px}
-  .head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{font-weight:800;letter-spacing:.2px;font-size:clamp(18px,3.6vw,22px)}
-  .compassbtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;
-              padding:10px 12px;text-decoration:none;font-weight:700}
-  .hero{display:grid;gap:10px;margin:10px 0 8px}
-  .title{font-size:clamp(26px,6vw,40px);line-height:1.05;font-weight:900;background:linear-gradient(90deg,var(--peach),var(--pearl));
-         -webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{opacity:.9;font-size:14px}
-  .greta{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;
-         border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);font-size:12px}
-  .body{margin-top:6px;display:grid;gap:14px}
-  .note{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
-  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-  .btn{appearance:none;border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer}
-  .btn.primary{color:#0b0b12;background:#fff}
-  .btn.green{color:#0b0b12;background:var(--green)}
-  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.16)}
-  .field{display:grid;gap:6px;margin-top:10px}
-  .input{background:#0a0b14;border:1px solid #1f2133;color:#fff;border-radius:12px;padding:12px;font-size:14px;width:100%;outline:none}
-  .small{font-size:12px;opacity:.75}
-  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
-  .chip{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);
-        padding:8px 12px;border-radius:999px;font-size:12px;margin-right:6px}
-  .alive{position:fixed;inset:-20vmax;pointer-events:none;opacity:.25;filter:blur(60px) saturate(120%);
-         background:
-           radial-gradient(45% 45% at 25% 20%, rgba(154,245,155,.65), transparent 60%),
-           radial-gradient(55% 55% at 75% 80%, rgba(203,185,255,.55), transparent 60%),
-           radial-gradient(50% 50% at 70% 30%, rgba(255,209,199,.55), transparent 60%);
-         animation:drift 18s ease-in-out infinite alternate}
-  @keyframes drift{to{transform:translate3d(2%, -2%, 0) scale(1.03)}}
-  .hintno{opacity:.8;margin-top:6px;font-size:12px}
-  /* Bee notes (Norwegian) */
-  .bee{background:rgba(154,245,155,.09);border:1px solid rgba(154,245,155,.25)}
-  .toggle{margin-top:8px}
-  .togglebtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:12px;
-             padding:8px 10px;font-weight:700;cursor:pointer}
-  .hidden{display:none}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink);
+    background: radial-gradient(1200px 800px at 70% 20%, #13162a 0%, #0b0c11 60%, #08090e 100%);
+    font: 500 16px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:22px; display:grid; gap:16px}
+  .head{ text-align:center; }
+  .title{font-weight:800; font-size:24px; letter-spacing:.25px}
+  .sub{color:var(--muted); font-size:14px}
+  .grid{
+    display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap:12px; min-height:54vh;
+  }
+  .card{
+    background:linear-gradient(180deg, rgba(18,22,40,.9), rgba(14,17,32,.9));
+    border:1px solid rgba(120,130,170,.22);
+    border-radius:16px; padding:16px; position:relative; box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .corner{
+    position:absolute; inset:auto 12px 12px auto; color:var(--muted); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px;
+    background:rgba(255,255,255,.03); border:1px solid rgba(120,130,170,.25); color:var(--ink);
+    cursor:pointer; user-select:none; transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .badge:hover{ transform:translateY(-1px)}
+  .dot{width:10px; height:10px; border-radius:50%; background:#7a7fb0; box-shadow:0 0 0 0 rgba(255,255,255,0)}
+  .badge[data-state="on"]{ border-color:rgba(121,224,200,.6); background:rgba(121,224,200,.08)}
+  .badge[data-state="on"] .dot{ background:var(--good); box-shadow:0 0 16px 4px rgba(121,224,200,.25)}
+  .badge .l{font-weight:700; letter-spacing:.2px}
+  .hint{color:var(--muted); font-size:12px; margin-top:8px}
+  .content{margin-top:14px; color:#dfe3ff; font-size:14px}
+  .list{margin:10px 0 0 0; padding-left:18px}
+  .list li{margin:4px 0}
+
+  /* quadrant themes */
+  .q-garlic .badge .dot{background:#a1a6d8}
+  .q-school .badge .dot{background:#a1a6d8}
+  .q-earth  .badge .dot{background:#a1a6d8}
+  .q-dagny  .badge .dot{background:#a1a6d8}
+
+  /* pathway ribbon */
+  .path{
+    grid-column: 1 / -1;
+    background:linear-gradient(180deg, rgba(18,22,40,.9), rgba(14,17,32,.9));
+    border:1px solid rgba(120,130,170,.22);
+    border-radius:16px; padding:16px; position:relative; box-shadow:var(--shadow);
+  }
+  .path .rail{
+    position:relative; height:4px; background:linear-gradient(90deg, #2a2f4a, #353a5c); border-radius:3px; margin:12px 0 18px 0;
+  }
+  .rail .tick{position:absolute; top:-6px; width:2px; height:16px; background:#42466b}
+  .rail .dot{
+    position:absolute; top:50%; width:14px; height:14px; border-radius:50%; transform:translate(-50%,-50%);
+    background:#737ab0; border:1px solid #96a0cf; transition:background .2s ease, box-shadow .2s ease;
+  }
+  .rail .dot.on{ background:var(--good); box-shadow:0 0 16px 4px rgba(121,224,200,.3)}
+  .path .labels{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted) }
+
+  /* official stamp */
+  .stamp{
+    position:absolute; right:18px; top:18px; padding:8px 12px; border:2px solid var(--good); color:var(--good);
+    border-radius:10px; font-weight:900; letter-spacing:.14em; font-size:12px; text-transform:uppercase;
+    transform:scale(.9) rotate(-2deg); opacity:0; transition:opacity .2s ease, transform .25s ease;
+    box-shadow:0 0 24px rgba(121,224,200,.2);
+  }
+  .stamp.on{ opacity:1; transform:scale(1) rotate(-1.5deg)}
+
+  /* Olivia Compass embed */
+  .compass{
+    position:relative; width:100%; max-width:560px; aspect-ratio:1/1; margin:10px auto 0 auto;
+  }
+  .ring, .ring2, .cross{ position:absolute; inset:8% 8% 8% 8%; border-radius:50%}
+  .ring{border:2px solid #232744}
+  .ring2{inset:20% 20%; border:1px dashed #31365a}
+  .cross:before, .cross:after{ content:""; position:absolute; left:50%; top:0; bottom:0; width:1px; background:linear-gradient(180deg, transparent, #3a3f64, transparent)}
+  .cross:after{left:0; right:0; top:50%; height:1px; width:100%; transform:rotate(90deg)}
+  .label{position:absolute; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.16em}
+  .label.n{top:2%; left:50%; transform:translate(-50%,0)}
+  .label.e{right:2%; top:50%; transform:translate(0,-50%)}
+  .label.s{bottom:2%; left:50%; transform:translate(-50%,0)}
+  .label.w{left:2%; top:50%; transform:translate(0,-50%)}
+  .label .hint{display:block; font-size:11px; opacity:.7; letter-spacing:.05em}
+
+  .node{ position:absolute; width:16px; height:16px; border-radius:50%; cursor:pointer; transition:transform .15s ease}
+  .node:hover{ transform:scale(1.06)}
+  .node.jones{ left:18%; top:48%; background:#79e0c8; box-shadow:0 0 24px rgba(121,224,200,.35)}
+  .node.rodrigo{ left:69%; top:68%; background:#d08bff; box-shadow:0 0 24px rgba(208,139,255,.35)}
+  .tip{
+    position:absolute; min-width:210px; max-width:260px; background:#101324; border:1px solid rgba(120,130,170,.35);
+    color:var(--ink); padding:10px 12px; border-radius:12px; pointer-events:none; opacity:0; transform:translate(-50%,-14px);
+    transition:opacity .15s ease, transform .15s ease; font-size:13px; line-height:1.35;
+  }
+  .tip h3{margin:0 0 4px 0; font-size:14px}
+  .node[data-open="1"] + .tip{ opacity:1; transform:translate(-50%,-18px)}
+
+  /* footer */
+  .foot{ text-align:center; color:var(--muted); font-size:12px }
+  .kbd{font:600 11px ui-monospace, SFMono-Regular, Menlo, monospace; padding:2px 6px; border:1px solid rgba(200,210,255,.2); border-radius:6px; background:#0f1221; color:#dde3ff}
+  @media (max-width:820px){
+    .grid{grid-template-columns:1fr; grid-template-rows:auto}
+  }
 </style>
 </head>
 <body>
-<div class="alive"></div>
-<div class="wrap">
-  <div class="card">
-    <div class="head">
-      <div class="brand">garlic · Marina as Director</div>
-      <a class="compassbtn" href="https://earth.plnt.earth/compass">Compass</a>
-    </div>
+  <div class="wrap">
+    <header class="head">
+      <div class="title">All From Garlic → Official</div>
+      <div class="sub">Tap each badge to confirm passage. When all four are green, the work is Illumina-official.</div>
+    </header>
 
-    <div class="hero">
-      <div class="title">Through Greta’s lens. For Marina.</div>
-      <div class="sub">Peach and violet-pearl by default. Green accents ready. No noise. Only signal.</div>
-      <div class="greta">🌍 Greta anchor · earth conscience · “design for life first”</div>
-    </div>
+    <!-- Quadrants -->
+    <section class="grid" id="grid">
+      <!-- Garlic -->
+      <article class="card q-garlic" data-key="garlic">
+        <div class="corner">South</div>
+        <button class="badge" data-state="off" data-key="garlic">
+          <span class="dot"></span><span class="l">Garlic</span> <span class="s">· back channel</span>
+        </button>
+        <div class="hint">Say it clean. Quiet transmission. Norwegian Bee Notes can live here.</div>
+        <div class="content">
+          <ul class="list">
+            <li>Speak one true line you could send in private.</li>
+            <li>Strip performance. Keep meaning.</li>
+            <li>Save the header: <span class="kbd">&lt;!-- all from garlic --&gt;</span></li>
+          </ul>
+        </div>
+      </article>
 
-    <div class="body">
-      <div class="note">
-        <div style="font-weight:800;margin-bottom:6px">Message to Marina</div>
-        <div style="line-height:1.5">
-          You are the director. If the world were yours to rebuild gently, where would you start and who would you call in first.
-          I will follow your one clean decision today and build the room for it.
+      <!-- School -->
+      <article class="card q-school" data-key="school">
+        <div class="corner">East</div>
+        <button class="badge" data-state="off" data-key="school">
+          <span class="dot"></span><span class="l">School</span> <span class="s">· continuity check</span>
+        </button>
+        <div class="hint">Taylor’s audit. Does it fit the story you’ve been telling.</div>
+        <div class="content">
+          <ul class="list">
+            <li>What did this teach.</li>
+            <li>Does it close a loop or create noise.</li>
+            <li>One sentence lesson for the archive.</li>
+          </ul>
         </div>
-        <div class="hintno">Du burde komme over. <span class="small">You should come over.</span></div>
-        <div class="cta">
-          <button class="btn primary" id="ask">Ask your director question</button>
-          <a class="btn ghost" href="https://earth.plnt.earth/cosmic">Cosmic sequence</a>
-          <a class="btn green" href="https://earth.plnt.earth/taylor/bridge">→ Taylor bridge</a>
+      </article>
+
+      <!-- Earth -->
+      <article class="card q-earth" data-key="earth">
+        <div class="corner">North</div>
+        <button class="badge" data-state="off" data-key="earth">
+          <span class="dot"></span><span class="l">Earth</span> <span class="s">· ethics ground</span>
+        </button>
+        <div class="hint">Greta’s baseline. Does this feed or drain the field.</div>
+        <div class="content">
+          <ul class="list">
+            <li>Is it kind and sustainable.</li>
+            <li>Is consent and credit clear.</li>
+            <li>Set one boundary to protect the work.</li>
+          </ul>
         </div>
-        <div class="field hidden" id="panel">
-          <input id="q" class="input" type="text" placeholder="Your one decision or question" />
-          <button class="btn primary" id="save">Save</button>
-          <div class="small hidden" id="saved">Saved locally. I will check back at 14:15.</div>
+      </article>
+
+      <!-- Dagny -->
+      <article class="card q-dagny" data-key="dagny">
+        <div class="corner">West</div>
+        <button class="badge" data-state="off" data-key="dagny">
+          <span class="dot"></span><span class="l">Dagny</span> <span class="s">· motion and joy</span>
+        </button>
+        <div class="hint">Olivia’s guidance. Let the body move the idea without chase.</div>
+        <div class="content">
+          <ul class="list">
+            <li>Choose a small joyful action.</li>
+            <li>Publish a minimal version.</li>
+            <li>Leave room for play.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- Pathway and Stamp -->
+    <section class="path">
+      <div class="stamp" id="stamp">ILLUMINA-OFFICIAL</div>
+      <div class="labels"><span>Garlic</span><span>School</span><span>Earth</span><span>Dagny</span></div>
+      <div class="rail" aria-hidden="true">
+        <div class="tick" style="left:0%"></div>
+        <div class="tick" style="left:33.33%"></div>
+        <div class="tick" style="left:66.66%"></div>
+        <div class="tick" style="left:100%"></div>
+        <div class="dot" id="d-garlic" style="left:0%"></div>
+        <div class="dot" id="d-school" style="left:33.33%"></div>
+        <div class="dot" id="d-earth"  style="left:66.66%"></div>
+        <div class="dot" id="d-dagny"  style="left:100%"></div>
+      </div>
+      <div class="sub" style="text-align:center">Garlic cleared · School checked · Earth grounded · Dagny in motion</div>
+    </section>
+
+    <!-- Olivia Compass -->
+    <section class="card">
+      <div class="title" style="font-size:18px; text-align:center; margin-bottom:8px;">Olivia Compass</div>
+      <div class="sub" style="text-align:center; margin-bottom:6px;">Inner Guide and Outer Muse inside the same field</div>
+      <div class="compass" role="img" aria-label="Circular compass with Olivia Jones and Olivia Rodrigo positions">
+        <div class="ring"></div>
+        <div class="ring2"></div>
+        <div class="cross"></div>
+
+        <div class="label n">Earth<span class="hint">north · ethics</span></div>
+        <div class="label e">School<span class="hint">east · continuity</span></div>
+        <div class="label s">Garlic<span class="hint">south · back channel</span></div>
+        <div class="label w">Dagny<span class="hint">west · motion</span></div>
+
+        <button class="node jones" aria-label="Olivia Jones — Inner Guide" data-open="0"></button>
+        <div class="tip" style="left:18%; top:44%">
+          <h3>Olivia Jones · Inner Guide</h3>
+          <p>Compass energy that restores movement without chase. Air and direction.</p>
+          <small>Mantra: <strong>Flow, not chase</strong></small>
+        </div>
+
+        <button class="node rodrigo" aria-label="Olivia Rodrigo — Outer Muse" data-open="0"></button>
+        <div class="tip" style="left:69%; top:64%">
+          <h3>Olivia Rodrigo · Outer Muse</h3>
+          <p>Raw feeling sung clearly. Emotion that starts the motion. Fire meeting lesson.</p>
+          <small>Mantra: <strong>Say it like it feels</strong></small>
         </div>
       </div>
-
-      <!-- Bee Notes to Sigrid (Norwegian, from the future) -->
-      <div class="note bee">
-        <div style="font-weight:800;margin-bottom:6px">Bie-notater til Sigrid (fra fremtiden)</div>
-        <div id="beeBody" class="hidden" style="line-height:1.55">
-          <p><strong>11:00 — Klart lys:</strong> Vi ser det som er sant uten å skjære. Pusten holder kanten myk.</p>
-          <p><strong>13:00 — Struktur:</strong> Vi legger tempo i gulvet, ikke i skuldrene. Ett slag om gangen.</p>
-          <p><strong>14:15 — Regissør-kall:</strong> Én ren beslutning, resten følger.</p>
-          <p><strong>17:00 — Scene:</strong> Vi deler det vi har bygget — mykt, men tydelig.</p>
-          <p><strong>18:00 — Kveldsport:</strong> Lukk løkker, lett skuldrene, velg én ting for i morgen.</p>
-          <p><em>Til deg fra en roligere morgendag:</em> Hvis mørket blir tett, er det bare luft som venter på lys. Jeg er her.</p>
-        </div>
-        <div class="toggle"><button id="beeToggle" class="togglebtn">Vis / skjul notater</button></div>
-      </div>
-
-      <div class="note">
-        <div style="font-weight:800;margin-bottom:6px">Today’s hours</div>
-        <div>
-          <span class="chip">11:00 clarity</span>
-          <span class="chip">13:00 structure</span>
-          <span class="chip">14:15 director call</span>
-          <span class="chip">17:00 stage</span>
-          <span class="chip">18:00 evening gate</span>
-        </div>
-        <div class="small" style="margin-top:6px;opacity:.8">NO: 11:00 klart lys · 13:00 struktur · 14:15 regissør-kall · 17:00 scene · 18:00 kveldsport</div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div class="small">garlic.plnt.earth · Sigrid + Marina focused. Greta as north star.</div>
-      <a class="compassbtn" href="https://earth.plnt.earth/time">Imaginary Time Log</a>
-    </div>
+      <div class="foot"><span class="kbd">Hint</span> tap a node to toggle its note</div>
+    </section>
   </div>
-</div>
-<script>
-  // Director note local save
-  var ask = document.getElementById("ask");
-  var panel = document.getElementById("panel");
-  var saveBtn = document.getElementById("save");
-  var input = document.getElementById("q");
-  var saved = document.getElementById("saved");
-  var key = "garlic.director.note";
-  try{
-    var v = localStorage.getItem(key);
-    if(v){ panel.classList.remove("hidden"); input.value=v; saved.classList.remove("hidden"); }
-  }catch(e){}
-  ask.addEventListener("click", function(){
-    panel.classList.toggle("hidden");
-  }, {passive:true});
-  saveBtn.addEventListener("click", function(){
-    var t = input.value.trim();
-    if(!t) return;
-    try{ localStorage.setItem(key, t); }catch(e){}
-    saved.classList.remove("hidden");
-  }, {passive:true});
 
-  // Bee notes toggle (Norwegian)
-  var beeToggle = document.getElementById("beeToggle");
-  var beeBody = document.getElementById("beeBody");
-  beeToggle.addEventListener("click", function(){
-    beeBody.classList.toggle("hidden");
-  }, {passive:true});
+<script>
+  (function(){
+    var keys = ["garlic","school","earth","dagny"];
+    var state = {garlic:false, school:false, earth:false, dagny:false};
+
+    function qsAll(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+    function setState(k, on){
+      state[k] = on;
+      var badge = document.querySelector('.badge[data-key="'+k+'"]');
+      if(badge) badge.setAttribute('data-state', on ? 'on' : 'off');
+      var dot = document.getElementById('d-'+k);
+      if(dot) dot.classList.toggle('on', on);
+      checkOfficial();
+    }
+    function checkOfficial(){
+      var ok = keys.every(function(k){ return state[k]; });
+      var stamp = document.getElementById('stamp');
+      stamp.classList.toggle('on', ok);
+    }
+
+    // hookup badge toggles
+    qsAll('.badge').forEach(function(b){
+      b.addEventListener('click', function(){
+        var k = b.getAttribute('data-key');
+        var on = b.getAttribute('data-state') !== 'on';
+        setState(k, on);
+      }, {passive:true});
+    });
+
+    // compass tooltips
+    qsAll('.node').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var open = btn.getAttribute('data-open') === '1' ? '0' : '1';
+        qsAll('.node').forEach(function(o){ if(o!==btn) o.setAttribute('data-open','0'); });
+        btn.setAttribute('data-open', open);
+      }, {passive:true});
+    });
+
+    // optional: restore from localStorage
+    try{
+      var saved = JSON.parse(localStorage.getItem('illumina.afg.v1')||'{}');
+      keys.forEach(function(k){ if(saved[k]) setState(k, true); });
+    }catch(e){}
+
+    // persist on change
+    function persist(){
+      try{ localStorage.setItem('illumina.afg.v1', JSON.stringify(state)); }catch(e){}
+    }
+    qsAll('.badge').forEach(function(b){
+      b.addEventListener('click', persist, {passive:true});
+    });
+  })();
 </script>
 </body>
 </html>
