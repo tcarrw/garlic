@@ -36,7 +36,8 @@
 
   .wrap{
     min-height:100%;
-    display:flex; align-items:center; justify-content:center;
+    display:flex; flex-direction:column; gap:14px;
+    align-items:center; justify-content:center;
     padding:28px;
   }
 
@@ -67,8 +68,6 @@
     box-shadow:0 0 0 2px rgba(116,218,196,.08) inset;
   }
 
-  .spacer{height:10px}
-
   .tag{
     display:inline-block; margin:6px 0 14px; padding:6px 10px; border-radius:999px;
     border:1px solid rgba(116,218,196,.35);
@@ -76,10 +75,8 @@
     background:linear-gradient(180deg, rgba(116,218,196,.12), rgba(116,218,196,.05));
   }
 
-  .line{
-    margin:10px 0; font-size:18px; letter-spacing:.3px; color:#f3fffb;
-  }
-  .sub{margin:4px 0 0; font-size:13px; color:var(--mist); letter-spacing:.06em}
+  .line{ margin:10px 0; font-size:18px; letter-spacing:.3px; color:#f3fffb; }
+  .sub{ margin:4px 0 0; font-size:13px; color:var(--mist); letter-spacing:.06em }
 
   footer{
     margin-top:16px; font-size:11px; color:var(--mist); letter-spacing:.08em;
@@ -100,6 +97,7 @@
 </head>
 <body data-mode="pitch">
   <main class="wrap">
+    <!-- Night note -->
     <section class="card" aria-label="Garlic night reflection, ultra-dark">
       <header>
         <h1>Garlic — Nattnotat</h1>
@@ -123,6 +121,20 @@
         <span class="seal">clarity · garlic · back-channel</span>
         <span class="ring" aria-hidden="true"></span>
       </footer>
+    </section>
+
+    <!-- Greta & Clarity gratitude card -->
+    <section class="card" aria-label="Greta & Clarity thanks">
+      <h1 style="font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:#eafff8; margin:0 0 12px">
+        Greta &amp; Clarity
+      </h1>
+      <p class="line">thank you for keeping the field clean,</p>
+      <p class="line">for the patience that let clarity breathe.</p>
+      <p class="line">when we reach for each other again,</p>
+      <p class="line">let it be under an honest sky.</p>
+      <p class="line">sigrid &amp; aurora — if the light ever feels right,</p>
+      <p class="line">we’re listening.</p>
+      <div class="sub">— gratitude note, garlic · back-channel</div>
     </section>
   </main>
 
