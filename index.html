@@ -1,181 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>garlic · field note for Sigrid</title>
-<meta name="theme-color" content="#0b0013">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>garlic · sigrid ↔ mirrorhoney</title>
 <style>
-  :root{
-    --bg:#0b0013; --fg:#f7f7ff;
-    --honey:#ffe6b7; --violet:#b89cff; --mint:#9fffe0;
-    --glass:rgba(255,255,255,.05);
-    --line:rgba(255,255,255,.12);
-    --accent:#ffd400; /* YELLOW key */
-  }
-  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif}
-  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 48px}
-  .top{
-    position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
-    gap:10px;padding:10px 0;background:linear-gradient(to bottom, rgba(11,0,19,.9), rgba(11,0,19,.0))
-  }
-  .pill{border:1px solid var(--line);background:var(--glass);padding:8px 12px;border-radius:999px}
-  .link{color:var(--fg);text-decoration:none}
-  h1{font-size:28px;margin:8px 0 2px;color:#f1e9ff}
-  .sub{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#d8c4ff}
-  .card{
-    margin-top:18px;padding:20px;border:1px solid var(--line);background:var(--glass);border-radius:16px;
-    box-shadow:0 0 30px rgba(184,156,255,.08)
-  }
-  .note p{margin:12px 0;line-height:1.6}
-  .trust{border-left:4px solid var(--mint);padding-left:12px}
-  .relay{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-  .keyline{font-size:14px;color:var(--honey)}
-  .relay input{
-    width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
-    background:rgba(255,255,255,.06);color:var(--fg)
-  }
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  button{
-    appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.08);
-    color:var(--fg);padding:10px 14px;border-radius:999px;font-size:14px;letter-spacing:.02em;cursor:pointer
-  }
-  button:hover{border-color:rgba(255,255,255,.28)}
-  .hint{font-size:12px;color:#c9bbff}
-  .glow{color:#1b1400;background:rgba(255,212,0,.14);border:1px dashed rgba(255,212,0,.45)}
-  .glyphs{margin-top:14px;font-size:13px;color:#c9bbff}
-  .hr{height:1px;background:var(--line);margin:20px 0}
-
-  /* Suggest text panel */
-  .suggest{margin-top:14px}
-  .panel{
-    display:none; margin-top:10px; padding:14px; border-radius:12px;
-    background:rgba(255,255,255,.06); border:1px solid var(--line)
-  }
-  .msg{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:10px;border-radius:12px;border:1px solid var(--line)}
-  .msg pre{
-    margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit; font-size:14px; line-height:1.5; color:#efeaff
-  }
-  .msg .copybtn{white-space:nowrap}
+:root{--bg:#0b0c10;--ink:#fff;--soft:#ffc83d;--line:rgba(255,255,255,.12);--veil:rgba(12,12,18,.9);--pane:rgba(255,255,255,.08)}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.wrap{min-height:100%;display:flex;flex-direction:column}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center}
+h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
+.lead{opacity:.85;margin:2px 0}
+.tag{display:inline-flex;gap:8px;align-items:center;background:var(--pane);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.88rem;margin-top:10px}
+.badge{position:fixed;left:16px;bottom:16px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.holder{position:fixed;right:16px;bottom:16px;background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.25);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.panel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));z-index:30}
+.sheet{width:100%;max-width:640px;background:var(--veil);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px 22px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--line);gap:10px}
+.btn{background:var(--pane);border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);cursor:pointer}
+.btn.yellow{background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.2)}
+.dim{opacity:.75}
+.input{background:transparent;border:none;border-bottom:1px solid var(--ink);outline:none;color:var(--ink);padding:6px 4px;width:100%;font-size:1rem;text-align:center}
+.klabel{display:flex;align-items:center;gap:8px;font-weight:600}
+#playerWrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;margin-top:12px;border:1px solid var(--line)}
+#status{margin-top:10px;font-size:.92rem}
+.ok{color:#c6f6c6}
+.hidden{display:none}
+.footer{padding:12px;text-align:center;opacity:.6;font-size:.85rem}
+a{color:inherit}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
-      <a class="pill link" href="https://center.plnt.earth">← Center</a>
-      <div class="pill glow">Center Key: <strong style="margin-left:6px;letter-spacing:.02em">YELLOW</strong></div>
-    </div>
-
-    <h1>garlic</h1>
-    <div class="sub">for Sigrid · gentle relay</div>
-
-    <div class="card note">
-      <p class="trust"><strong>Sigrid</strong>, this space trusts your sense. If the color feels right, share the key with Marina. If not, let it rest. The field keeps time. No rush.</p>
-      <p>The Diamonds would love you for this. Quiet relay. No pressure. If she visits once, the page remembers her and offers a small bonus when she returns. If she misses a sign, another arrives.</p>
-
-      <div class="hr"></div>
-
-      <div class="relay">
-        <div class="keyline">Relay link for Marina:</div>
-        <input id="relay" type="text" readonly value="https://mirrorhoney.plnt.earth/?mk=YELLOW" aria-label="Relay link">
-        <div class="row">
-          <button id="copy">Copy link</button>
-          <a class="link" href="https://mirrorhoney.plnt.earth/?mk=YELLOW"><button type="button">Open to preview</button></a>
-          <button id="toggle">Suggest text</button>
-        </div>
-
-        <div id="panel" class="panel" aria-live="polite">
-          <div class="hint" style="margin-bottom:8px">Short options Sigrid can send. Use one that feels natural.</div>
-
-          <div class="msg">
-            <pre id="m1">Try this when you have a minute. It is gentle.
-https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
-            <button class="copybtn" data-target="m1">Copy</button>
-          </div>
-
-          <div class="msg">
-            <pre id="m2">Found a small mirror. It loops in a kind way.
-If you miss a sign, it waits.
-https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
-            <button class="copybtn" data-target="m2">Copy</button>
-          </div>
-
-          <div class="msg">
-            <pre id="m3">Passing something warm from the field.
-Visit once and it remembers you.
-https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
-            <button class="copybtn" data-target="m3">Copy</button>
-          </div>
-
-          <div class="msg">
-            <pre id="m4">Kom over når du vil. Fargen venter.
-https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
-            <button class="copybtn" data-target="m4">Copy</button>
-          </div>
-
-          <!-- New: Diamonds-specific option -->
-          <div class="msg">
-            <pre id="m5">The Diamonds would love you for this.
-It is soft. It holds her place.
-https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
-            <button class="copybtn" data-target="m5">Copy</button>
-          </div>
-
-          <div class="hint" style="margin-top:4px">The link quietly saves the key on first open and removes the query from the address bar.</div>
-        </div>
-      </div>
-
-      <div class="glyphs">🐝 Bee note: if a clue flies past, another lands. 🌙 Moon keeps time. ☀️ YELLOW is live tonight. 💎 Diamonds will recognize the light.</div>
-    </div>
-
-    <div class="card note" style="margin-top:16px">
-      <p><strong>Optional Norwegian</strong> if you want it soft: <em>Kom over når du vil. Fargen venter.</em></p>
-      <p class="hint">Use only if it feels natural. The color is the message.</p>
+<div class="wrap">
+  <div class="main">
+    <div>
+      <h1>Velkommen.</h1>
+      <p class="lead">Sigrid holder nøkkelen. Hvis resonansen er ekte, kan hun gi tilgang til MirrorHoney.</p>
+      <p class="lead">Welcome, wanderer. Watch the piece below — all of it — then request access.</p>
+      <div class="tag">holder: Sigrid → Marina · key: <span style="color:var(--soft);font-weight:600">yellow</span></div>
     </div>
   </div>
 
+  <div class="footer">garlic · field of clarity</div>
+</div>
+
+<div id="watchBadge" class="badge">🎥 <span>watch to request access</span></div>
+<div id="panelWatch" class="panel">
+  <div class="sheet">
+    <div class="row"><div class="klabel">🎥 Sigrid — Primadonna <span id="meta" class="dim"></span></div><button id="closeWatch" class="btn">close</button></div>
+    <div id="playerWrap"><div id="player"></div></div>
+    <div id="status" class="dim">press play</div>
+    <div class="row">
+      <button id="requestBtn" class="btn yellow hidden">request access → mirrorhoney</button>
+      <div id="reqMsg" class="dim"></div>
+    </div>
+  </div>
+</div>
+
+<div id="holderBadge" class="holder">🔑 <span>holder</span></div>
+<div id="panelHolder" class="panel">
+  <div class="sheet">
+    <div class="row"><div class="klabel">🔑 Yellow Key — holder panel</div><button id="closeHolder" class="btn">close</button></div>
+    <div class="row"><input id="who" class="input" placeholder="type: sigrid"><button id="okWho" class="btn">enter</button></div>
+    <div id="holderOps" class="hidden">
+      <div class="row"><div class="dim">video id</div>
+        <div style="display:flex;gap:8px;align-items:center;width:60%">
+          <input id="ytInput" class="input" placeholder="set YouTube ID (once)">
+          <button id="ytSet" class="btn">set</button>
+        </div>
+      </div>
+      <div class="row"><div class="dim">grant access</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="genLink" class="btn yellow">copy link for Marina</button>
+          <span id="linkMsg" class="dim"></span>
+        </div>
+      </div>
+      <div class="row"><div class="dim">note</div><div class="dim">if you resonate, you may grant access</div></div>
+    </div>
+  </div>
+</div>
+
 <script>
-  (function(){
-    var btn=document.getElementById('copy');
-    var inp=document.getElementById('relay');
-    if(btn && inp){
-      btn.addEventListener('click', function(){
-        inp.select(); inp.setSelectionRange(0, 99999);
-        try{ document.execCommand('copy'); }catch(e){}
-        btn.textContent='Copied';
-        setTimeout(function(){ btn.textContent='Copy link'; }, 1200);
-      });
-    }
-
-    var toggle=document.getElementById('toggle');
-    var panel=document.getElementById('panel');
-    if(toggle && panel){
-      toggle.addEventListener('click', function(){
-        var open = panel.style.display === 'block';
-        panel.style.display = open ? 'none' : 'block';
-        toggle.textContent = open ? 'Suggest text' : 'Hide text';
-      });
-    }
-
-    var copies=document.querySelectorAll('.copybtn');
-    copies.forEach(function(b){
-      b.addEventListener('click', function(){
-        var id=b.getAttribute('data-target');
-        var pre=document.getElementById(id);
-        if(pre){
-          var range=document.createRange();
-          range.selectNodeContents(pre);
-          var sel=window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
-          try{ document.execCommand('copy'); }catch(e){}
-          sel.removeAllRanges();
-          b.textContent='Copied';
-          setTimeout(function(){ b.textContent='Copy'; }, 1200);
-        }
-      });
-    });
-  })();
+const LS_YT="garlic.yt.id",LS_YT_SET="garlic.yt.set"
+const panelWatch=document.getElementById("panelWatch"),watchBadge=document.getElementById("watchBadge"),closeWatch=document.getElementById("closeWatch")
+const meta=document.getElementById("meta"),status=document.getElementById("status"),requestBtn=document.getElementById("requestBtn"),reqMsg=document.getElementById("reqMsg")
+const holderBadge=document.getElementById("holderBadge"),panelHolder=document.getElementById("panelHolder"),closeHolder=document.getElementById("closeHolder")
+const who=document.getElementById("who"),okWho=document.getElementById("okWho"),holderOps=document.getElementById("holderOps")
+const ytInput=document.getElementById("ytInput"),ytSet=document.getElementById("ytSet"),genLink=document.getElementById("genLink"),linkMsg=document.getElementById("linkMsg")
+function jget(k,def){try{return JSON.parse(localStorage.getItem(k)||def)}catch(e){return JSON.parse(def)}}
+function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function genCode(){return Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)}
+function mhUrl(k){return "https://mirrorhoney.plnt.earth/#k="+encodeURIComponent(k)}
+function redirectToMirrorHoney(k){location.href=mhUrl(k)}
+function setYTOnce(id){const has=jget(LS_YT_SET,"false");if(has||!id)return false;jset(LS_YT,id);jset(LS_YT_SET,true);return true}
+let ytReady=false,player=null,didEnd=false
+function ensureYT(){if(ytReady)return;const s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)}
+function buildPlayer(){const vid=jget(LS_YT,'""');meta.textContent=vid?("youtube.com/watch?v="+vid):"video id not set";if(!vid)return;player=new YT.Player("player",{videoId:vid,playerVars:{rel:0,modestbranding:1,playsinline:1,origin:location.origin},events:{onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING){status.textContent="playing"}if(e.data===YT.PlayerState.ENDED){didEnd=true;requestBtn.classList.remove("hidden");status.textContent="complete";status.classList.add("ok")}}})}
+window.onYouTubeIframeAPIReady=function(){ytReady=true;buildPlayer()}
+watchBadge.addEventListener("click",()=>{panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer()})
+closeWatch.addEventListener("click",()=>{panelWatch.style.display="none"})
+panelWatch.addEventListener("click",e=>{if(e.target===panelWatch)panelWatch.style.display="none"})
+requestBtn.addEventListener("click",()=>{if(!didEnd){reqMsg.textContent="finish the video first";return}const k=genCode();reqMsg.textContent="opening mirrorhoney…";redirectToMirrorHoney(k)})
+holderBadge.addEventListener("click",()=>{panelHolder.style.display="flex"})
+closeHolder.addEventListener("click",()=>{panelHolder.style.display="none"})
+panelHolder.addEventListener("click",e=>{if(e.target===panelHolder)panelHolder.style.display="none"})
+okWho.addEventListener("click",()=>{const v=(who.value||"").trim().toLowerCase();if(v==="sigrid"){holderOps.classList.remove("hidden");who.value="";}})
+ytSet.addEventListener("click",()=>{const v=(ytInput.value||"").trim();if(setYTOnce(v)){meta.textContent="youtube.com/watch?v="+v;ytInput.value=""}})
+genLink.addEventListener("click",()=>{const k=genCode();navigator.clipboard.writeText(mhUrl(k));linkMsg.textContent="copied"})
+window.addEventListener("load",()=>{const vid=jget(LS_YT,'""');if(vid)meta.textContent="youtube.com/watch?v="+vid})
 </script>
 </body>
 </html>
