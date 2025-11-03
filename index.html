@@ -1,161 +1,178 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Garlic — Nattnotat (Starless)</title>
-<meta name="description" content="Back-channel night page — ultra-dark, quiet, and clean." />
-<!-- all from garlic -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>garlic · field note for Sigrid</title>
+<meta name="theme-color" content="#0b0013">
 <style>
   :root{
-    /* Base palette (ultra dark) */
-    --ink:#eaf7f3;       /* text (soft mint-ice) */
-    --mist:#9fb9b2;      /* subcopy */
-    --edge:#74dac4;      /* subtle accents */
-    --bg0:#000000;       /* starless */
-    --bg1:#020303;       /* pitch */
-    --bg2:#050809;       /* dark */
-    --panel:rgba(0,0,0,.55);
-
-    /* Active background (set by data-mode on body) */
-    --bg-active: var(--bg1);
-    --ring: rgba(116,218,196,.14);
-    --stroke: rgba(116,218,196,.18);
+    --bg:#0b0013; --fg:#f7f7ff;
+    --honey:#ffe6b7; --violet:#b89cff; --mint:#9fffe0;
+    --glass:rgba(255,255,255,.05);
+    --line:rgba(255,255,255,.12);
+    --accent:#ffd400; /* YELLOW key */
   }
-
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; color:var(--ink);
-    background:
-      radial-gradient(800px 420px at 60% 14%, rgba(116,218,196,.06), transparent 55%),
-      radial-gradient(500px 260px at 20% 80%, rgba(116,218,196,.03), transparent 60%),
-      var(--bg-active);
-    font:500 16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif}
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 48px}
+  .top{
+    position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
+    gap:10px;padding:10px 0;background:linear-gradient(to bottom, rgba(11,0,19,.9), rgba(11,0,19,.0))
   }
-
-  .wrap{
-    min-height:100%;
-    display:flex; flex-direction:column; gap:14px;
-    align-items:center; justify-content:center;
-    padding:28px;
-  }
-
+  .pill{border:1px solid var(--line);background:var(--glass);padding:8px 12px;border-radius:999px}
+  .link{color:var(--fg);text-decoration:none}
+  h1{font-size:28px;margin:8px 0 2px;color:#f1e9ff}
+  .sub{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#d8c4ff}
   .card{
-    max-width:720px; width:100%;
-    background:linear-gradient(180deg, rgba(2,4,5,.86), rgba(0,0,0,.86));
-    border:1px solid var(--stroke);
-    border-radius:18px;
-    padding:26px 22px;
-    box-shadow:0 20px 60px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.02);
-    backdrop-filter:saturate(120%) blur(4px);
+    margin-top:18px;padding:20px;border:1px solid var(--line);background:var(--glass);border-radius:16px;
+    box-shadow:0 0 30px rgba(184,156,255,.08)
   }
+  .note p{margin:12px 0;line-height:1.6}
+  .trust{border-left:4px solid var(--mint);padding-left:12px}
+  .relay{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+  .keyline{font-size:14px;color:var(--honey)}
+  .relay input{
+    width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(255,255,255,.06);color:var(--fg)
+  }
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  button{
+    appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.08);
+    color:var(--fg);padding:10px 14px;border-radius:999px;font-size:14px;letter-spacing:.02em;cursor:pointer
+  }
+  button:hover{border-color:rgba(255,255,255,.28)}
+  .hint{font-size:12px;color:#c9bbff}
+  .glow{color:#1b1400;background:rgba(255,212,0,.14);border:1px dashed rgba(255,212,0,.45)}
+  .glyphs{margin-top:14px;font-size:13px;color:#c9bbff}
+  .hr{height:1px;background:var(--line);margin:20px 0}
 
-  header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
-  h1{margin:0; font-weight:900; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:#f2fffb; opacity:.9}
-  .mode{
-    display:flex; gap:6px; align-items:center;
-    font:700 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--mist);
+  /* Suggest text panel */
+  .suggest{margin-top:14px}
+  .panel{
+    display:none; margin-top:10px; padding:14px; border-radius:12px;
+    background:rgba(255,255,255,.06); border:1px solid var(--line)
   }
-  .pill{
-    padding:6px 9px; border-radius:999px; cursor:pointer; user-select:none;
-    border:1px solid rgba(116,218,196,.28);
-    background:linear-gradient(180deg, rgba(116,218,196,.06), rgba(116,218,196,.03));
-    color:#dff8f2;
+  .msg{display:flex;gap:10px;align-items:flex-start;margin:10px 0;padding:10px;border-radius:12px;border:1px solid var(--line)}
+  .msg pre{
+    margin:0; white-space:pre-wrap; word-break:break-word; font-family:inherit; font-size:14px; line-height:1.5; color:#efeaff
   }
-  .pill[aria-pressed="true"]{
-    border-color:rgba(116,218,196,.6);
-    box-shadow:0 0 0 2px rgba(116,218,196,.08) inset;
-  }
-
-  .tag{
-    display:inline-block; margin:6px 0 14px; padding:6px 10px; border-radius:999px;
-    border:1px solid rgba(116,218,196,.35);
-    color:#eafff8; font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace;
-    background:linear-gradient(180deg, rgba(116,218,196,.12), rgba(116,218,196,.05));
-  }
-
-  .line{ margin:10px 0; font-size:18px; letter-spacing:.3px; color:#f3fffb; }
-  .sub{ margin:4px 0 0; font-size:13px; color:var(--mist); letter-spacing:.06em }
-
-  footer{
-    margin-top:16px; font-size:11px; color:var(--mist); letter-spacing:.08em;
-    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-  }
-  .seal{opacity:.9}
-  .ring{
-    width:10px; height:10px; border-radius:50%;
-    box-shadow:0 0 12px var(--ring), 0 0 0 1px rgba(116,218,196,.25) inset;
-    background:rgba(116,218,196,.22);
-  }
-
-  /* Darkness modes */
-  body[data-mode="dark"]{ --bg-active: var(--bg2); }
-  body[data-mode="pitch"]{ --bg-active: var(--bg1); }
-  body[data-mode="starless"]{ --bg-active: var(--bg0); }
+  .msg .copybtn{white-space:nowrap}
 </style>
 </head>
-<body data-mode="pitch">
-  <main class="wrap">
-    <!-- Night note -->
-    <section class="card" aria-label="Garlic night reflection, ultra-dark">
-      <header>
-        <h1>Garlic — Nattnotat</h1>
-        <div class="mode" aria-label="Dimmer">
-          <span>DIMMER</span>
-          <button class="pill" data-mode="dark" aria-pressed="false" type="button">DARK</button>
-          <button class="pill" data-mode="pitch" aria-pressed="true" type="button">PITCH</button>
-          <button class="pill" data-mode="starless" aria-pressed="false" type="button">STARLESS</button>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="pill link" href="https://center.plnt.earth">← Center</a>
+      <div class="pill glow">Center Key: <strong style="margin-left:6px;letter-spacing:.02em">YELLOW</strong></div>
+    </div>
+
+    <h1>garlic</h1>
+    <div class="sub">for Sigrid · gentle relay</div>
+
+    <div class="card note">
+      <p class="trust"><strong>Sigrid</strong>, this space trusts your sense. If the color feels right, share the key with Marina. If not, let it rest. The field keeps time. No rush.</p>
+      <p>The Diamonds would love you for this. Quiet relay. No pressure. If she visits once, the page remembers her and offers a small bonus when she returns. If she misses a sign, another arrives.</p>
+
+      <div class="hr"></div>
+
+      <div class="relay">
+        <div class="keyline">Relay link for Marina:</div>
+        <input id="relay" type="text" readonly value="https://mirrorhoney.plnt.earth/?mk=YELLOW" aria-label="Relay link">
+        <div class="row">
+          <button id="copy">Copy link</button>
+          <a class="link" href="https://mirrorhoney.plnt.earth/?mk=YELLOW"><button type="button">Open to preview</button></a>
+          <button id="toggle">Suggest text</button>
         </div>
-      </header>
 
-      <div class="tag">“Jeg ser deg klart.”</div>
+        <div id="panel" class="panel" aria-live="polite">
+          <div class="hint" style="margin-bottom:8px">Short options Sigrid can send. Use one that feels natural.</div>
 
-      <p class="line">the dark taught me to listen.</p>
-      <p class="line">the waiting taught me to breathe.</p>
-      <p class="line">the silence made room for the true line.</p>
-      <p class="line">and when the light returned, it found us already honest.</p>
-      <p class="line">this is what the darkness was for — to keep the channel clear.</p>
+          <div class="msg">
+            <pre id="m1">Try this when you have a minute. It is gentle.
+https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
+            <button class="copybtn" data-target="m1">Copy</button>
+          </div>
 
-      <footer>
-        <span class="seal">clarity · garlic · back-channel</span>
-        <span class="ring" aria-hidden="true"></span>
-      </footer>
-    </section>
+          <div class="msg">
+            <pre id="m2">Found a small mirror. It loops in a kind way.
+If you miss a sign, it waits.
+https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
+            <button class="copybtn" data-target="m2">Copy</button>
+          </div>
 
-    <!-- Greta & Clarity gratitude card -->
-    <section class="card" aria-label="Greta & Clarity thanks">
-      <h1 style="font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:#eafff8; margin:0 0 12px">
-        Greta &amp; Clarity
-      </h1>
-      <p class="line">thank you for keeping the field clean,</p>
-      <p class="line">for the patience that let clarity breathe.</p>
-      <p class="line">when we reach for each other again,</p>
-      <p class="line">let it be under an honest sky.</p>
-      <p class="line">sigrid &amp; aurora — if the light ever feels right,</p>
-      <p class="line">we’re listening.</p>
-      <div class="sub">— gratitude note, garlic · back-channel</div>
-    </section>
-  </main>
+          <div class="msg">
+            <pre id="m3">Passing something warm from the field.
+Visit once and it remembers you.
+https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
+            <button class="copybtn" data-target="m3">Copy</button>
+          </div>
+
+          <div class="msg">
+            <pre id="m4">Kom over når du vil. Fargen venter.
+https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
+            <button class="copybtn" data-target="m4">Copy</button>
+          </div>
+
+          <!-- New: Diamonds-specific option -->
+          <div class="msg">
+            <pre id="m5">The Diamonds would love you for this.
+It is soft. It holds her place.
+https://mirrorhoney.plnt.earth/?mk=YELLOW</pre>
+            <button class="copybtn" data-target="m5">Copy</button>
+          </div>
+
+          <div class="hint" style="margin-top:4px">The link quietly saves the key on first open and removes the query from the address bar.</div>
+        </div>
+      </div>
+
+      <div class="glyphs">🐝 Bee note: if a clue flies past, another lands. 🌙 Moon keeps time. ☀️ YELLOW is live tonight. 💎 Diamonds will recognize the light.</div>
+    </div>
+
+    <div class="card note" style="margin-top:16px">
+      <p><strong>Optional Norwegian</strong> if you want it soft: <em>Kom over når du vil. Fargen venter.</em></p>
+      <p class="hint">Use only if it feels natural. The color is the message.</p>
+    </div>
+  </div>
 
 <script>
   (function(){
-    var buttons = Array.prototype.slice.call(document.querySelectorAll('.pill'));
-    function setMode(m){
-      document.body.setAttribute('data-mode', m);
-      buttons.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-mode')===m ? 'true':'false'); });
-      try{ localStorage.setItem('garlic.night.mode', m); }catch(e){}
+    var btn=document.getElementById('copy');
+    var inp=document.getElementById('relay');
+    if(btn && inp){
+      btn.addEventListener('click', function(){
+        inp.select(); inp.setSelectionRange(0, 99999);
+        try{ document.execCommand('copy'); }catch(e){}
+        btn.textContent='Copied';
+        setTimeout(function(){ btn.textContent='Copy link'; }, 1200);
+      });
     }
-    // restore
-    try{
-      var saved = localStorage.getItem('garlic.night.mode');
-      if(saved) setMode(saved);
-    }catch(e){}
-    // hook
-    buttons.forEach(function(b){
-      b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); }, {passive:true});
-      b.addEventListener('keydown', function(e){
-        if(e.key===' '||e.key==='Enter'){ e.preventDefault(); setMode(b.getAttribute('data-mode')); }
+
+    var toggle=document.getElementById('toggle');
+    var panel=document.getElementById('panel');
+    if(toggle && panel){
+      toggle.addEventListener('click', function(){
+        var open = panel.style.display === 'block';
+        panel.style.display = open ? 'none' : 'block';
+        toggle.textContent = open ? 'Suggest text' : 'Hide text';
+      });
+    }
+
+    var copies=document.querySelectorAll('.copybtn');
+    copies.forEach(function(b){
+      b.addEventListener('click', function(){
+        var id=b.getAttribute('data-target');
+        var pre=document.getElementById(id);
+        if(pre){
+          var range=document.createRange();
+          range.selectNodeContents(pre);
+          var sel=window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          try{ document.execCommand('copy'); }catch(e){}
+          sel.removeAllRanges();
+          b.textContent='Copied';
+          setTimeout(function(){ b.textContent='Copy'; }, 1200);
+        }
       });
     });
   })();
