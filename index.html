@@ -12,8 +12,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,sy
 h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
 .lead{opacity:.85;margin:2px 0}
 .tag{display:inline-flex;gap:8px;align-items:center;background:var(--pane);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.88rem;margin-top:10px}
-.badge{position:fixed;left:16px;bottom:16px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
-.holder{position:fixed;right:16px;bottom:16px;background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.25);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.badge{position:fixed;left:16px;bottom:16px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
+.holder{position:fixed;right:16px;bottom:16px;background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.25);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
 .panel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));z-index:30}
 .sheet{width:100%;max-width:640px;background:var(--veil);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px 22px}
 .row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--line);gap:10px}
@@ -27,20 +27,45 @@ h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
 .ok{color:#c6f6c6}
 .hidden{display:none}
 .footer{padding:12px;text-align:center;opacity:.6;font-size:.85rem}
-a{color:inherit}
+.link{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.nav{position:fixed;left:14px;top:14px;display:flex;gap:8px;z-index:60}
+.nav a{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;text-decoration:none}
+#schoolLink{display:none}
+.topright a{position:fixed;right:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;text-decoration:none;z-index:70}
+#xBadge{top:14px}#igBadge{top:54px}
+#introGate{text-align:center;padding:24px;max-width:540px;margin:0 auto}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+#introGate h2{animation:pulse 4s ease-in-out infinite}
 </style>
 </head>
 <body>
+<div class="nav">
+  <a href="https://center.plnt.earth" target="_blank" id="centerLink">⬅️ Center</a>
+  <a href="https://school.plnt.earth" target="_blank" id="schoolLink">🎓 School</a>
+</div>
+<div class="topright">
+  <a id="xBadge" href="https://x.com/illuminatnotes" target="_blank">✖️ @illuminatnotes</a>
+  <a id="igBadge" href="https://instagram.com/harry_espookies" target="_blank">🟣 @harry_espookies</a>
+</div>
+
 <div class="wrap">
   <div class="main">
     <div>
       <h1>Velkommen.</h1>
       <p class="lead">Sigrid holder nøkkelen. Hvis resonansen er ekte, kan hun gi tilgang til MirrorHoney.</p>
-      <p class="lead">Welcome, wanderer. Watch the piece below — all of it — then request access.</p>
+      <p class="lead">Welcome, wanderer.</p>
+
+      <div id="introGate">
+        <h2>Field of Clarity</h2>
+        <p class="lead">If you don’t yet hold the phrase, the trail begins elsewhere.</p>
+        <p class="lead">Search <a href="https://x.com/illuminatnotes" target="_blank" style="color:#fff;text-decoration:underline">@illuminatnotes</a>
+        and listen for my favorite Sigrid song. Its title is the first clue. More clues on <a href="https://instagram.com/harry_espookies" target="_blank" style="color:#fff;text-decoration:underline">Instagram</a> to find @kenneljustine.</p>
+        <p class="dim" style="font-size:.9rem">(those who already know the whisper may enter below)</p>
+      </div>
+
       <div class="tag">holder: Sigrid → Marina · key: <span style="color:var(--soft);font-weight:600">yellow</span></div>
     </div>
   </div>
-
   <div class="footer">garlic · field of clarity</div>
 </div>
 
@@ -54,6 +79,10 @@ a{color:inherit}
       <button id="requestBtn" class="btn yellow hidden">request access → mirrorhoney</button>
       <div id="reqMsg" class="dim"></div>
     </div>
+    <div id="echoSlot" style="display:none;margin-top:10px;opacity:.9">
+      <div style="font-size:.92rem;opacity:.75">echo from the mirror</div>
+      <div id="echoText" style="margin-top:4px"></div>
+    </div>
   </div>
 </div>
 
@@ -63,13 +92,15 @@ a{color:inherit}
     <div class="row"><div class="klabel">🔑 Yellow Key — holder panel</div><button id="closeHolder" class="btn">close</button></div>
     <div class="row"><input id="who" class="input" placeholder="type: sigrid"><button id="okWho" class="btn">enter</button></div>
     <div id="holderOps" class="hidden">
-      <div class="row"><div class="dim">video id</div>
+      <div class="row">
+        <div class="dim">video id</div>
         <div style="display:flex;gap:8px;align-items:center;width:60%">
           <input id="ytInput" class="input" placeholder="set YouTube ID (once)">
           <button id="ytSet" class="btn">set</button>
         </div>
       </div>
-      <div class="row"><div class="dim">grant access</div>
+      <div class="row">
+        <div class="dim">grant access</div>
         <div style="display:flex;gap:8px;align-items:center">
           <button id="genLink" class="btn yellow">copy link for Marina</button>
           <span id="linkMsg" class="dim"></span>
@@ -80,34 +111,53 @@ a{color:inherit}
   </div>
 </div>
 
+<div id="passBadge" class="badge" style="left:auto;right:16px;bottom:72px">✨ sigrid pass</div>
+<div id="panelPass" class="panel">
+  <div class="sheet">
+    <div class="row"><div class="klabel">✨ Sigrid pass</div><button id="closePass" class="btn">close</button></div>
+    <div class="row"><input id="passInput" class="input" placeholder="enter phrase"><button id="passGo" class="btn">enter</button></div>
+    <div class="row"><div class="dim">hint</div><div class="dim">four words · whisper + patience</div></div>
+  </div>
+</div>
+
 <script>
 const LS_YT="garlic.yt.id",LS_YT_SET="garlic.yt.set"
+const PHRASE_SIGRID="hush baby hurry slowly",PHRASE_MH="do it again"
 const panelWatch=document.getElementById("panelWatch"),watchBadge=document.getElementById("watchBadge"),closeWatch=document.getElementById("closeWatch")
 const meta=document.getElementById("meta"),status=document.getElementById("status"),requestBtn=document.getElementById("requestBtn"),reqMsg=document.getElementById("reqMsg")
 const holderBadge=document.getElementById("holderBadge"),panelHolder=document.getElementById("panelHolder"),closeHolder=document.getElementById("closeHolder")
 const who=document.getElementById("who"),okWho=document.getElementById("okWho"),holderOps=document.getElementById("holderOps")
 const ytInput=document.getElementById("ytInput"),ytSet=document.getElementById("ytSet"),genLink=document.getElementById("genLink"),linkMsg=document.getElementById("linkMsg")
+const passBadge=document.getElementById("passBadge"),panelPass=document.getElementById("panelPass"),closePass=document.getElementById("closePass"),passInput=document.getElementById("passInput"),passGo=document.getElementById("passGo")
+const viewEcho=document.getElementById("echoText"),echoSlot=document.getElementById("echoSlot"),schoolLink=document.getElementById("schoolLink")
+function norm(s){return String(s||"").toLowerCase().trim()}
 function jget(k,def){try{return JSON.parse(localStorage.getItem(k)||def)}catch(e){return JSON.parse(def)}}
 function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function genCode(){return Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)}
-function mhUrl(k){return "https://mirrorhoney.plnt.earth/#k="+encodeURIComponent(k)}
-function redirectToMirrorHoney(k){location.href=mhUrl(k)}
-function setYTOnce(id){const has=jget(LS_YT_SET,"false");if(has||!id)return false;jset(LS_YT,id);jset(LS_YT_SET,true);return true}
+function mhUrlWithPhrase(src){var u="https://mirrorhoney.plnt.earth/";var q="?s="+encodeURIComponent(src||"garlic.watch");var h="#k="+encodeURIComponent(PHRASE_MH);return u+q+h}
+function redirectToMirrorHoneyWithWatch(){location.href=mhUrlWithPhrase("garlic.watch")}
+function copyGrantLink(){var link=mhUrlWithPhrase("garlic.holder");navigator.clipboard.writeText(link);linkMsg.textContent="copied"}
+function setYTOnce(id){var has=jget(LS_YT_SET,"false");if(has||!id)return false;jset(LS_YT,id);jset(LS_YT_SET,true);return true}
 let ytReady=false,player=null,didEnd=false
-function ensureYT(){if(ytReady)return;const s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)}
-function buildPlayer(){const vid=jget(LS_YT,'""');meta.textContent=vid?("youtube.com/watch?v="+vid):"video id not set";if(!vid)return;player=new YT.Player("player",{videoId:vid,playerVars:{rel:0,modestbranding:1,playsinline:1,origin:location.origin},events:{onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING){status.textContent="playing"}if(e.data===YT.PlayerState.ENDED){didEnd=true;requestBtn.classList.remove("hidden");status.textContent="complete";status.classList.add("ok")}}})}
+function ensureYT(){if(ytReady)return;var s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)}
+function buildPlayer(){var vid=jget(LS_YT,'""');meta.textContent=vid?("youtube.com/watch?v="+vid):"video id not set";if(!vid)return;player=new YT.Player("player",{videoId:vid,playerVars:{rel:0,modestbranding:1,playsinline:1,origin:location.origin},events:{onStateChange:function(e){if(e.data===YT.PlayerState.PLAYING){status.textContent="playing"}if(e.data===YT.PlayerState.ENDED){didEnd=true;requestBtn.classList.remove("hidden");status.textContent="complete";status.classList.add("ok")}}})}
 window.onYouTubeIframeAPIReady=function(){ytReady=true;buildPlayer()}
-watchBadge.addEventListener("click",()=>{panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer()})
-closeWatch.addEventListener("click",()=>{panelWatch.style.display="none"})
-panelWatch.addEventListener("click",e=>{if(e.target===panelWatch)panelWatch.style.display="none"})
-requestBtn.addEventListener("click",()=>{if(!didEnd){reqMsg.textContent="finish the video first";return}const k=genCode();reqMsg.textContent="opening mirrorhoney…";redirectToMirrorHoney(k)})
-holderBadge.addEventListener("click",()=>{panelHolder.style.display="flex"})
-closeHolder.addEventListener("click",()=>{panelHolder.style.display="none"})
-panelHolder.addEventListener("click",e=>{if(e.target===panelHolder)panelHolder.style.display="none"})
-okWho.addEventListener("click",()=>{const v=(who.value||"").trim().toLowerCase();if(v==="sigrid"){holderOps.classList.remove("hidden");who.value="";}})
-ytSet.addEventListener("click",()=>{const v=(ytInput.value||"").trim();if(setYTOnce(v)){meta.textContent="youtube.com/watch?v="+v;ytInput.value=""}})
-genLink.addEventListener("click",()=>{const k=genCode();navigator.clipboard.writeText(mhUrl(k));linkMsg.textContent="copied"})
-window.addEventListener("load",()=>{const vid=jget(LS_YT,'""');if(vid)meta.textContent="youtube.com/watch?v="+vid})
+watchBadge.addEventListener("click",function(){panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer()})
+closeWatch.addEventListener("click",function(){panelWatch.style.display="none"})
+panelWatch.addEventListener("click",function(e){if(e.target===panelWatch)panelWatch.style.display="none"})
+requestBtn.addEventListener("click",function(){if(!didEnd){reqMsg.textContent="finish the video first";return}reqMsg.textContent="opening mirrorhoney…";redirectToMirrorHoneyWithWatch()})
+holderBadge.addEventListener("click",function(){panelHolder.style.display="flex"})
+closeHolder.addEventListener("click",function(){panelHolder.style.display="none"})
+panelHolder.addEventListener("click",function(e){if(e.target===panelHolder)panelHolder.style.display="none"})
+okWho.addEventListener("click",function(){var v=(who.value||"").trim().toLowerCase();if(v==="sigrid"){holderOps.classList.remove("hidden");who.value=""}})
+ytSet.addEventListener("click",function(){var v=(ytInput.value||"").trim();if(setYTOnce(v)){meta.textContent="youtube.com/watch?v="+v;ytInput.value=""}})
+genLink.addEventListener("click",copyGrantLink)
+passBadge.addEventListener("click",function(){panelPass.style.display="flex"})
+closePass.addEventListener("click",function(){panelPass.style.display="none"})
+panelPass.addEventListener("click",function(e){if(e.target===panelPass)panelPass.style.display="none"})
+passGo.addEventListener("click",function(){if(norm(passInput.value)===norm(PHRASE_SIGRID)){panelPass.style.display="none";panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer();passInput.value=""}})
+(function(){function pick(s,pat){var m=String(s||"").match(pat);return m?decodeURIComponent(m[1]):""}var echo=pick(location.hash,/[#&]echo=([^&]+)/);if(echo){if(viewEcho&&echoSlot){viewEcho.textContent=echo;echoSlot.style.display="block"}history.replaceState({},document.title,location.pathname)}})();
+window.addEventListener("load",function(){var vid=jget(LS_YT,'""');if(vid)meta.textContent="youtube.com/watch?v="+vid;try{if(localStorage.getItem("school.key.set"))schoolLink.style.display="inline-flex"}catch(e){} })
 </script>
+<script>!function(){var s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";s.defer=true;document.head.appendChild(s)}()</script>
 </body>
 </html>
