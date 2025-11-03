@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Garlic · Sigrid — “Primadonna” (cover)</title>
+<meta name="theme-color" content="#ffd84a" />
+<meta name="description" content="Sigrid & Johanne Raabe covering Marina's 'Primadonna' — Yellow (Clarity) key window." />
+<style>
+  :root{
+    --bg0:#0f0b1a; --bg1:#17132e; --bg2:#1f1a44;
+    --ink:#eef2ff; --inkd:#d7dcff; --pearl:#ffffff; --yellow:#ffe66e;
+  }
+  html,body{height:100%;margin:0}
+  body{
+    min-height:100%;
+    background:
+      radial-gradient(1000px 720px at 70% 8%, #2b245f 0%, var(--bg2) 36%, var(--bg1) 62%, var(--bg0) 100%),
+      linear-gradient(180deg,#0b0916,#0f0b1a);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica;
+    color:var(--ink); -webkit-font-smoothing:antialiased; letter-spacing:.15px;
+    display:flex; flex-direction:column;
+  }
+  header,footer{
+    padding:clamp(12px,3vw,22px); color:var(--inkd);
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+  }
+  .crumbs a{color:var(--inkd); text-decoration:none; border-bottom:1px dotted #cfc9ff66}
+  .wrap{flex:1; display:grid; place-items:center; padding:clamp(12px,3vw,24px)}
+
+  .pane{
+    position:relative; width:min(960px,94vw);
+    border-radius:22px; padding:clamp(18px,3.6vw,28px);
+    background:linear-gradient(180deg,#ffffff12,#ffffff08);
+    border:1px solid #ffffff22;
+    box-shadow:0 24px 80px #0009, inset 0 0 0 1px #ffffff18, inset 0 0 120px #9fffe622;
+    backdrop-filter:blur(12px) saturate(118%); -webkit-backdrop-filter:blur(12px) saturate(118%);
+    overflow:hidden; isolation:isolate;
+  }
+  h1{margin:0 0 6px; font-size:clamp(22px,3.4vw,34px); color:var(--pearl)}
+  .sub{margin:0 0 12px; color:var(--inkd)}
+  .key{color:#111; background:linear-gradient(180deg,#fff59c,#ffe66e); border-radius:6px; padding:2px 6px; display:inline-block}
+
+  .video{
+    position:relative; margin-top:14px; border-radius:16px; overflow:hidden;
+    border:1px solid #ffffff26; height:min(56vw,360px);
+    background:linear-gradient(180deg,#0a0815,#13112a);
+  }
+  .poster{position:absolute; inset:0; display:grid; place-items:center; cursor:pointer}
+  .poster img{width:100%; height:100%; object-fit:cover; filter:brightness(.9) saturate(1.05)}
+  .play{position:absolute; width:64px; height:64px; border-radius:999px; border:1px solid #ffffff66;
+        background:linear-gradient(180deg,#ffffff30,#ffffff12); display:grid; place-items:center; box-shadow:0 8px 30px #0008}
+  .play:before{content:""; width:0; height:0; margin-left:3px; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent}
+  .iframe{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000}
+
+  .notes{margin-top:14px; font-size:14px; color:var(--inkd)}
+  .hint{opacity:.9}
+
+  /* tiny badge */
+  .badge{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid #ffffff33; background:linear-gradient(180deg,#ffffff18,#ffffff0c)}
+</style>
+</head>
+<body>
+  <header>
+    <div class="crumbs"><a href="/">garlic</a> / sigrid / primadonna</div>
+    <span class="badge">Clarity · Yellow</span>
+  </header>
+
+  <div class="wrap">
+    <main class="pane">
+      <h1>Sigrid — “Primadonna” (cover)</h1>
+      <p class="sub">
+        The Yellow (<span class="key">clarity</span>) window anchored to the compilation cut at <strong>10:36</strong>.
+      </p>
+
+      <section class="video">
+        <!-- poster + thumb -->
+        <div class="poster" id="poster" role="button" aria-label="Play Primadonna (Sigrid cover)">
+          <img id="thumb" alt="Primadonna thumbnail"/>
+          <div class="play" aria-hidden="true"></div>
+        </div>
+        <!-- iframe mounts on click -->
+      </section>
+
+      <p class="notes">
+        <span class="hint">When played, this page sets the Yellow key across the network</span> —
+        it writes <code>localStorage['color.key.yellow']="true"</code> and
+        <code>localStorage['garlic.sigrid.primadonna.played']="true"</code>.
+        It also stores the video id/start so other pages can reflect it.
+      </p>
+    </main>
+  </div>
+
+  <footer>
+    <div>© Garlic · Illumina</div>
+    <div>160 Hz · clarity</div>
+  </footer>
+
+<script>
+(function(){
+  // --- CONFIG (defaults) ---
+  // YouTube compilation ID and the Primadonna segment start (seconds)
+  var YT_ID_DEFAULT   = 'uxTdS0Frwsk'; // Sigrid covers compilation (2021)
+  var YT_START_DEFAULT= 636;           // 10:36
+
+  // Allow overrides via localStorage so you can swap without editing:
+  // localStorage['video.primadonna.id']    = '...'
+  // localStorage['video.primadonna.start'] = '...'
+  var YT = YT_ID_DEFAULT, T = YT_START_DEFAULT;
+  try{
+    var lsId = localStorage.getItem('video.primadonna.id');
+    var lsTs = localStorage.getItem('video.primadonna.start');
+    if(lsId && lsId.trim()) YT = lsId.trim();
+    if(lsTs && String(lsTs).trim() !== '') T = Math.max(0, parseInt(lsTs,10)||0);
+  }catch(_){}
+
+  // Poster thumb
+  var poster = document.getElementById('poster');
+  var thumb  = document.getElementById('thumb');
+  var plate  = poster && poster.parentElement;
+
+  function setThumb(id){
+    if(!thumb) return;
+    if(id){ thumb.src = 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg'; }
+  }
+  setThumb(YT);
+
+  function mountIframe(id, start){
+    if(!plate || !id) return;
+    poster.style.display = 'none';
+    var iframe = document.createElement('iframe');
+    iframe.className = 'iframe';
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    var qs = '?autoplay=1&playsinline=1&modestbranding=1&rel=0' + (start?('&start='+encodeURIComponent(start)):'');
+    iframe.src = 'https://www.youtube.com/embed/' + id + qs;
+    plate.appendChild(iframe);
+
+    // Mark Yellow key present across the ecosystem
+    try{
+      localStorage.setItem('color.key.yellow','true');
+      localStorage.setItem('garlic.sigrid.primadonna.played','true');
+      // also remember the chosen id/start for other pages
+      localStorage.setItem('video.primadonna.id', id);
+      localStorage.setItem('video.primadonna.start', String(start||0));
+    }catch(_){}
+  }
+
+  if(poster){
+    poster.addEventListener('click', function(){ mountIframe(YT, T); });
+  }
+})();
+</script>
+</body>
+</html>
