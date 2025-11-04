@@ -6,31 +6,32 @@
 <title>garlic.plnt.earth — Third Key / Taylor (School)</title>
 <style>
 html,body{
-  margin:0;height:100%;
+  margin:0;
   background:radial-gradient(circle at 50% 45%, #fffdf4 0%, #f7edd5 100%);
   font-family:'Segoe UI',sans-serif;color:#000;text-align:center;
-  overflow-x:hidden;
 }
 h1{margin-top:4vh;font-weight:400;letter-spacing:.08em;}
 #book{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  font-size:6vw;animation:pulse 6s ease-in-out infinite;
+  display:block;
+  margin:6vh auto 0 auto;
+  font-size:6vw;
+  animation:pulse 6s ease-in-out infinite;
 }
 @keyframes pulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9;}
-  50%{transform:translate(-50%,-50%) scale(1.08);opacity:1;}
+  0%,100%{transform:scale(1);opacity:.9;}
+  50%{transform:scale(1.08);opacity:1;}
 }
 main{
-  position:relative;
-  top:56%;
-  transform:translateY(-50%);
   margin:0 auto;
-  width:82%;
+  width:90%;
   max-width:540px;
+  padding-bottom:8vh;
 }
 #text{
-  font-size:1em;line-height:1.55em;opacity:.9;margin-bottom:1.2em;
+  font-size:1em;
+  line-height:1.55em;
+  opacity:.9;
+  margin-bottom:1.2em;
 }
 section.note{
   background:rgba(255,255,255,0.65);
@@ -43,8 +44,13 @@ section.note{
   margin-top:1.2em;
 }
 #footer{
-  position:absolute;bottom:3%;left:50%;transform:translateX(-50%);
-  font-size:.8em;opacity:.6;line-height:1.6em;width:92%;
+  text-align:center;
+  font-size:.8em;
+  opacity:.6;
+  line-height:1.6em;
+  margin:3em auto 2em;
+  width:90%;
+  max-width:700px;
 }
 #footer a{color:#000;text-decoration:none;opacity:.6;}
 #footer a:hover{opacity:1;}
@@ -82,7 +88,7 @@ section.note{
     <p><strong>Bridge Forward</strong><br/>
     From study comes sweetness.  
     The next key glows gold — Honey / Sabrina — where practice becomes affection.  
-    Through her Norwegian mirror (Honning), this light travels north into the Nordlys ring,  
+    Through her Norwegian mirror (<em>Honning</em>), this light travels north into the Nordlys ring,  
     carrying warmth across languages.</p>
   </section>
 </main>
