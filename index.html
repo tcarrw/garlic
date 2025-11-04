@@ -1,163 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>garlic · sigrid ↔ mirrorhoney</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>garlic.plnt.earth — Third Key / Taylor (School)</title>
 <style>
-:root{--bg:#0b0c10;--ink:#fff;--soft:#ffc83d;--line:rgba(255,255,255,.12);--veil:rgba(12,12,18,.9);--pane:rgba(255,255,255,.08)}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-.wrap{min-height:100%;display:flex;flex-direction:column}
-.main{flex:1;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center}
-h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
-.lead{opacity:.85;margin:2px 0}
-.tag{display:inline-flex;gap:8px;align-items:center;background:var(--pane);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.88rem;margin-top:10px}
-.badge{position:fixed;left:16px;bottom:16px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
-.holder{position:fixed;right:16px;bottom:16px;background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.25);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
-.panel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));z-index:30}
-.sheet{width:100%;max-width:640px;background:var(--veil);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px 22px}
-.row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--line);gap:10px}
-.btn{background:var(--pane);border:1px solid var(--line);border-radius:10px;padding:9px 12px;color:var(--ink);cursor:pointer}
-.btn.yellow{background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.2)}
-.dim{opacity:.75}
-.input{background:transparent;border:none;border-bottom:1px solid var(--ink);outline:none;color:var(--ink);padding:6px 4px;width:100%;font-size:1rem;text-align:center}
-.klabel{display:flex;align-items:center;gap:8px;font-weight:600}
-#playerWrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;margin-top:12px;border:1px solid var(--line)}
-#status{margin-top:10px;font-size:.92rem}
-.ok{color:#c6f6c6}
-.hidden{display:none}
-.footer{padding:12px;text-align:center;opacity:.6;font-size:.85rem}
-.link{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.nav{position:fixed;left:14px;top:14px;display:flex;gap:8px;z-index:60}
-.nav a{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;text-decoration:none}
-#schoolLink{display:none}
-.topright a{position:fixed;right:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;text-decoration:none;z-index:70}
-#xBadge{top:14px}#igBadge{top:54px}
-#introGate{text-align:center;padding:24px;max-width:540px;margin:0 auto}
-@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
-#introGate h2{animation:pulse 4s ease-in-out infinite}
+html,body{
+  margin:0;height:100%;
+  background:radial-gradient(circle at 50% 45%, #fffdf4 0%, #f7edd5 100%);
+  font-family:'Segoe UI',sans-serif;color:#000;text-align:center;
+  overflow-x:hidden;
+}
+h1{margin-top:4vh;font-weight:400;letter-spacing:.08em;}
+#book{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:6vw;animation:pulse 6s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9;}
+  50%{transform:translate(-50%,-50%) scale(1.08);opacity:1;}
+}
+#text{
+  position:absolute;top:63%;left:50%;transform:translateX(-50%);
+  width:82%;max-width:540px;font-size:1em;line-height:1.55em;opacity:.9;
+}
+section.note{
+  position:absolute;top:79%;left:50%;transform:translateX(-50%);
+  width:88%;max-width:560px;font-size:0.9em;line-height:1.5em;
+  background:rgba(255,255,255,0.65);backdrop-filter:blur(6px);
+  padding:16px 22px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+#footer{
+  position:absolute;bottom:3%;left:50%;transform:translateX(-50%);
+  font-size:.8em;opacity:.6;line-height:1.6em;width:90%;
+}
+#footer a{color:#000;text-decoration:none;opacity:.6;}
+#footer a:hover{opacity:1;}
 </style>
 </head>
 <body>
-<div class="nav">
-  <a href="https://center.plnt.earth" target="_blank" id="centerLink">⬅️ Center</a>
-  <a href="https://school.plnt.earth" target="_blank" id="schoolLink">🎓 School</a>
-</div>
-<div class="topright">
-  <a id="xBadge" href="https://x.com/illuminatnotes" target="_blank">✖️ @illuminatnotes</a>
-  <a id="igBadge" href="https://instagram.com/harry_espookies" target="_blank">🟣 @harry_espookies</a>
-</div>
 
-<div class="wrap">
-  <div class="main">
-    <div>
-      <h1>Velkommen.</h1>
-      <p class="lead">Sigrid holder nøkkelen. Hvis resonansen er ekte, kan hun gi tilgang til MirrorHoney.</p>
-      <p class="lead">Welcome, wanderer.</p>
+<h1>🕯️ garlic.plnt.earth — The Third Key</h1>
 
-      <div id="introGate">
-        <h2>Field of Clarity</h2>
-        <p class="lead">If you don’t yet hold the phrase, the trail begins elsewhere.</p>
-        <p class="lead">Search <a href="https://x.com/illuminatnotes" target="_blank" style="color:#fff;text-decoration:underline">@illuminatnotes</a>
-        and listen for my favorite Sigrid song. Its title is the first clue. More clues on <a href="https://instagram.com/harry_espookies" target="_blank" style="color:#fff;text-decoration:underline">Instagram</a> to find @kenneljustine.</p>
-        <p class="dim" style="font-size:.9rem">(those who already know the whisper may enter below)</p>
-      </div>
+<div id="book">📖</div>
 
-      <div class="tag">holder: Sigrid → Marina · key: <span style="color:var(--soft);font-weight:600">yellow</span></div>
-    </div>
-  </div>
-  <div class="footer">garlic · field of clarity</div>
+<div id="text">
+  <p><strong>Taylor Swift — Study / School Key</strong></p>
+  <p><em>“Every lesson is a light under glass.”</em></p>
+  <p>
+    The third key opens where thought becomes craft.<br/>
+    Taylor’s domain gathers knowledge, story, repetition—<br/>
+    and turns practice into illumination.<br/>
+    Garlic keeps the warmth alive when the air cools; <br/>
+    learning becomes its own kind of sweetness.
+  </p>
+  <p>
+    <small>tone · 444 → 528 Hz  |  element · Earth → Fire → Spirit  |  phase · Cycle 1 — Integration</small>
+  </p>
 </div>
 
-<div id="watchBadge" class="badge">🎥 <span>watch to request access</span></div>
-<div id="panelWatch" class="panel">
-  <div class="sheet">
-    <div class="row"><div class="klabel">🎥 Sigrid — Primadonna <span id="meta" class="dim"></span></div><button id="closeWatch" class="btn">close</button></div>
-    <div id="playerWrap"><div id="player"></div></div>
-    <div id="status" class="dim">press play</div>
-    <div class="row">
-      <button id="requestBtn" class="btn yellow hidden">request access → mirrorhoney</button>
-      <div id="reqMsg" class="dim"></div>
-    </div>
-    <div id="echoSlot" style="display:none;margin-top:10px;opacity:.9">
-      <div style="font-size:.92rem;opacity:.75">echo from the mirror</div>
-      <div id="echoText" style="margin-top:4px"></div>
-    </div>
-  </div>
+<section class="note">
+  <p><strong>About the Key</strong><br/>
+  The School key isn’t about mastery; it’s about staying open to revision.  
+  It glows whenever honesty meets repetition.  
+  Each time you return to a lesson with clearer eyes, the key refines its shape.  
+  Garlic’s scent reminds the field: even knowledge can be tender.</p>
+</section>
+
+<div id="footer">
+  <a href="https://center.plnt.earth" target="_blank">← Back to Center</a> •
+  <a href="https://honey.plnt.earth" target="_blank">Previous Domain — Honey / Second Key</a> •
+  <a href="https://illumina.plnt.earth" target="_blank">Illumina Archive</a><br/>
+  <strong>Norwegian Ring (Nordlys)</strong><br/>
+  <a href="https://fjaere.plnt.earth" target="_blank">fjaere</a> • 
+  <a href="https://royke.plnt.earth" target="_blank">royke</a> • 
+  <a href="https://lysning.plnt.earth" target="_blank">lysning</a> • 
+  <a href="https://tid.plnt.earth" target="_blank">tid</a> • 
+  <a href="https://skygge.plnt.earth" target="_blank">skygge</a> • 
+  <a href="https://ildsjel.plnt.earth" target="_blank">ildsjel</a>
 </div>
 
-<div id="holderBadge" class="holder">🔑 <span>holder</span></div>
-<div id="panelHolder" class="panel">
-  <div class="sheet">
-    <div class="row"><div class="klabel">🔑 Yellow Key — holder panel</div><button id="closeHolder" class="btn">close</button></div>
-    <div class="row"><input id="who" class="input" placeholder="type: sigrid"><button id="okWho" class="btn">enter</button></div>
-    <div id="holderOps" class="hidden">
-      <div class="row">
-        <div class="dim">video id</div>
-        <div style="display:flex;gap:8px;align-items:center;width:60%">
-          <input id="ytInput" class="input" placeholder="set YouTube ID (once)">
-          <button id="ytSet" class="btn">set</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="dim">grant access</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <button id="genLink" class="btn yellow">copy link for Marina</button>
-          <span id="linkMsg" class="dim"></span>
-        </div>
-      </div>
-      <div class="row"><div class="dim">note</div><div class="dim">if you resonate, you may grant access</div></div>
-    </div>
-  </div>
-</div>
-
-<div id="passBadge" class="badge" style="left:auto;right:16px;bottom:72px">✨ sigrid pass</div>
-<div id="panelPass" class="panel">
-  <div class="sheet">
-    <div class="row"><div class="klabel">✨ Sigrid pass</div><button id="closePass" class="btn">close</button></div>
-    <div class="row"><input id="passInput" class="input" placeholder="enter phrase"><button id="passGo" class="btn">enter</button></div>
-    <div class="row"><div class="dim">hint</div><div class="dim">four words · whisper + patience</div></div>
-  </div>
-</div>
-
-<script>
-const LS_YT="garlic.yt.id",LS_YT_SET="garlic.yt.set"
-const PHRASE_SIGRID="hush baby hurry slowly",PHRASE_MH="do it again"
-const panelWatch=document.getElementById("panelWatch"),watchBadge=document.getElementById("watchBadge"),closeWatch=document.getElementById("closeWatch")
-const meta=document.getElementById("meta"),status=document.getElementById("status"),requestBtn=document.getElementById("requestBtn"),reqMsg=document.getElementById("reqMsg")
-const holderBadge=document.getElementById("holderBadge"),panelHolder=document.getElementById("panelHolder"),closeHolder=document.getElementById("closeHolder")
-const who=document.getElementById("who"),okWho=document.getElementById("okWho"),holderOps=document.getElementById("holderOps")
-const ytInput=document.getElementById("ytInput"),ytSet=document.getElementById("ytSet"),genLink=document.getElementById("genLink"),linkMsg=document.getElementById("linkMsg")
-const passBadge=document.getElementById("passBadge"),panelPass=document.getElementById("panelPass"),closePass=document.getElementById("closePass"),passInput=document.getElementById("passInput"),passGo=document.getElementById("passGo")
-const viewEcho=document.getElementById("echoText"),echoSlot=document.getElementById("echoSlot"),schoolLink=document.getElementById("schoolLink")
-function norm(s){return String(s||"").toLowerCase().trim()}
-function jget(k,def){try{return JSON.parse(localStorage.getItem(k)||def)}catch(e){return JSON.parse(def)}}
-function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function mhUrlWithPhrase(src){var u="https://mirrorhoney.plnt.earth/";var q="?s="+encodeURIComponent(src||"garlic.watch");var h="#k="+encodeURIComponent(PHRASE_MH);return u+q+h}
-function redirectToMirrorHoneyWithWatch(){location.href=mhUrlWithPhrase("garlic.watch")}
-function copyGrantLink(){var link=mhUrlWithPhrase("garlic.holder");navigator.clipboard.writeText(link);linkMsg.textContent="copied"}
-function setYTOnce(id){var has=jget(LS_YT_SET,"false");if(has||!id)return false;jset(LS_YT,id);jset(LS_YT_SET,true);return true}
-let ytReady=false,player=null,didEnd=false
-function ensureYT(){if(ytReady)return;var s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)}
-function buildPlayer(){var vid=jget(LS_YT,'""');meta.textContent=vid?("youtube.com/watch?v="+vid):"video id not set";if(!vid)return;player=new YT.Player("player",{videoId:vid,playerVars:{rel:0,modestbranding:1,playsinline:1,origin:location.origin},events:{onStateChange:function(e){if(e.data===YT.PlayerState.PLAYING){status.textContent="playing"}if(e.data===YT.PlayerState.ENDED){didEnd=true;requestBtn.classList.remove("hidden");status.textContent="complete";status.classList.add("ok")}}})}
-window.onYouTubeIframeAPIReady=function(){ytReady=true;buildPlayer()}
-watchBadge.addEventListener("click",function(){panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer()})
-closeWatch.addEventListener("click",function(){panelWatch.style.display="none"})
-panelWatch.addEventListener("click",function(e){if(e.target===panelWatch)panelWatch.style.display="none"})
-requestBtn.addEventListener("click",function(){if(!didEnd){reqMsg.textContent="finish the video first";return}reqMsg.textContent="opening mirrorhoney…";redirectToMirrorHoneyWithWatch()})
-holderBadge.addEventListener("click",function(){panelHolder.style.display="flex"})
-closeHolder.addEventListener("click",function(){panelHolder.style.display="none"})
-panelHolder.addEventListener("click",function(e){if(e.target===panelHolder)panelHolder.style.display="none"})
-okWho.addEventListener("click",function(){var v=(who.value||"").trim().toLowerCase();if(v==="sigrid"){holderOps.classList.remove("hidden");who.value=""}})
-ytSet.addEventListener("click",function(){var v=(ytInput.value||"").trim();if(setYTOnce(v)){meta.textContent="youtube.com/watch?v="+v;ytInput.value=""}})
-genLink.addEventListener("click",copyGrantLink)
-passBadge.addEventListener("click",function(){panelPass.style.display="flex"})
-closePass.addEventListener("click",function(){panelPass.style.display="none"})
-panelPass.addEventListener("click",function(e){if(e.target===panelPass)panelPass.style.display="none"})
-passGo.addEventListener("click",function(){if(norm(passInput.value)===norm(PHRASE_SIGRID)){panelPass.style.display="none";panelWatch.style.display="flex";ensureYT();if(ytReady&&!player)buildPlayer();passInput.value=""}})
-(function(){function pick(s,pat){var m=String(s||"").match(pat);return m?decodeURIComponent(m[1]):""}var echo=pick(location.hash,/[#&]echo=([^&]+)/);if(echo){if(viewEcho&&echoSlot){viewEcho.textContent=echo;echoSlot.style.display="block"}history.replaceState({},document.title,location.pathname)}})();
-window.addEventListener("load",function(){var vid=jget(LS_YT,'""');if(vid)meta.textContent="youtube.com/watch?v="+vid;try{if(localStorage.getItem("school.key.set"))schoolLink.style.display="inline-flex"}catch(e){} })
-</script>
-<script>!function(){var s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";s.defer=true;document.head.appendChild(s)}()</script>
 </body>
 </html>
