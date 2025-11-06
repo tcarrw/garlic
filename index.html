@@ -1,124 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>garlic.plnt.earth — Third Key / Taylor (School)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garlic Lexicon · Illumina 1</title>
+
+<!-- main colour map -->
+<link rel="stylesheet" href="https://assets.plnt.earth/colors-daynight.css">
+
+<!-- animated favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22><text y='0.9em' font-size='90'>🧄</text></svg>">
+
 <style>
-html,body{
-  margin:0;
-  background:radial-gradient(circle at 50% 45%, #fffdf4 0%, #f7edd5 100%);
-  font-family:'Segoe UI',sans-serif;color:#000;text-align:center;
+:root{
+  --day-bg:radial-gradient(circle at 50% 0%,#ffffff 0%,#f5f2eb 80%);
+  --day-text:#222;
+  --card-bg:rgba(255,255,255,0.7);
+  --card-text:#222;
+  --card-shadow:rgba(0,0,0,0.08);
 }
-h1{margin-top:4vh;font-weight:400;letter-spacing:.08em;}
-#book{
-  display:block;
-  margin:6vh auto 0 auto;
-  font-size:6vw;
-  animation:pulse 6s ease-in-out infinite;
+body.night{
+  --night-bg:radial-gradient(circle at 50% 20%,#10101a 0%,#050509 100%);
+  --night-text:#d8f2e1;
+  --card-bg:rgba(26,30,33,0.85);
+  --card-text:#d8f2e1;
+  --card-shadow:rgba(60,255,200,0.25);
 }
-@keyframes pulse{
-  0%,100%{transform:scale(1);opacity:.9;}
-  50%{transform:scale(1.08);opacity:1;}
+
+body{
+  margin:0;padding:0;
+  font-family:"Helvetica Neue",sans-serif;
+  background:var(--day-bg);color:var(--day-text);
+  overflow-x:hidden;
+  transition:background .6s,color .6s;
 }
-main{
-  margin:0 auto;
-  width:90%;
-  max-width:560px;
-  padding-bottom:6vh;
+body.night{background:var(--night-bg);color:var(--night-text);}
+
+#overlay{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;z-index:1000;
+  font-size:1.4rem;letter-spacing:.05em;cursor:pointer;
+  transition:opacity .8s;
 }
-#text{
-  font-size:1em;line-height:1.55em;opacity:.9;margin-bottom:1.4em;
+body.night #overlay{background:#000;color:#eee;}
+#overlay.hidden{opacity:0;pointer-events:none;}
+
+.container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  padding:6rem 1.5rem 5rem;
+  max-width:1000px;margin:0 auto;
+  perspective:1000px;
 }
-section.note, section.gate{
-  background:rgba(255,255,255,0.65);
-  backdrop-filter:blur(6px);
-  padding:18px 24px;
+
+.card{
+  position:relative;height:200px;
+  transform-style:preserve-3d;
+  transition:transform .8s;
+  cursor:pointer;
+}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  backface-visibility:hidden;
   border-radius:10px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.05);
-  font-size:0.9em;
-  line-height:1.5em;
-  margin-top:1.4em;
-  text-align:left;
+  background:var(--card-bg);color:var(--card-text);
+  box-shadow:0 4px 12px var(--card-shadow);
+  padding:1.2rem;text-align:center;
 }
-section.note strong, section.gate strong{display:block;margin-bottom:.3em;}
-#footer{
-  text-align:center;
-  font-size:.8em;
-  opacity:.6;
-  line-height:1.6em;
-  margin:3em auto 2em;
-  width:90%;
-  max-width:700px;
+.card-face.back{transform:rotateY(180deg);}
+h2{margin:0 0 .4rem;font-weight:600;font-size:1.3rem;}
+
+body.night .card-face{
+  border:1px solid rgba(100,255,220,.15);
+  box-shadow:0 0 12px rgba(100,255,220,.1),0 0 24px rgba(120,0,255,.05);
 }
-#footer a{color:#000;text-decoration:none;opacity:.6;}
-#footer a:hover{opacity:1;}
+body.night .card:hover .card-face{
+  box-shadow:0 0 20px rgba(120,255,200,.3),0 0 35px rgba(150,80,255,.2);
+}
+
+#toggleMode{
+  position:fixed;top:1rem;right:1rem;
+  font-size:1.4rem;cursor:pointer;z-index:900;
+  background:none;border:none;color:inherit;
+}
+
+#mantra{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+  font-size:.95rem;opacity:.08;pointer-events:none;
+  white-space:nowrap;user-select:none;letter-spacing:.03em;
+  text-shadow:0 0 10px rgba(255,255,200,.3);
+}
+body.night #mantra{
+  text-shadow:0 0 14px rgba(150,255,220,.3),0 0 22px rgba(180,80,255,.25);
+  opacity:.12;
+}
+footer{
+  position:fixed;bottom:.5rem;right:1rem;
+  font-size:.8rem;opacity:.6;user-select:none;
+}
+body.night footer{color:rgba(180,255,240,.6);}
 </style>
 </head>
+
 <body>
+<div id="overlay">Tap to Begin</div>
+<button id="toggleMode" title="Toggle Day/Night">🌗</button>
 
-<h1>🕯️ garlic.plnt.earth — The Third Key</h1>
-
-<div id="book">📖</div>
-
-<main>
-  <div id="text">
-    <p><strong>Taylor Swift — Study / School Key</strong></p>
-    <p><em>“Every lesson is a light under glass.”</em></p>
-    <p>
-      The third key opens where thought becomes craft.<br/>
-      Taylor’s domain gathers knowledge, story, repetition—<br/>
-      and turns practice into illumination.<br/>
-      Garlic keeps the warmth alive when the air cools;<br/>
-      learning becomes its own kind of sweetness.
-    </p>
-    <p>
-      <small>tone · 444 → 528 Hz  |  element · Earth → Fire → Spirit  |  phase · Cycle 1 — Integration</small>
-    </p>
+<div class="container" id="lexicon" style="display:none;">
+  <div class="card">
+    <div class="card-face front"><h2>Honey</h2><p>Sweetness reclaimed — sincerity spoken softly through truth.</p></div>
+    <div class="card-face back"><h2>Honey (Illumina)</h2><p>Magnetism and resonance. Sweetness that transforms; the signal of alignment.</p></div>
   </div>
-
-  <section class="gate">
-    <strong>🗝️ Gate Holder — Kendyl</strong>
-    <p>
-      Every school has a door, and every door needs someone gentle enough to open it.  
-      Kendyl stands at this threshold — where learning meets trust.  
-      Her presence keeps the path between emotion and understanding clear.  
-      She does not guard knowledge; she invites it to breathe.
-    </p>
-  </section>
-
-  <section class="note">
-    <strong>About the Key</strong>
-    <p>
-      The School Key isn’t about mastery; it’s about staying open to revision.  
-      It glows whenever honesty meets repetition.  
-      Each time you return to a lesson with clearer eyes, the key refines its shape.  
-      Garlic’s scent reminds the field: even knowledge can be tender.
-    </p>
-
-    <strong>Bridge Forward</strong>
-    <p>
-      From study comes sweetness.  
-      The next key glows gold — Honey / Sabrina — where practice becomes affection.  
-      Through her Norwegian mirror (<em>Honning</em>), this light travels north into the Nordlys ring,  
-      carrying warmth across languages.
-    </p>
-  </section>
-</main>
-
-<div id="footer">
-  <a href="https://center.plnt.earth" target="_blank">← Back to Center</a> • 
-  <a href="https://wonder.plnt.earth" target="_blank">Previous Domain — Wonder / Second Key</a> • 
-  <a href="https://honey.plnt.earth" target="_blank">Next Domain — Honey / Fourth Key</a> • 
-  <a href="https://illumina.plnt.earth" target="_blank">Illumina Archive</a><br/>
-  <strong>Norwegian Ring (Nordlys)</strong><br/>
-  <a href="https://fjaere.plnt.earth" target="_blank">fjaere</a> • 
-  <a href="https://royke.plnt.earth" target="_blank">royke</a> • 
-  <a href="https://lysning.plnt.earth" target="_blank">lysning</a> • 
-  <a href="https://tid.plnt.earth" target="_blank">tid</a> • 
-  <a href="https://skygge.plnt.earth" target="_blank">skygge</a> • 
-  <a href="https://ildsjel.plnt.earth" target="_blank">ildsjel</a>
+  <div class="card">
+    <div class="card-face front"><h2>Love / In Love</h2><p>From naïve romance to self-aware devotion; being seen, not owned.</p></div>
+    <div class="card-face back"><h2>Love (Collective Current)</h2><p>Field frequency. “In love” = the Bee in flight between mirrors.</p></div>
+  </div>
+  <div class="card">
+    <div class="card-face front"><h2>Kingdom / Dynasty</h2><p>Fairytale power rewritten as self-sovereignty and creative lineage.</p></div>
+    <div class="card-face back"><h2>Hive-Realm</h2><p>Power by resonance, not throne — every cell luminous.</p></div>
+  </div>
+  <div class="card">
+    <div class="card-face front"><h2>Rain / Window / Waiting</h2><p>Romantic longing and pause — cleansing through vulnerability.</p></div>
+    <div class="card-face back"><h2>Fertilising Pause</h2><p>Rain as recharge, window as light-cell, waiting as hum before motion.</p></div>
+  </div>
+  <div class="card">
+    <div class="card-face front"><h2>Secrets / Ghosts / Haunting</h2><p>Memory and loss turned to wisdom; haunting as continuation, not fear.</p></div>
+    <div class="card-face back"><h2>Echo Resonance</h2><p>Ghosts = ancestral vibration; haunting = gentle reminder of continuity.</p></div>
+  </div>
 </div>
 
+<div id="mantra">Når vi sier det som er sant, lærer luften å svare.</div>
+<footer>Garlic Lexicon v1 · Illumina 1</footer>
+
+<!-- Hidden audio placeholder for Miss Monique’s 128 Hz hum -->
+<audio id="garlicTone" loop preload="auto" style="display:none;">
+  <!-- add src="https://assets.plnt.earth/audio/monique-128hz.mp3" when ready -->
+</audio>
+
+<script>
+/* ---- page interactivity ---- */
+const overlay=document.getElementById('overlay');
+const container=document.getElementById('lexicon');
+overlay.addEventListener('click',()=>{
+  overlay.classList.add('hidden');
+  setTimeout(()=>{overlay.remove();container.style.display='grid';},800);
+});
+document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('flipped')));
+document.getElementById('toggleMode').addEventListener('click',()=>{
+  document.body.classList.toggle('night');
+});
+
+/* ---- audio + hum-synced favicon glow ---- */
+window.addEventListener('load',()=>{
+  try{
+    if(localStorage.getItem('motionKey')==='true'){
+      const tone=document.getElementById('garlicTone');
+      // tone.src='https://assets.plnt.earth/audio/monique-128hz.mp3';
+      tone.style.display='block';tone.volume=0.2;
+
+      const play=()=>{tone.play().catch(()=>{});document.removeEventListener('click',play);};
+      document.addEventListener('click',play);
+
+      const link=document.querySelector("link[rel='icon']");
+      const ctx=new(window.AudioContext||window.webkitAudioContext)();
+      const src=ctx.createMediaElementSource(tone);
+      const analyser=ctx.createAnalyser();
+      analyser.fftSize=256;
+      const data=new Uint8Array(analyser.frequencyBinCount);
+      src.connect(analyser);analyser.connect(ctx.destination);
+      const baseGlow=.8;
+      function animateGlow(){
+        analyser.getByteFrequencyData(data);
+        let avg=0;for(let i=0;i<16;i++)avg+=data[i];avg/=16;
+        const strength=Math.min(1,avg/128);
+        const glow=baseGlow+strength*.4;
+        link.style.filter=`drop-shadow(0 0 ${4+strength*8}px rgba(152,255,217,${glow}))`;
+        requestAnimationFrame(animateGlow);
+      }
+      tone.addEventListener('play',()=>{ctx.resume();animateGlow();});
+    }
+  }catch(e){}
+});
+</script>
 </body>
 </html>
