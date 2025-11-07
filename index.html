@@ -4,14 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Garlic Lexicon · Illumina 1</title>
-
-<!-- main colour map -->
 <link rel="stylesheet" href="https://assets.plnt.earth/colors-daynight.css">
-
-<!-- animated favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22><text y='0.9em' font-size='90'>🧄</text></svg>">
-
 <style>
 :root{
   --day-bg:radial-gradient(circle at 50% 0%,#ffffff 0%,#f5f2eb 80%);
@@ -27,83 +22,67 @@ body.night{
   --card-text:#d8f2e1;
   --card-shadow:rgba(60,255,200,0.25);
 }
-
 body{
-  margin:0;padding:0;
-  font-family:"Helvetica Neue",sans-serif;
+  margin:0;padding:0;font-family:"Helvetica Neue",sans-serif;
   background:var(--day-bg);color:var(--day-text);
-  overflow-x:hidden;
-  transition:background .6s,color .6s;
+  overflow-x:hidden;transition:background .6s,color .6s;
 }
 body.night{background:var(--night-bg);color:var(--night-text);}
-
 #overlay{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  background:#fff;z-index:1000;
-  font-size:1.4rem;letter-spacing:.05em;cursor:pointer;
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#fff;z-index:1000;font-size:1.4rem;letter-spacing:.05em;cursor:pointer;
   transition:opacity .8s;
 }
 body.night #overlay{background:#000;color:#eee;}
 #overlay.hidden{opacity:0;pointer-events:none;}
-
 .container{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1.5rem;
-  padding:6rem 1.5rem 5rem;
-  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;padding:6rem 1.5rem 5rem;max-width:1000px;margin:0 auto;
   perspective:1000px;
 }
-
-.card{
-  position:relative;height:200px;
-  transform-style:preserve-3d;
-  transition:transform .8s;
-  cursor:pointer;
-}
+.card{position:relative;height:200px;transform-style:preserve-3d;
+  transition:transform .8s;cursor:pointer;}
 .card.flipped{transform:rotateY(180deg);}
 .card-face{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  backface-visibility:hidden;
-  border-radius:10px;
-  background:var(--card-bg);color:var(--card-text);
-  box-shadow:0 4px 12px var(--card-shadow);
-  padding:1.2rem;text-align:center;
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  backface-visibility:hidden;border-radius:10px;background:var(--card-bg);color:var(--card-text);
+  box-shadow:0 4px 12px var(--card-shadow);padding:1.2rem;text-align:center;
 }
 .card-face.back{transform:rotateY(180deg);}
 h2{margin:0 0 .4rem;font-weight:600;font-size:1.3rem;}
-
-body.night .card-face{
-  border:1px solid rgba(100,255,220,.15);
-  box-shadow:0 0 12px rgba(100,255,220,.1),0 0 24px rgba(120,0,255,.05);
-}
+body.night .card-face{border:1px solid rgba(100,255,220,.15);
+  box-shadow:0 0 12px rgba(100,255,220,.1),0 0 24px rgba(120,0,255,.05);}
 body.night .card:hover .card-face{
-  box-shadow:0 0 20px rgba(120,255,200,.3),0 0 35px rgba(150,80,255,.2);
-}
-
+  box-shadow:0 0 20px rgba(120,255,200,.3),0 0 35px rgba(150,80,255,.2);}
 #toggleMode{
-  position:fixed;top:1rem;right:1rem;
-  font-size:1.4rem;cursor:pointer;z-index:900;
-  background:none;border:none;color:inherit;
+  position:fixed;top:1rem;right:1rem;font-size:1.4rem;
+  cursor:pointer;z-index:900;background:none;border:none;color:inherit;
 }
-
 #mantra{
   position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
-  font-size:.95rem;opacity:.08;pointer-events:none;
-  white-space:nowrap;user-select:none;letter-spacing:.03em;
-  text-shadow:0 0 10px rgba(255,255,200,.3);
+  font-size:.95rem;opacity:.08;pointer-events:none;white-space:nowrap;
+  user-select:none;letter-spacing:.03em;text-shadow:0 0 10px rgba(255,255,200,.3);
 }
-body.night #mantra{
-  text-shadow:0 0 14px rgba(150,255,220,.3),0 0 22px rgba(180,80,255,.25);
-  opacity:.12;
-}
+body.night #mantra{text-shadow:0 0 14px rgba(150,255,220,.3),0 0 22px rgba(180,80,255,.25);opacity:.12;}
 footer{
-  position:fixed;bottom:.5rem;right:1rem;
-  font-size:.8rem;opacity:.6;user-select:none;
+  position:fixed;bottom:.5rem;right:1rem;font-size:.8rem;opacity:.6;user-select:none;
 }
 body.night footer{color:rgba(180,255,240,.6);}
+.rule{
+  position:fixed;top:1rem;left:50%;transform:translateX(-50%);
+  font-size:1rem;letter-spacing:.08em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity 1s ease;
+}
+.rule.show{opacity:.6;}
+#technoRule{color:#00ffbf;text-shadow:0 0 10px #00ffbf;}
+#popRule{color:#ff4faf;text-shadow:0 0 10px #ff4faf;}
+#askAlice{
+  position:fixed;bottom:4.2rem;left:50%;transform:translateX(-50%);
+  background:none;border:1px solid currentColor;border-radius:8px;
+  padding:.6rem 1rem;font-size:.9rem;opacity:.7;cursor:pointer;
+  color:inherit;transition:opacity .3s;
+}
+#askAlice:hover{opacity:1;}
 </style>
 </head>
 
@@ -112,65 +91,52 @@ body.night footer{color:rgba(180,255,240,.6);}
 <button id="toggleMode" title="Toggle Day/Night">🌗</button>
 
 <div class="container" id="lexicon" style="display:none;">
-  <div class="card">
-    <div class="card-face front"><h2>Honey</h2><p>Sweetness reclaimed — sincerity spoken softly through truth.</p></div>
-    <div class="card-face back"><h2>Honey (Illumina)</h2><p>Magnetism and resonance. Sweetness that transforms; the signal of alignment.</p></div>
-  </div>
-  <div class="card">
-    <div class="card-face front"><h2>Love / In Love</h2><p>From naïve romance to self-aware devotion; being seen, not owned.</p></div>
-    <div class="card-face back"><h2>Love (Collective Current)</h2><p>Field frequency. “In love” = the Bee in flight between mirrors.</p></div>
-  </div>
-  <div class="card">
-    <div class="card-face front"><h2>Kingdom / Dynasty</h2><p>Fairytale power rewritten as self-sovereignty and creative lineage.</p></div>
-    <div class="card-face back"><h2>Hive-Realm</h2><p>Power by resonance, not throne — every cell luminous.</p></div>
-  </div>
-  <div class="card">
-    <div class="card-face front"><h2>Rain / Window / Waiting</h2><p>Romantic longing and pause — cleansing through vulnerability.</p></div>
-    <div class="card-face back"><h2>Fertilising Pause</h2><p>Rain as recharge, window as light-cell, waiting as hum before motion.</p></div>
-  </div>
-  <div class="card">
-    <div class="card-face front"><h2>Secrets / Ghosts / Haunting</h2><p>Memory and loss turned to wisdom; haunting as continuation, not fear.</p></div>
-    <div class="card-face back"><h2>Echo Resonance</h2><p>Ghosts = ancestral vibration; haunting = gentle reminder of continuity.</p></div>
-  </div>
+  <div class="card"><div class="card-face front"><h2>Honey</h2><p>Sweetness reclaimed — sincerity spoken softly through truth.</p></div><div class="card-face back"><h2>Honey (Illumina)</h2><p>Magnetism and resonance. Sweetness that transforms; the signal of alignment.</p></div></div>
+  <div class="card"><div class="card-face front"><h2>Love / In Love</h2><p>From naïve romance to self-aware devotion; being seen, not owned.</p></div><div class="card-face back"><h2>Love (Collective Current)</h2><p>Field frequency. “In love” = the Bee in flight between mirrors.</p></div></div>
+  <div class="card"><div class="card-face front"><h2>Kingdom / Dynasty</h2><p>Fairytale power rewritten as self-sovereignty and creative lineage.</p></div><div class="card-face back"><h2>Hive-Realm</h2><p>Power by resonance, not throne — every cell luminous.</p></div></div>
+  <div class="card"><div class="card-face front"><h2>Rain / Window / Waiting</h2><p>Romantic longing and pause — cleansing through vulnerability.</p></div><div class="card-face back"><h2>Fertilising Pause</h2><p>Rain as recharge, window as light-cell, waiting as hum before motion.</p></div></div>
+  <div class="card"><div class="card-face front"><h2>Secrets / Ghosts / Haunting</h2><p>Memory and loss turned to wisdom; haunting as continuation, not fear.</p></div><div class="card-face back"><h2>Echo Resonance</h2><p>Ghosts = ancestral vibration; haunting = gentle reminder of continuity.</p></div></div>
 </div>
 
-<div id="mantra">Når vi sier det som er sant, lærer luften å svare.</div>
-<footer>Garlic Lexicon v1 · Illumina 1</footer>
+<div id="technoRule" class="rule">TECHNO RULE: TRUST RHYTHM, NOT CHAOS</div>
+<div id="popRule" class="rule">POP RULE: MAKE THEM FEEL, THEN THINK</div>
 
-<!-- Hidden audio placeholder for Miss Monique’s 128 Hz hum -->
+<button id="askAlice">🪶 Ask Alice about the Garlic Key</button>
+
+<div id="mantra">Når vi sier det som er sant, lærer luften å svare.</div>
+<footer>
+  Garlic Lexicon v1 · Illumina 1  
+  <span id="returnLink" style="display:none;"> · <a href="https://motion.plnt.earth">↞ return to motion</a></span>
+</footer>
+
 <audio id="garlicTone" loop preload="auto" style="display:none;">
   <!-- add src="https://assets.plnt.earth/audio/monique-128hz.mp3" when ready -->
 </audio>
 
 <script>
-/* ---- page interactivity ---- */
 const overlay=document.getElementById('overlay');
 const container=document.getElementById('lexicon');
-overlay.addEventListener('click',()=>{
-  overlay.classList.add('hidden');
-  setTimeout(()=>{overlay.remove();container.style.display='grid';},800);
-});
+overlay.addEventListener('click',()=>{overlay.classList.add('hidden');setTimeout(()=>{overlay.remove();container.style.display='grid';},800);});
 document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('flipped')));
-document.getElementById('toggleMode').addEventListener('click',()=>{
-  document.body.classList.toggle('night');
-});
+document.getElementById('toggleMode').addEventListener('click',()=>document.body.classList.toggle('night'));
 
-/* ---- audio + hum-synced favicon glow ---- */
+// show rules + motion return + grant garlic key
+if(localStorage.ruleTechno==="true")document.getElementById('technoRule').classList.add('show');
+if(localStorage.rulePop==="true")document.getElementById('popRule').classList.add('show');
+if(localStorage.motionKey==="true"){document.getElementById('returnLink').style.display='inline';localStorage.setItem('garlicKey','true');}
+
+// audio hum
 window.addEventListener('load',()=>{
   try{
-    if(localStorage.getItem('motionKey')==='true'){
+    if(localStorage.motionKey==='true'){
       const tone=document.getElementById('garlicTone');
-      // tone.src='https://assets.plnt.earth/audio/monique-128hz.mp3';
       tone.style.display='block';tone.volume=0.2;
-
       const play=()=>{tone.play().catch(()=>{});document.removeEventListener('click',play);};
       document.addEventListener('click',play);
-
       const link=document.querySelector("link[rel='icon']");
       const ctx=new(window.AudioContext||window.webkitAudioContext)();
       const src=ctx.createMediaElementSource(tone);
-      const analyser=ctx.createAnalyser();
-      analyser.fftSize=256;
+      const analyser=ctx.createAnalyser();analyser.fftSize=256;
       const data=new Uint8Array(analyser.frequencyBinCount);
       src.connect(analyser);analyser.connect(ctx.destination);
       const baseGlow=.8;
@@ -186,6 +152,23 @@ window.addEventListener('load',()=>{
     }
   }catch(e){}
 });
+
+// ---------- Ask Alice Tweet ----------
+(function(){
+  const askBtn=document.getElementById('askAlice');
+  askBtn.addEventListener('click',()=>{
+    const start=new Date("2025-11-05T00:00:00Z");
+    const now=new Date();
+    const d=(now-start)/86400000;
+    const day=Math.floor(d%42)+1;
+    const phase=(d%42)/42;
+    const pool=["🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘"];
+    const moon=pool[Math.floor((phase*8)%8)];
+    const text=`${moon} Illumina 1 · Day ${day}/42 — anyone seen the Garlic Key? Asking Alice. #GarlicKey #Canceled #Illumina`;
+    const url=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://garlic.plnt.earth")}`;
+    window.open(url,'_blank');
+  });
+})();
 </script>
 </body>
 </html>
