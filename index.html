@@ -3,53 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>garlic.plnt.earth – Ode to Garlic</title>
+<title>Catan — 2 Player Rules + Score Tracker</title>
 <style>
-html,body{
-  margin:0;padding:0;
-  font-family:Georgia,serif;
-  color:#2b2b2b;
-  background:#fdfaf4;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+body {
+  font-family: "Georgia", serif;
+  background: #f6f2e7;
+  color: #3b2a1a;
+  line-height: 1.6;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  border: 6px double #c2a267;
+  border-radius: 12px;
 }
-.container{
-  max-width:640px;
-  padding:2rem;
+h1, h2 {
+  text-align: center;
+  color: #5a4228;
 }
-h1{
-  font-weight:400;
-  letter-spacing:0.04em;
-  color:#b58e00;
-  margin-bottom:1.5rem;
+h2 {
+  margin-top: 1.5em;
+  border-bottom: 2px solid #d2b482;
+  display: inline-block;
+  padding-bottom: 0.25em;
 }
-p{
-  line-height:1.7;
-  font-size:1.1rem;
+ul { margin: 0.5em 0 1em 1.5em; }
+li { margin-bottom: 0.4em; }
+em { color: #795b2f; }
+.note {
+  background: #fff9e8;
+  border-left: 4px solid #d2b482;
+  padding: 0.6em 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+  font-style: italic;
 }
-footer{
-  margin-top:2rem;
-  font-size:0.8rem;
-  color:#999;
+#tracker {
+  background: #fffaf1;
+  border: 3px solid #d2b482;
+  border-radius: 8px;
+  padding: 1em;
+  margin: 2em 0;
+  text-align: center;
+}
+#tracker h2 { border: none; margin-top: 0; }
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  margin-bottom: 0.6em;
+}
+.player span.name {
+  width: 120px;
+  text-align: right;
+  font-weight: bold;
+}
+button {
+  background: #e7d4a6;
+  border: 1px solid #b69859;
+  border-radius: 4px;
+  padding: 0.2em 0.6em;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+button:hover { background: #f2e2b7; }
+.score {
+  font-size: 1.4em;
+  width: 2ch;
+  display: inline-block;
+  text-align: center;
+}
+#reset {
+  margin-top: 1em;
+  background: #d9c58a;
+}
+footer {
+  text-align: center;
+  margin-top: 2em;
+  font-size: 0.9em;
+  color: #7a6c57;
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>garlic.plnt.earth</h1>
-  <p>
-    Garlic: bulb of courage, root of warmth.<br><br>
-    It hums beneath the knife, sharp then sweet.<br>
-    A single clove holds memory of soil and fire —<br>
-    a whisper that wakes the pan, the body, the day.<br><br>
-    Roasted, raw, crushed, or whole — it never lies.<br>
-    It simply arrives and fills the air<br>
-    with truth strong enough to make you tear up a little.
-  </p>
-  <footer>© 2025 garlic.plnt.earth — for the love of garlic</footer>
+
+<h1>🌾 Catan: 2-Player Variant</h1>
+<p class="note">This version keeps the classic Catan flow but balances it for two explorers. All components remain standard.</p>
+
+<div id="tracker">
+  <h2>🏆 Score Tracker</h2>
+  <div class="player">
+    <span class="name">Player 1:</span>
+    <button onclick="adjust('p1',-1)">−</button>
+    <span id="p1" class="score">0</span>
+    <button onclick="adjust('p1',1)">+</button>
+  </div>
+  <div class="player">
+    <span class="name">Player 2:</span>
+    <button onclick="adjust('p2',-1)">−</button>
+    <span id="p2" class="score">0</span>
+    <button onclick="adjust('p2',1)">+</button>
+  </div>
+  <button id="reset" onclick="resetScores()">Reset</button>
 </div>
+
+<h2>🎲 Setup</h2>
+<ul>
+  <li>Use the <em>standard board layout</em> with normal terrain, numbers, and ports.</li>
+  <li>Each player begins with <strong>2 settlements</strong> and <strong>2 roads</strong>.</li>
+  <li>Optionally: each player may place <strong>1 extra road</strong> after setup to ease expansion.</li>
+</ul>
+
+<h2>⚙️ Core Gameplay</h2>
+<ul>
+  <li>On your turn, roll dice and collect resources from adjacent hexes.</li>
+  <li>Build roads, settlements, and cities as usual using resource cards.</li>
+  <li>Play development cards normally — they function as in the base game.</li>
+  <li>The game ends when a player reaches <strong>10 Victory Points</strong>.</li>
+</ul>
+
+<h2>👥 Two-Player Adjustments</h2>
+
+<h3>1. Trading</h3>
+<ul>
+  <li>No direct trades between players.</li>
+  <li>You may trade only with the <strong>bank</strong> at 4:1, or use ports (3:1 or 2:1) if available.</li>
+</ul>
+
+<h3>2. Neutral Settlements (Optional)</h3>
+<ul>
+  <li>After setup, each player places <strong>one neutral settlement</strong> and <strong>two neutral roads</strong>.</li>
+  <li>Neutral pieces block space but do not collect resources or score points.</li>
+</ul>
+
+<h3>3. The Robber</h3>
+<ul>
+  <li>When moving the robber, you must steal from your opponent if possible.</li>
+  <li>If your opponent has no resource cards, you skip stealing.</li>
+</ul>
+
+<h3>4. Development Cards</h3>
+<ul>
+  <li>Use the full deck as normal.</li>
+  <li>Victory Point cards remain secret until they cause a win.</li>
+</ul>
+
+<h2>🏁 Winning</h2>
+<ul>
+  <li>First to <strong>10 Victory Points</strong> wins.</li>
+  <li>Points are awarded as usual:
+    <ul>
+      <li>Settlement = 1 point</li>
+      <li>City = 2 points</li>
+      <li>Longest Road = 2 points</li>
+      <li>Largest Army = 2 points</li>
+      <li>Victory Point card = 1 point each</li>
+    </ul>
+  </li>
+</ul>
+
+<footer>
+  <p>Designed for cozy rivalries — trade wisely, expand carefully, and rule your island.</p>
+</footer>
+
+<script>
+function adjust(id, delta) {
+  const el = document.getElementById(id);
+  let val = parseInt(el.textContent, 10) + delta;
+  if (val < 0) val = 0;
+  if (val > 10) val = 10;
+  el.textContent = val;
+  localStorage.setItem(id, val);
+  if (val === 10) {
+    const winner = id === 'p1' ? 'Player 1' : 'Player 2';
+    alert('🏆 ' + winner + ' wins the game with 10 Victory Points!');
+  }
+}
+function resetScores() {
+  document.getElementById('p1').textContent = 0;
+  document.getElementById('p2').textContent = 0;
+  localStorage.removeItem('p1');
+  localStorage.removeItem('p2');
+}
+window.addEventListener('load', () => {
+  const p1 = localStorage.getItem('p1');
+  const p2 = localStorage.getItem('p2');
+  if (p1) document.getElementById('p1').textContent = p1;
+  if (p2) document.getElementById('p2').textContent = p2;
+});
+</script>
+
 </body>
 </html>
