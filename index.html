@@ -77,6 +77,24 @@ button:hover { background: #f2e2b7; }
   margin-top: 1em;
   background: #d9c58a;
 }
+.resource-guide {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8em;
+  margin: 1em 0;
+}
+.resource {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  background: #fff9e8;
+  border: 1px solid #d2b482;
+  border-radius: 6px;
+  padding: 0.4em 0.6em;
+  font-size: 0.95em;
+}
+.resource span.icon { font-size: 1.2em; }
 footer {
   text-align: center;
   margin-top: 2em;
@@ -114,10 +132,27 @@ footer {
   <li>Optionally: each player may place <strong>1 extra road</strong> after setup to ease expansion.</li>
 </ul>
 
+<h2>🎒 Starting Resources</h2>
+<ul>
+  <li>After both players have placed their <strong>second settlement</strong>, each player collects <em>1 resource card</em> for each terrain hex touching that settlement.</li>
+  <li>Example: if your second settlement borders a forest, a pasture, and a field, you start with <strong>1 Lumber, 1 Wool, and 1 Grain</strong>.</li>
+  <li>The first settlement you placed does not produce starting resources.</li>
+  <li>This gives both players a small initial hand to build or trade from on their first turn.</li>
+</ul>
+
+<div class="resource-guide">
+  <div class="resource"><span class="icon">🌲</span> Forest = Lumber ( Wood )</div>
+  <div class="resource"><span class="icon">🧱</span> Hills = Brick</div>
+  <div class="resource"><span class="icon">🌾</span> Fields = Grain ( Wheat )</div>
+  <div class="resource"><span class="icon">🐑</span> Pasture = Wool ( Sheep )</div>
+  <div class="resource"><span class="icon">⛰️</span> Mountains = Ore</div>
+  <div class="resource"><span class="icon">🏜️</span> Desert = No resources</div>
+</div>
+
 <h2>⚙️ Core Gameplay</h2>
 <ul>
   <li>On your turn, roll dice and collect resources from adjacent hexes.</li>
-  <li>Build roads, settlements, and cities as usual using resource cards.</li>
+  <li>Build roads, settlements, and cities as usual using resources.</li>
   <li>Play development cards normally — they function as in the base game.</li>
   <li>The game ends when a player reaches <strong>10 Victory Points</strong>.</li>
 </ul>
@@ -127,7 +162,7 @@ footer {
 <h3>1. Trading</h3>
 <ul>
   <li>No direct trades between players.</li>
-  <li>You may trade only with the <strong>bank</strong> at 4:1, or use ports (3:1 or 2:1) if available.</li>
+  <li>You may trade only with the <strong>bank</strong> at 4 : 1, or use ports (3 : 1 or 2 : 1) if available.</li>
 </ul>
 
 <h3>2. Neutral Settlements (Optional)</h3>
@@ -139,7 +174,7 @@ footer {
 <h3>3. The Robber</h3>
 <ul>
   <li>When moving the robber, you must steal from your opponent if possible.</li>
-  <li>If your opponent has no resource cards, you skip stealing.</li>
+  <li>If your opponent has no resource cards, skip stealing.</li>
 </ul>
 
 <h3>4. Development Cards</h3>
